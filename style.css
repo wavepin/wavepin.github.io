@@ -1,0 +1,83 @@
+body {
+    background-color: pink;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#askGif, #yesGif, #noGif {
+    display: none;
+}
+
+#askGif {
+    display: block;
+}
+
+button {
+    background-color: rgb(241, 87, 182); /* Light pink */
+    border: 2px solid #FF69B4; /* Hot pink */
+    padding: 20px 40px; /* Increased padding */
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 50px; /* Rounded corners */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    transition: all 0.3s ease 0s; /* Smooth transition */
+    color: white; /* White text */
+    font-weight: bold; /* Bold text */
+    font-size: 20px; /* Increased font size */
+}
+
+#noButton {
+    background-color: rgb(238, 173, 213);
+    border: 1px solid #FF69B4;
+    margin-top: 60px;
+    padding: 10px 20px; /* Smaller padding */
+    font-size: 16px; /* Smaller font size */
+}
+
+button:hover {
+    background-color: #FF69B4; /* Hot pink */
+    border: 2px solid #FFC0CB; /* Light pink */
+    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.2); /* More shadow on hover */
+    transform: translateY(-7px); /* Move the button up a bit on hover */
+}
+
+h1 {
+    color: white;
+}
+
+/* Add media queries for responsiveness */
+@media screen and (max-width: 600px) {
+    body {
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 20px;
+        width: 90%;
+        text-align: center;
+    }
+
+    button {
+        padding: 10px 20px; /* Smaller padding */
+        font-size: 16px; /* Smaller font size */
+    }
+
+        #noButton {
+            padding: 5px 10px; /* Smaller padding */
+            font-size: 10px;
+        }
+
+    #noButton {
+        margin-top: 20px;
+    }
+
+    img {
+        width: 70%; /* Make the GIFs take up the full width of their container */
+        height: auto; /* Keep the aspect ratio of the GIFs */
+    }
+}
