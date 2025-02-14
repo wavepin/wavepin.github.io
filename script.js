@@ -1,3 +1,16 @@
+window.addEventListener("load", function () {
+  var yesButton = document.getElementById("yesButton");
+  var noButton = document.getElementById("noButton");
+  noButton.style.position = "absolute";
+  // Center horizontally below yes button:
+  noButton.style.left =
+    yesButton.offsetLeft +
+    (yesButton.offsetWidth - noButton.offsetWidth) / 2 +
+    "px";
+  // Place noButton 10px below the yesButton:
+  noButton.style.top = yesButton.offsetTop + yesButton.offsetHeight + 10 + "px";
+});
+
 document.getElementById("yesButton").addEventListener("click", function () {
   document.getElementById("yesGif").style.display = "block";
   document.getElementById("askGif").style.display = "none";
@@ -14,7 +27,6 @@ noButton.addEventListener("mousemove", function (e) {
       Math.pow(e.clientY - noButton.offsetTop, 2)
   );
   if (distance < 500) {
-    // Change this value to increase or decrease the "run away" distance
     noButton.style.position = "absolute";
     noButton.style.left =
       Math.random() * (window.innerWidth - noButton.offsetWidth) + "px";

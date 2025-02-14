@@ -34,14 +34,12 @@ button {
 }
 
 #noButton {
-  position: absolute;
-  left: 47%;
-  top: 87%;
   transition: left 0.3s ease, top 0.3s ease;
   background-color: rgb(238, 173, 213);
   border: 1px solid #ff69b4;
-  margin-top: 20px;
-  padding: 10px 20px;
+  margin-left: 0px;
+  margin-top: 10px;
+  padding: 20px 30px;
   font-size: 16px;
 }
 
