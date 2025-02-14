@@ -72,12 +72,12 @@ h1 {
   }
 
   #noButton {
-    padding: 5px 10px; /* Smaller padding */
-    font-size: 10px;
+    padding: 8px 16px; /* Smaller padding */
+    font-size: 13px;
   }
 
   #noButton {
-    margin-top: 20px;
+    margin-top: 10px;
   }
 
   img {
