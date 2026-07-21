@@ -3,599 +3,607 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>San Antonio Must-Visit Attractions</title>
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Massachusetts learner's permit study guide focused on the topics repeatedly reported in a Reddit discussion and verified against the 2026 Massachusetts Driver's Manual.">
+  <title>MA Permit - High-Yield Study Guide</title>
   <style>
     :root {
       color-scheme: light;
-      --ink: #1d2528;
-      --muted: #5f6d70;
-      --paper: #faf7f1;
-      --panel: #ffffff;
-      --river: #0c6b74;
-      --terra: #b55335;
-      --sage: #6c7f54;
-      --gold: #d9a441;
-      --line: rgba(29, 37, 40, 0.14);
-      --shadow: 0 18px 45px rgba(39, 31, 21, 0.12);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --ink: #14213d;
+      --navy: #0b2545;
+      --blue: #134b70;
+      --red: #b4232c;
+      --cream: #f7f3ea;
+      --paper: #fffdf8;
+      --gold: #e8b44f;
+      --green: #226f54;
+      --muted: #5d6574;
+      --line: #d9d4c8;
+      --shadow: 0 12px 30px rgba(11, 37, 69, .10);
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      background:
-        linear-gradient(180deg, rgba(250, 247, 241, 0.94), rgba(250, 247, 241, 0.98)),
-        radial-gradient(circle at 20% 0%, rgba(217, 164, 65, 0.16), transparent 34%),
-        radial-gradient(circle at 80% 5%, rgba(12, 107, 116, 0.15), transparent 30%);
       color: var(--ink);
-      line-height: 1.55;
+      background: var(--cream);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.58;
     }
-
-    a {
-      color: inherit;
-    }
-
-    .hero {
-      min-height: 72vh;
-      display: grid;
-      align-items: end;
+    a { color: var(--blue); }
+    button, input { font: inherit; }
+    .masthead {
       position: relative;
       overflow: hidden;
-      background-image:
-        linear-gradient(90deg, rgba(11, 25, 28, 0.82), rgba(11, 25, 28, 0.38) 55%, rgba(11, 25, 28, 0.18)),
-        url("https://commons.wikimedia.org/wiki/Special:FilePath/River%20walk%20with%20tower.jpg");
-      background-size: cover;
-      background-position: center;
       color: white;
+      background: var(--navy);
+      border-bottom: 7px solid var(--red);
     }
-
-    .hero::after {
+    .masthead::after {
       content: "";
       position: absolute;
-      inset: auto 0 0;
-      height: 22%;
-      background: linear-gradient(180deg, transparent, var(--paper));
-      pointer-events: none;
+      width: 430px;
+      height: 430px;
+      right: -120px;
+      top: -230px;
+      border: 60px solid rgba(255,255,255,.055);
+      border-radius: 50%;
     }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      width: min(1120px, calc(100% - 36px));
-      margin: 0 auto;
-      padding: 72px 0 96px;
+    .hero { max-width: 1180px; margin: auto; padding: 54px 24px 42px; position: relative; z-index: 1; }
+    .eyebrow { margin: 0 0 10px; color: #ffd27a; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; }
+    h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.5rem, 7vw, 5.2rem); line-height: .94; letter-spacing: -.045em; margin: 0; max-width: 850px; }
+    .dek { max-width: 770px; font-size: 1.12rem; color: #dce7f2; margin: 22px 0 0; }
+    .exam-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; max-width: 1180px; margin: 0 auto; background: rgba(255,255,255,.16); border-top: 1px solid rgba(255,255,255,.16); }
+    .exam-stat { background: rgba(255,255,255,.055); padding: 18px 24px; }
+    .exam-stat strong { display: block; font-size: 1.6rem; color: white; }
+    .exam-stat span { color: #c9d8e6; font-size: .85rem; }
+    .layout { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 38px; padding: 30px 24px 80px; }
+    aside { position: sticky; top: 14px; align-self: start; }
+    .search { width: 100%; border: 1px solid var(--line); background: white; border-radius: 9px; padding: 10px 12px; color: var(--ink); }
+    .search:focus { outline: 3px solid rgba(19,75,112,.18); border-color: var(--blue); }
+    nav { margin-top: 14px; }
+    nav a { display: block; padding: 7px 10px; margin: 2px 0; color: var(--ink); text-decoration: none; border-left: 3px solid transparent; font-size: .92rem; }
+    nav a:hover, nav a:focus { color: var(--red); border-left-color: var(--red); background: white; }
+    .progress-card { margin-top: 18px; background: var(--ink); color: white; padding: 15px; border-radius: 10px; }
+    .progress-card p { margin: 0 0 8px; font-size: .85rem; color: #d8e0eb; }
+    progress { width: 100%; accent-color: var(--gold); }
+    .print-button { width: 100%; margin-top: 12px; border: 0; border-radius: 8px; padding: 9px; background: var(--gold); color: #261b05; font-weight: 800; cursor: pointer; }
+    main { min-width: 0; }
+    section { scroll-margin-top: 18px; margin-bottom: 54px; }
+    h2 { font-family: Georgia, "Times New Roman", serif; color: var(--navy); font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.1; letter-spacing: -.025em; margin: 0 0 18px; padding-bottom: 10px; border-bottom: 2px solid var(--ink); }
+    h3 { color: var(--navy); font-size: 1.15rem; margin: 28px 0 10px; }
+    h4 { margin-bottom: 5px; }
+    p { margin: 8px 0 13px; }
+    ul, ol { padding-left: 22px; }
+    li { margin: 5px 0; }
+    .priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .priority { background: var(--paper); border: 1px solid var(--line); border-top: 5px solid var(--blue); border-radius: 8px; padding: 18px; box-shadow: var(--shadow); }
+    .priority.hot { border-top-color: var(--red); }
+    .priority.warm { border-top-color: var(--gold); }
+    .priority h3 { margin: 4px 0; }
+    .priority .rank { font-weight: 900; color: var(--red); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; }
+    .note, .warning, .memory { padding: 14px 16px; margin: 16px 0; border-left: 5px solid var(--blue); background: #eef5f8; }
+    .warning { border-color: var(--red); background: #fff0f0; }
+    .memory { border-color: var(--gold); background: #fff8df; }
+    .memory strong, .warning strong, .note strong { color: var(--navy); }
+    .source { color: var(--muted); font-size: .82rem; }
+    .task-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0; list-style: none; }
+    .task-list label { display: flex; gap: 10px; align-items: flex-start; background: white; border: 1px solid var(--line); border-radius: 8px; padding: 12px; cursor: pointer; }
+    .task-list input { margin-top: 4px; accent-color: var(--green); }
+    table { border-collapse: collapse; width: 100%; margin: 14px 0 24px; background: white; font-size: .91rem; }
+    caption { text-align: left; font-weight: 800; color: var(--navy); margin-bottom: 7px; }
+    th, td { text-align: left; vertical-align: top; padding: 10px 11px; border: 1px solid var(--line); }
+    th { background: var(--navy); color: white; }
+    tbody tr:nth-child(even) { background: #f7f8fa; }
+    td strong { color: var(--red); }
+    .number-wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .number { background: var(--ink); color: white; border-radius: 8px; padding: 12px; min-height: 94px; }
+    .number b { display: block; color: #ffd27a; font-size: 1.45rem; line-height: 1.1; }
+    .number span { font-size: .82rem; color: #d7e0eb; }
+    .signals { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .signal { border: 1px solid var(--line); background: white; border-radius: 8px; padding: 11px 13px; }
+    .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; background: var(--red); }
+    .dot.yellow { background: #e0a900; } .dot.green { background: #17814e; }
+    details { background: white; border: 1px solid var(--line); border-radius: 8px; margin: 9px 0; overflow: hidden; }
+    summary { cursor: pointer; font-weight: 800; padding: 13px 15px; color: var(--navy); }
+    details > div { padding: 0 15px 14px; }
+    .quiz-card { border: 1px solid var(--line); border-radius: 9px; background: white; margin: 11px 0; padding: 15px; }
+    .quiz-card p { margin-top: 0; font-weight: 750; }
+    .reveal { border: 1px solid var(--blue); color: var(--blue); background: transparent; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-weight: 700; }
+    .answer { display: none; border-left: 4px solid var(--green); background: #eaf7f0; padding: 10px 12px; margin-top: 10px; }
+    .answer.show { display: block; }
+    .search-hidden { display: none !important; }
+    .footer { background: var(--navy); color: #d5e0eb; padding: 30px 24px; }
+    .footer-inner { max-width: 1180px; margin: auto; }
+    .footer a { color: #ffd27a; }
+    .tiny { font-size: .78rem; color: var(--muted); }
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { position: static; }
+      nav { columns: 2; }
+      .progress-card { display: none; }
+      .priority-grid, .number-wall { grid-template-columns: 1fr 1fr; }
     }
-
-    .eyebrow {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: rgba(255, 255, 255, 0.82);
-      margin-bottom: 18px;
-      font-weight: 700;
+    @media (max-width: 580px) {
+      .exam-strip { grid-template-columns: 1fr 1fr; }
+      .hero { padding-top: 38px; }
+      .priority-grid, .number-wall, .signals, .task-list { grid-template-columns: 1fr; }
+      nav { columns: 1; }
+      th, td { padding: 8px; }
+      table { font-size: .8rem; }
     }
-
-    h1 {
-      max-width: 820px;
-      margin: 0;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(3rem, 8vw, 6.7rem);
-      line-height: 0.9;
-      letter-spacing: 0;
-    }
-
-    .hero-copy {
-      max-width: 660px;
-      margin: 24px 0 0;
-      font-size: clamp(1.05rem, 2vw, 1.28rem);
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 28px;
-    }
-
-    .pill {
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      background: rgba(255, 255, 255, 0.14);
-      backdrop-filter: blur(10px);
-      padding: 9px 13px;
-      border-radius: 999px;
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.92);
-    }
-
-    main {
-      width: min(1120px, calc(100% - 36px));
-      margin: -42px auto 64px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .intro-band {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      border-radius: 8px;
-      padding: 26px;
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 22px;
-      align-items: center;
-    }
-
-    .intro-band p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .quick-note {
-      border-left: 4px solid var(--terra);
-      padding-left: 16px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    section {
-      margin-top: 58px;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 22px;
-      margin-bottom: 22px;
-    }
-
-    h2 {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(2rem, 4vw, 3.35rem);
-      line-height: 1;
-      margin: 0;
-      letter-spacing: 0;
-    }
-
-    .section-head p {
-      margin: 0;
-      max-width: 430px;
-      color: var(--muted);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 12px 28px rgba(39, 31, 21, 0.08);
-      display: flex;
-      flex-direction: column;
-      min-height: 100%;
-    }
-
-    .card.feature {
-      grid-column: span 2;
-    }
-
-    .card img {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      display: block;
-      background: #d9d1c4;
-    }
-
-    .card.feature img {
-      aspect-ratio: 16 / 9;
-    }
-
-    .card-body {
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      flex: 1;
-    }
-
-    .card h3 {
-      margin: 0;
-      font-size: 1.22rem;
-      line-height: 1.15;
-    }
-
-    .card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.96rem;
-    }
-
-    .stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: auto;
-    }
-
-    .tag {
-      padding: 6px 9px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      background: rgba(12, 107, 116, 0.1);
-      color: var(--river);
-    }
-
-    .tag.time {
-      background: rgba(181, 83, 53, 0.12);
-      color: var(--terra);
-    }
-
-    .why {
-      border-top: 1px solid var(--line);
-      padding-top: 12px;
-    }
-
-    .why strong {
-      color: var(--ink);
-    }
-
-    .source {
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-
-    .plan {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 20px;
-    }
-
-    .day {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      box-shadow: var(--shadow);
-      padding: 22px;
-    }
-
-    .day h3 {
-      margin: 0 0 6px;
-      font-size: 1.5rem;
-    }
-
-    .day .subtitle {
-      color: var(--muted);
-      margin: 0 0 20px;
-    }
-
-    .timeline {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      gap: 14px;
-    }
-
-    .timeline li {
-      display: grid;
-      grid-template-columns: 88px 1fr;
-      gap: 14px;
-      align-items: start;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .timeline li:last-child {
-      border-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .timeblock {
-      color: var(--terra);
-      font-weight: 900;
-      font-size: 0.9rem;
-    }
-
-    .timeline p {
-      margin: 3px 0 0;
-      color: var(--muted);
-    }
-
-    .footer {
-      margin-top: 44px;
-      padding: 22px 0 10px;
-      color: var(--muted);
-      font-size: 0.92rem;
-      border-top: 1px solid var(--line);
-    }
-
-    .footer a {
-      color: var(--river);
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    @media (max-width: 880px) {
-      .intro-band,
-      .plan,
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .card.feature {
-        grid-column: span 1;
-      }
-
-      .section-head {
-        display: block;
-      }
-
-      .section-head p {
-        margin-top: 10px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .hero {
-        min-height: 78vh;
-      }
-
-      .hero-inner {
-        padding-bottom: 84px;
-      }
-
-      main {
-        width: min(100% - 24px, 1120px);
-      }
-
-      .intro-band,
-      .day {
-        padding: 18px;
-      }
-
-      .timeline li {
-        grid-template-columns: 1fr;
-        gap: 4px;
-      }
+    @media print {
+      body { background: white; font-size: 10.5pt; }
+      aside, .print-button, .reveal { display: none !important; }
+      .layout { display: block; padding: 20px; }
+      .masthead { border-bottom-width: 3px; }
+      .hero { padding: 25px; }
+      h1 { font-size: 35pt; }
+      section { break-inside: avoid; margin-bottom: 30px; }
+      table { break-inside: avoid; }
+      .answer { display: block; }
+      a { color: inherit; text-decoration: none; }
     }
   </style>
 </head>
 <body>
-  <header class="hero">
-    <div class="hero-inner">
-      <div class="eyebrow">San Antonio, Texas | Quick but satisfying</div>
-      <h1>Essential San Antonio</h1>
-      <p class="hero-copy">A focused guide to the city's must-visit historic sites, river scenes, food districts, gardens, and skyline views, tuned for a traveler who moves quickly but still wants the hits.</p>
-      <div class="hero-meta">
-        <span class="pill">10 top stops</span>
-        <span class="pill">Lower-end time estimates</span>
-        <span class="pill">Two relaxed half-days</span>
-      </div>
+  <header class="masthead">
+    <div class="hero">
+      <p class="eyebrow">Massachusetts learner's permit · high-yield edition</p>
+      <h1>Ace the permit test.</h1>
+      <p class="dek">A last-day study guide built from the topics test-takers repeatedly flagged in the supplied Reddit thread, with every rule checked against the official 2026 Massachusetts Driver's Manual.</p>
+    </div>
+    <div class="exam-strip" aria-label="Exam facts">
+      <div class="exam-stat"><strong>25</strong><span>multiple-choice questions</span></div>
+      <div class="exam-stat"><strong>18</strong><span>correct answers to pass (72%)</span></div>
+      <div class="exam-stat"><strong>25 min</strong><span>about one minute per question</span></div>
+      <div class="exam-stat"><strong>5 areas</strong><span>alcohol, suspensions, JOL, rules, signs</span></div>
     </div>
   </header>
 
-  <main>
-    <div class="intro-band">
-      <p>San Antonio's best first visit is not about reading every plaque. It is about feeling the layers: Spanish missions, river-level city life, Mexican market color, adaptive reuse at Pearl, and one big look from above.</p>
-      <div class="quick-note">Fast-traveler rule: use the time estimates as "see it well enough" windows, then linger only where the place catches you.</div>
-    </div>
-
-    <section>
-      <div class="section-head">
-        <h2>Must-Visit Attractions</h2>
-        <p>These are the strongest first-trip stops, chosen for history, sense of place, visuals, and how easily they fit into two noon-start half-days.</p>
+  <div class="layout">
+    <aside aria-label="Study navigation">
+      <input id="search" class="search" type="search" placeholder="Search this guide…" aria-label="Search guide">
+      <nav>
+        <a href="#priorities">What to prioritize</a>
+        <a href="#plan">Tonight's plan</a>
+        <a href="#jol">JOL rules</a>
+        <a href="#jol-penalties">JOL penalties</a>
+        <a href="#alcohol">Alcohol & drugs</a>
+        <a href="#suspensions">Other suspensions</a>
+        <a href="#signs">Signs & signals</a>
+        <a href="#road">Rules of the road</a>
+        <a href="#special">Special situations</a>
+        <a href="#numbers">Number cram wall</a>
+        <a href="#quiz">Self-test</a>
+        <a href="#sources">Sources</a>
+      </nav>
+      <div class="progress-card">
+        <p><strong id="progressText">0 of 8</strong> study blocks checked</p>
+        <progress id="progress" max="8" value="0"></progress>
+        <button class="print-button" type="button" onclick="window.print()">Print / Save PDF</button>
       </div>
+    </aside>
 
-      <div class="grid">
-        <article class="card feature">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/The%20Alamo%20%284763454756%29.jpg" alt="The Alamo in San Antonio">
-          <div class="card-body">
-            <div class="stats"><span class="tag">History icon</span><span class="tag time">30-45 min</span></div>
-            <h3>The Alamo</h3>
-            <p>The former Mission San Antonio de Valero is the city's most famous site and the symbolic center of Texas independence history.</p>
-            <p class="why"><strong>Why go:</strong> It is compact, central, and culturally unavoidable. Reserve the free church entry if you want to step inside without friction.</p>
-            <a class="source" href="https://www.thealamo.org/visit/">Official visitor info</a>
-          </div>
-        </article>
+    <main>
+      <section id="priorities" data-search>
+        <h2>What the thread says to prioritize</h2>
+        <div class="priority-grid">
+          <article class="priority hot">
+            <span class="rank">Priority 1</span>
+            <h3>JOL + suspensions</h3>
+            <p>The original poster said the majority of their test involved alcohol and JOL violations. Another test-taker reported at least eight JOL/suspension questions before failing, then passed after studying the manual.</p>
+          </article>
+          <article class="priority hot">
+            <span class="rank">Priority 1</span>
+            <h3>Alcohol + drugs</h3>
+            <p>The same two first-hand reports repeatedly pair alcohol/drug rules with JOL. The second test-taker estimated about six JOL and alcohol/drug questions on the successful attempt.</p>
+          </article>
+          <article class="priority warm">
+            <span class="rank">Priority 2</span>
+            <h3>Signs + road rules</h3>
+            <p>They remain explicitly testable. The original poster recalled roughly three sign questions and one highway question, but exact exam mixes vary.</p>
+          </article>
+        </div>
+        <div class="warning"><strong>Use the ranking, not the anecdotes, as a guarantee.</strong> This is one Reddit thread with two detailed first-hand accounts. The official manual says all five areas are examinable: alcohol misuse, suspensions, JOL violations, rules of the road, and road signs.</div>
+        <p class="source">Thread evidence: supplied Reddit post and all visible comments, accessed July 21, 2026. Exam scope: RMV manual p. 15.</p>
+      </section>
 
-        <article class="card">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/River%20walk%20-%20san%20antonio.jpg" alt="San Antonio River Walk">
-          <div class="card-body">
-            <div class="stats"><span class="tag">Classic stroll</span><span class="tag time">45-75 min</span></div>
-            <h3>San Antonio River Walk</h3>
-            <p>The landscaped river corridor is lined with bridges, patios, public art, shops, and downtown architecture.</p>
-            <p class="why"><strong>Why go:</strong> It is the city's signature atmosphere, especially from late afternoon into evening.</p>
-            <a class="source" href="https://www.sa.gov/Directory/Departments/CCDO/Parks-Facilities/River-Walk">City River Walk info</a>
-          </div>
-        </article>
+      <section id="plan" data-search>
+        <h2>A realistic last-night plan</h2>
+        <ol>
+          <li><strong>45 minutes:</strong> memorize the JOL restriction rules and the red-number penalty ladders.</li>
+          <li><strong>45 minutes:</strong> memorize BAC thresholds, implied consent, failed/refused test suspensions, and OUI penalties.</li>
+          <li><strong>30 minutes:</strong> learn sign colors/shapes, signals, pavement lines, right-of-way, and school bus rules.</li>
+          <li><strong>20 minutes:</strong> review the Number Cram Wall, then answer every self-test question aloud.</li>
+          <li><strong>Tomorrow:</strong> one 15-minute number review. Do not stay up so late that fatigue erases the benefit.</li>
+        </ol>
+        <ul class="task-list" aria-label="Study checklist">
+          <li><label><input class="study-check" type="checkbox"> JOL eligibility and restrictions</label></li>
+          <li><label><input class="study-check" type="checkbox"> JOL permit penalty table</label></li>
+          <li><label><input class="study-check" type="checkbox"> JOL license penalty table</label></li>
+          <li><label><input class="study-check" type="checkbox"> BAC, drinks, and implied consent</label></li>
+          <li><label><input class="study-check" type="checkbox"> Failed/refused tests and OUI table</label></li>
+          <li><label><input class="study-check" type="checkbox"> Signs, signals, and pavement markings</label></li>
+          <li><label><input class="study-check" type="checkbox"> Right-of-way, turns, passing, parking</label></li>
+          <li><label><input class="study-check" type="checkbox"> Number wall + self-test</label></li>
+        </ul>
+      </section>
 
-        <article class="card">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mission%20San%20Jos%C3%A9%20San%20Antonio.JPG" alt="Mission San Jose in San Antonio">
-          <div class="card-body">
-            <div class="stats"><span class="tag">UNESCO site</span><span class="tag time">45-60 min</span></div>
-            <h3>Mission San Jose</h3>
-            <p>The best single stop in San Antonio Missions National Historical Park, with a large walled compound and visitor center.</p>
-            <p class="why"><strong>Why go:</strong> It gives you the clearest sense of the mission system without needing to visit all four southern missions.</p>
-            <a class="source" href="https://home.nps.gov/saan/planyourvisit/basicinfo.htm">NPS visitor info</a>
-          </div>
-        </article>
+      <section id="jol" data-search>
+        <h2>JOL: know the rules cold</h2>
+        <h3>Who is a Junior Operator?</h3>
+        <p>Any motor vehicle operator or motorcyclist from age <strong>16½ until 18</strong> who holds a Junior Operator's License (JOL). The restriction code is <strong>I</strong>.</p>
 
-        <article class="card">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/The%20Pearl%20San%20Antonio%202019.jpg" alt="The Pearl in San Antonio">
-          <div class="card-body">
-            <div class="stats"><span class="tag">Food district</span><span class="tag time">45-75 min</span></div>
-            <h3>Pearl District</h3>
-            <p>A former brewery turned polished neighborhood with restaurants, shops, river access, Hotel Emma, and a strong weekend market scene.</p>
-            <p class="why"><strong>Why go:</strong> It is the best easy taste of modern San Antonio: adaptive reuse, food, design, and people-watching.</p>
-            <a class="source" href="https://www.visitsanantonio.com/plan-your-trip/neighborhood-guide/pearl-district/">Visit San Antonio guide</a>
-          </div>
-        </article>
+        <h3>Requirements to obtain a JOL</h3>
+        <ul>
+          <li>Hold a valid learner's permit for at least <strong>six consecutive months</strong> before the road test. Any suspension invalidates the permit and restarts the six-month clock after the suspension ends.</li>
+          <li>Maintain a <strong>clean driving record for six consecutive months</strong> before the road test.</li>
+          <li>Complete RMV-approved driver education: <strong>30 classroom hours + 12 behind-the-wheel hours + 6 observation hours</strong>.</li>
+          <li>Complete <strong>40 additional supervised driving hours</strong>, certified by a parent/guardian. This drops to <strong>30 hours</strong> if an approved driver skills development program was completed.</li>
+          <li>A parent/guardian completes <strong>two hours</strong> of driver-ed curriculum instruction, unless completed in the past five years.</li>
+          <li>Pass the driver-education final exam so the certificate is filed electronically with the RMV.</li>
+        </ul>
 
-        <article class="card">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/San%20Antonio%27s%20Historic%20Market%20Square%20in%202024.jpg" alt="Historic Market Square in San Antonio">
-          <div class="card-body">
-            <div class="stats"><span class="tag">Color + shops</span><span class="tag time">30-45 min</span></div>
-            <h3>Historic Market Square</h3>
-            <p>Also called El Mercado, this downtown market area packs in Mexican-style shops, murals, music, sweets, and restaurants.</p>
-            <p class="why"><strong>Why go:</strong> It is touristy, yes, but still one of the fastest ways to get San Antonio's color and food culture in one stop.</p>
-            <a class="source" href="https://www.tourtexas.com/attractions/market-square-san-antonio">Market Square overview</a>
-          </div>
-        </article>
+        <h3>JOL license restrictions</h3>
+        <ul>
+          <li><strong>Passenger restriction:</strong> for the first six months after receiving a JOL, no passenger under 18 unless the passenger is immediate family or the driver is accompanied by a person at least 21, licensed in MA or another state, with at least one year of driving experience, seated beside the driver. It ends after six months or at age 18, whichever comes first. A suspension pauses the six-month clock.</li>
+          <li><strong>Night restriction:</strong> no driving from <strong>12:30 a.m. to 5:00 a.m.</strong> unless accompanied by a parent or legal guardian. From 12:30–1:00 and 4:00–5:00, police generally enforce it only after a lawful stop for another violation, but the driving is still illegal.</li>
+          <li>No vehicle requiring a commercial driver's license.</li>
+          <li>No mobile electronic device for any reason while driving, except reporting an emergency.</li>
+          <li>A suspension imposed while on a JOL must be completed, and the driver must reach 18, before becoming eligible for a full license.</li>
+        </ul>
+        <div class="memory"><strong>Core ladder:</strong> passenger/night restriction violations are <strong>60 days → 180 days → 1 year</strong>. JOL speeding is <strong>90 days → 1 year</strong>. Drag racing is <strong>1 year → 3 years</strong>.</div>
+        <p class="source">Official manual pp. 9–11.</p>
+      </section>
 
-        <article class="card">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Morning%20at%20the%20Tea%20Garden.jpg" alt="Japanese Tea Garden in San Antonio">
-          <div class="card-body">
-            <div class="stats"><span class="tag">Garden pause</span><span class="tag time">25-40 min</span></div>
-            <h3>Japanese Tea Garden</h3>
-            <p>A restored quarry garden in Brackenridge Park with stonework, koi ponds, bridges, lush planting, and waterfall views.</p>
-            <p class="why"><strong>Why go:</strong> It is free, photogenic, and a calm reset between heavier historic stops.</p>
-            <a class="source" href="https://www.sa.gov/Directory/Departments/Parks/Parks-Facilities/Buildings-Centers/Japanese-Tea-Garden">City garden info</a>
-          </div>
-        </article>
+      <section id="jol-penalties" data-search>
+        <h2>JOL violation and penalty tables</h2>
+        <p>These are the high-risk memorization tables specifically emphasized by the thread. “New exam” means another learner's permit exam.</p>
+        <table>
+          <caption>Mandatory learner's PERMIT suspensions — Junior Operators 16½ to 18</caption>
+          <thead><tr><th>Violation</th><th>Suspension</th><th>Reinstatement / fines</th><th>Fee</th></tr></thead>
+          <tbody>
+            <tr><td>Driving without a licensed driver</td><td><strong>60d / 180d / 1yr</strong></td><td>New exam every time; 2nd also Driver Attitudinal Retraining</td><td>$100</td></tr>
+            <tr><td>Driving during night restriction</td><td><strong>60d / 180d / 1yr</strong></td><td>New exam every time; 2nd also Driver Attitudinal Retraining</td><td>$100</td></tr>
+            <tr><td>Speeding</td><td><strong>90d / 1yr</strong></td><td>New exam every time</td><td>$100</td></tr>
+            <tr><td>Drag racing</td><td><strong>1yr / 3yr</strong></td><td>New exam + retraining; SCARR may be required</td><td>$500 / $1,000</td></tr>
+            <tr><td>Mobile electronic device</td><td><strong>60d / 180d / 1yr</strong></td><td>1st: $100 fine + new exam + retraining. Fines: $100 / $250 / $500</td><td>$100</td></tr>
+            <tr><td>Negligent operation + injury from phone use</td><td><strong>180d / 1yr</strong></td><td>2nd+ require new exam</td><td>$500</td></tr>
+          </tbody>
+        </table>
 
-        <article class="card">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tower%20of%20the%20americas%202013.jpg" alt="Tower of the Americas">
-          <div class="card-body">
-            <div class="stats"><span class="tag">Skyline view</span><span class="tag time">30-45 min</span></div>
-            <h3>Tower of the Americas</h3>
-            <p>A 750-foot observation tower built for HemisFair '68, with a deck, 4D theater, cafe, bar, and broad city views.</p>
-            <p class="why"><strong>Why go:</strong> It helps you understand the shape of downtown and the flat sweep of South Texas.</p>
-            <a class="source" href="https://www.toweroftheamericas.com/location/tower-of-the-americas/">Official visitor info</a>
-          </div>
-        </article>
+        <table>
+          <caption>Mandatory LICENSE suspensions — Junior Operators 16½ to 18</caption>
+          <thead><tr><th>Violation</th><th>Suspension</th><th>Reinstatement / fines</th><th>Fee</th></tr></thead>
+          <tbody>
+            <tr><td>Passenger or night restriction</td><td><strong>60d / 180d / 1yr</strong></td><td>2nd+ retraining; 3rd+ new exam + road test</td><td>$100</td></tr>
+            <tr><td>Speeding</td><td><strong>90d / 1yr</strong></td><td>New exam + retraining + road test; SCARR may be required</td><td>$500</td></tr>
+            <tr><td>Drag racing</td><td><strong>1yr / 3yr</strong></td><td>New exam + retraining + road test; SCARR may be required</td><td>$500 / $1,000</td></tr>
+            <tr><td>Negligent/reckless operation or operating to endanger</td><td><strong>180d / 1yr</strong> (2nd within 3 years)</td><td>2nd+ new exam + road test</td><td>$500</td></tr>
+            <tr><td>Mobile electronic device</td><td><strong>60d / 180d / 1yr</strong></td><td>1st: $100 fine + new exam + retraining + road test. Fines: $100 / $250 / $500</td><td>$100</td></tr>
+            <tr><td>Negligent operation + injury from phone use</td><td><strong>180d / 1yr</strong></td><td>2nd+ new exam + road test</td><td>$500</td></tr>
+          </tbody>
+        </table>
+        <div class="warning"><strong>Extra JOL alcohol/drug-related suspension:</strong> a Junior Operator convicted of OUI, operating to endanger, leaving a crash, open-container drinking, OUI with serious bodily injury, unauthorized vehicle use, reckless/negligent operation, loaning a license/permit, or motor vehicle homicide gets an additional <strong>180 days for a first offense or 1 year for a later offense</strong>, unless an extra failed/refused breath-test suspension already applies. A parent/guardian is notified.</div>
+        <p class="source">Official manual pp. 63–65. “d” = days; “yr” = year.</p>
+      </section>
 
-        <article class="card">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/La%20Villita%2C%20San%20Antonio.jpg" alt="La Villita Historic Arts Village">
-          <div class="card-body">
-            <div class="stats"><span class="tag">Historic arts</span><span class="tag time">25-40 min</span></div>
-            <h3>La Villita Historic Arts Village</h3>
-            <p>A one-square-block historic district just off the River Walk, now filled with galleries, shops, small courtyards, and old stone buildings.</p>
-            <p class="why"><strong>Why go:</strong> It is a low-effort add-on that adds texture between the River Walk and downtown landmarks.</p>
-            <a class="source" href="https://www.visitsanantonio.com/listing/la-villita-historic-arts-village/2945/">Visit San Antonio listing</a>
-          </div>
-        </article>
+      <section id="alcohol" data-search>
+        <h2>Alcohol, drugs, BAC, and OUI</h2>
+        <h3>What alcohol does</h3>
+        <p>Alcohol is a depressant. It slows reflexes, increases reaction time, distorts vision and judgment, and can create false confidence. It also makes speeding, lane drift, and failure to buckle up more likely. Even one drink in an hour can impair driving; fatigue, emotional upset, and lack of food can worsen the effect.</p>
+        <ul>
+          <li>No trick “sobers you up.” Coffee, cold showers, exercise, and food may change how alert you feel, but <strong>only time</strong> removes alcohol.</li>
+          <li>BAC depends on body weight, amount consumed, food eaten beforehand, time spent drinking, and individual processing speed—not the beverage type.</li>
+          <li>Each contains about the same alcohol (about ½ ounce): <strong>12 oz beer = 5 oz wine = 1½ oz of 80-proof liquor</strong>. One may raise an average person's BAC about <strong>0.02</strong>.</li>
+          <li>The manual says alcohol makes crash risk about <strong>5×</strong> greater; alcohol plus marijuana about <strong>12×</strong>.</li>
+        </ul>
 
-        <article class="card">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/San%20Fernando%20Cathedral%20-%20San%20Antonio.jpg" alt="San Fernando Cathedral in San Antonio">
-          <div class="card-body">
-            <div class="stats"><span class="tag">Old downtown</span><span class="tag time">15-30 min</span></div>
-            <h3>San Fernando Cathedral & Main Plaza</h3>
-            <p>One of the city's oldest civic-religious anchors, facing Main Plaza and close to Market Square and the River Walk.</p>
-            <p class="why"><strong>Why go:</strong> By day it is a quick architectural stop; on show nights, "The Saga" projection makes it memorable after dark.</p>
-            <a class="source" href="https://www.visitsanantonio.com/plan-your-trip/only-in-san-antonio/san-antonio-the-saga/">The Saga info</a>
-          </div>
-        </article>
+        <h3>BAC and implied consent</h3>
+        <div class="number-wall">
+          <div class="number"><b>0.08</b><span>BAC: criminal legal limit / failed chemical test for all drivers</span></div>
+          <div class="number"><b>0.02</b><span>BAC: under-21 administrative “zero tolerance” threshold</span></div>
+          <div class="number"><b>12 · 5 · 1½</b><span>ounces: beer · wine · 80-proof liquor</span></div>
+          <div class="number"><b>Time only</b><span>removes alcohol from the body</span></div>
+        </div>
+        <p>Massachusetts' Implied Consent Law means a licensed driver agrees to chemical testing in covered circumstances. If an officer believes you are OUI, they may request a field sobriety test and, after arrest, a breath or blood test. A BAC above the legal limit—or refusal—causes police to take the license and issue an <strong>immediate</strong> suspension notice.</p>
 
-        <article class="card feature">
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Go%20Rio%20Riverboat%20at%20The%20Westin%20Riverwalk%2C%20San%20Antonio%20%2849223774063%29.jpg" alt="GO RIO river cruise boat on the San Antonio River">
-          <div class="card-body">
-            <div class="stats"><span class="tag">Easy orientation</span><span class="tag time">35 min</span></div>
-            <h3>GO RIO Narrated River Cruise</h3>
-            <p>A short narrated boat loop through the downtown River Walk, covering landmarks, architecture, and river stories from the water.</p>
-            <p class="why"><strong>Why go:</strong> It is the most efficient way to sample the River Walk without turning the afternoon into a long walk.</p>
-            <a class="source" href="https://www.goriocruises.com/narrated-cruises/">Official cruise info</a>
-          </div>
-        </article>
-      </div>
-    </section>
+        <table>
+          <caption>Failed chemical test suspension (BAC ≥ .08; or youth sanction at ≥ .02)</caption>
+          <thead><tr><th>Age</th><th>Administrative suspension</th><th>First-case education option</th></tr></thead>
+          <tbody>
+            <tr><td>Over 21</td><td><strong>30 days</strong> or until court case concludes, whichever is shorter</td><td>Court penalties may follow a conviction</td></tr>
+            <tr><td>18–21</td><td><strong>30 days + 180 days</strong></td><td>Extra 180 days may be waived by entering approved alcohol education</td></tr>
+            <tr><td>Under 18</td><td><strong>30 days + 1 year</strong></td><td>Extra year may be reduced to 180 days by entering approved alcohol education</td></tr>
+          </tbody>
+        </table>
 
-    <section>
-      <div class="section-head">
-        <h2>Two Half-Day Plan</h2>
-        <p>Both days start at noon and leave a soft landing before a 7:30 dinner. Adjust meals by neighborhood: downtown on day one, Pearl or Southtown on day two.</p>
-      </div>
+        <table>
+          <caption>Refusing a chemical test (prior refusals do not count as prior OUI offenses)</caption>
+          <thead><tr><th>Age</th><th>0 prior OUI</th><th>1 prior</th><th>2 prior</th><th>3+ prior</th></tr></thead>
+          <tbody>
+            <tr><td>Over 21</td><td><strong>180 days</strong></td><td>3 years</td><td>5 years</td><td>Lifetime</td></tr>
+            <tr><td>18–21</td><td><strong>3 years + 180 days</strong></td><td>3 years + 180 days</td><td>5 years + 180 days</td><td>Lifetime</td></tr>
+            <tr><td>Under 18</td><td><strong>3 years + 1 year</strong></td><td>3 years + 1 year</td><td>5 years + 1 year</td><td>Lifetime</td></tr>
+          </tbody>
+        </table>
+        <p class="tiny">For under-21 refusal additions, winning the court case does not remove the alcohol-education requirement. On a first OUI case, age 18–21 may have the extra 180 days waived by entering approved education; under 18 may have the extra year reduced to 180 days.</p>
 
-      <div class="plan">
-        <article class="day">
-          <h3>Day 1: Downtown, River & Skyline</h3>
-          <p class="subtitle">Best for your first arrival day: iconic, walkable, and atmospheric near evening.</p>
-          <ol class="timeline">
-            <li>
-              <div class="timeblock">12:00</div>
-              <div><strong>The Alamo</strong><p>Use a reservation if entering the church. Keep it brisk unless the exhibits grab you.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">12:50</div>
-              <div><strong>Lunch or coffee near Alamo Plaza</strong><p>Quick pause so the afternoon does not feel like a forced march.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">1:45</div>
-              <div><strong>GO RIO narrated cruise</strong><p>Let the boat orient you before walking the river yourself.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">2:30</div>
-              <div><strong>River Walk to La Villita</strong><p>Stroll the best central bends, then duck into La Villita for shops and courtyards.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">3:45</div>
-              <div><strong>Tower of the Americas</strong><p>Take in the observation deck, then wander a little of Hemisfair if energy is good.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">5:15</div>
-              <div><strong>San Fernando Cathedral & Main Plaza</strong><p>Quick architecture stop, then decompress with a drink or shaded sit before dinner.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">7:30</div>
-              <div><strong>Dinner downtown or Southtown</strong><p>If "The Saga" is running and timing works, return to Main Plaza after dinner.</p></div>
-            </li>
-          </ol>
-        </article>
+        <table>
+          <caption>OUI conviction penalties — alcohol or drugs (including marijuana/prescription drugs)</caption>
+          <thead><tr><th>Offense</th><th>Fine</th><th>Prison</th><th>License suspension</th></tr></thead>
+          <tbody>
+            <tr><td>1st</td><td>$500–$5,000</td><td>Max 2½ years</td><td><strong>1 year</strong>; education may reduce to 45–90 days if over 21, or 210 days if under 21</td></tr>
+            <tr><td>2nd</td><td>$600–$10,000</td><td>30 days–2½ years</td><td><strong>2 years</strong></td></tr>
+            <tr><td>3rd (felony)</td><td>$1,000–$15,000</td><td>150 days–5 years</td><td><strong>8 years</strong></td></tr>
+            <tr><td>4th (felony)</td><td>$1,500–$25,000</td><td>1–5 years</td><td><strong>10 years</strong></td></tr>
+            <tr><td>5th (felony)</td><td>$2,000–$50,000</td><td>2–5 years</td><td><strong>Lifetime</strong></td></tr>
+          </tbody>
+        </table>
 
-        <article class="day">
-          <h3>Day 2: Missions, Market, Garden & Pearl</h3>
-          <p class="subtitle">A relaxed loop with one essential mission, a vivid market stop, a garden break, and a strong food finish.</p>
-          <ol class="timeline">
-            <li>
-              <div class="timeblock">12:00</div>
-              <div><strong>Mission San Jose</strong><p>Start at the visitor center and walk the compound. This is the one mission to prioritize.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">1:20</div>
-              <div><strong>Optional Mission Concepcion drive-by</strong><p>Add a 20-minute look if you want a second mission without committing to the full trail.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">2:10</div>
-              <div><strong>Historic Market Square</strong><p>Browse fast, snack if useful, and get the color hit before moving north.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">3:30</div>
-              <div><strong>Japanese Tea Garden</strong><p>Short scenic reset: pond, bridges, waterfall, and shade.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">4:30</div>
-              <div><strong>Pearl District</strong><p>Browse Hotel Emma's public areas, the river edge, shops, and Pullman Market if open.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">6:15</div>
-              <div><strong>Unscheduled buffer</strong><p>Use this for a drink, a longer Pearl wander, or simply getting cleaned up before dinner.</p></div>
-            </li>
-            <li>
-              <div class="timeblock">7:30</div>
-              <div><strong>Dinner at Pearl or nearby</strong><p>This is the natural food-focused ending, with minimal extra transit.</p></div>
-            </li>
-          </ol>
-        </article>
-      </div>
-    </section>
+        <h3>Under-21 alcohol, open containers, false IDs, and drugs</h3>
+        <ul>
+          <li>Under 21: illegal to buy/have someone buy alcohol, or possess/carry/transport alcohol unless with a parent/guardian. License suspension range: <strong>90 days to 1 year</strong>. Buying or attempting to buy: <strong>180-day suspension</strong>.</li>
+          <li>Open container: neither the driver nor anyone else may have an open alcoholic drink inside the vehicle. Conviction: <strong>$100–$500</strong>; under 21 also arrested, fined, and suspended.</li>
+          <li>False/altered/borrowed ID or false information: RMV may suspend up to <strong>6 months without a conviction</strong>; conviction brings a <strong>1-year suspension</strong>.</li>
+          <li>OUI law applies to marijuana, illegal drugs, prescription drugs, and over-the-counter medicines. Legal possession of marijuana does not make impaired driving legal.</li>
+          <li>Marijuana impairs response to sights/sounds, rapid task handling, unexpected-event response, and night vision. Sedatives/cold medicines may cause drowsiness; stimulants may be followed by fatigue, dizziness, nervousness, and poor concentration.</li>
+        </ul>
+        <p class="source">Official manual pp. 68–75.</p>
+      </section>
 
-    <div class="footer">
-      <p>Research checked against official or destination sources including <a href="https://www.thealamo.org/visit/">The Alamo</a>, <a href="https://home.nps.gov/saan/planyourvisit/basicinfo.htm">National Park Service</a>, <a href="https://www.sa.gov/Directory/Departments/CCDO/Parks-Facilities/River-Walk">City of San Antonio River Walk</a>, <a href="https://www.goriocruises.com/narrated-cruises/">GO RIO</a>, <a href="https://www.toweroftheamericas.com/location/tower-of-the-americas/">Tower of the Americas</a>, and Visit San Antonio pages for Pearl, La Villita, and The Saga. Image URLs are Wikimedia Commons file links.</p>
-    </div>
-  </main>
+      <section id="suspensions" data-search>
+        <h2>Other suspensions and violation numbers</h2>
+        <table>
+          <caption>Mandatory suspensions for drivers 18 and older</caption>
+          <thead><tr><th>Situation</th><th>Trigger</th><th>Result</th><th>Fee</th></tr></thead>
+          <tbody>
+            <tr><td>3 speeding violations</td><td>Within 1 year</td><td><strong>30-day suspension</strong></td><td>$100</td></tr>
+            <tr><td>3 surchargeable events</td><td>Within 2 years</td><td>Complete retraining in 90 days or indefinite suspension until completed</td><td>$100</td></tr>
+            <tr><td>7 surchargeable events</td><td>Within 3 years</td><td><strong>60-day suspension</strong></td><td>$100</td></tr>
+            <tr><td>Habitual traffic offender</td><td>3 major violations OR 12 major/minor in 5 years</td><td><strong>4 years</strong></td><td>$500</td></tr>
+            <tr><td>Out-of-state suspension</td><td>Suspended/revoked elsewhere</td><td>Until resolved</td><td>$100</td></tr>
+          </tbody>
+        </table>
+        <h3>Criminal offense suspension ranges</h3>
+        <ul>
+          <li>Driving with suspended/revoked license: <strong>60 days–1 year</strong>.</li>
+          <li>Operating without owner's authority / vehicle larceny: <strong>1–3 years</strong>.</li>
+          <li>Leaving an injury crash: <strong>1–2 years</strong>; leaving a property-damage crash: <strong>60 days–1 year</strong>.</li>
+          <li>Operating to endanger: <strong>60 days–1 year</strong>.</li>
+          <li>Motor vehicle homicide or vehicular manslaughter: <strong>15 years–lifetime</strong>.</li>
+          <li>Drug trafficking (except Class D substance): <strong>1–5 years</strong>, even without driving.</li>
+          <li>Graffiti/defacing property: <strong>1 year</strong> or one-year delay in obtaining a license.</li>
+          <li>Drag racing by drivers over 18: <strong>30–180 days</strong>.</li>
+        </ul>
+        <div class="memory"><strong>Speeding fine formula:</strong> minimum fine is $100 plus $5 public-safety surcharge. Over 10 mph above the limit, add $10 for each mph above the first ten. Posted work-zone speeding fines are doubled. The manual also notes a $50 head-injury trust surcharge included in speeding fines.</div>
+        <p>For a civil motor vehicle infraction, pay or request a hearing within <strong>20 days</strong>. A hearing request has a <strong>$25</strong> filing fee, refunded if found not responsible for every violation. Ignoring the citation adds a late fee and can lead to suspension.</p>
+        <p class="source">Official manual pp. 56–68.</p>
+      </section>
+
+      <section id="signs" data-search>
+        <h2>Signs, signals, and pavement markings</h2>
+        <h3>Sign colors</h3>
+        <table>
+          <thead><tr><th>Color</th><th>Meaning</th><th>Color</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>Red</td><td>Stop / prohibition</td><td>Green</td><td>Direction / where you can go</td></tr>
+            <tr><td>Yellow</td><td>General warning</td><td>Black & white</td><td>Regulation</td></tr>
+            <tr><td>Blue</td><td>Motorist service / evacuation</td><td>Brown</td><td>Recreation, historic, scenic</td></tr>
+            <tr><td>Orange</td><td>Construction / maintenance</td><td>Fluorescent yellow-green</td><td>School, bike, pedestrian, curve warning</td></tr>
+            <tr><td>Fluorescent pink</td><td>Incident management</td><td>Purple</td><td>Electronic toll collection</td></tr>
+          </tbody>
+        </table>
+        <h3>Sign shapes you should recognize at a distance</h3>
+        <p><strong>Octagon:</strong> stop · <strong>downward triangle:</strong> yield · <strong>pennant:</strong> no-passing zone · <strong>pentagon:</strong> school zone/crossing · <strong>diamond:</strong> warning · <strong>circle:</strong> railroad warning · <strong>rectangle:</strong> regulation or guide/information · <strong>crossbuck:</strong> railroad crossing · <strong>shield:</strong> interstate highway.</p>
+
+        <h3>Traffic lights</h3>
+        <div class="signals">
+          <div class="signal"><span class="dot"></span><strong>Steady red:</strong> stop. Right on red after full stop and yielding unless prohibited. Left on red only one-way to one-way, after stop/yield.</div>
+          <div class="signal"><span class="dot"></span><strong>Flashing red:</strong> treat exactly as a STOP sign.</div>
+          <div class="signal"><span class="dot yellow"></span><strong>Steady yellow:</strong> stop if safe. If already stopped, do not enter.</div>
+          <div class="signal"><span class="dot yellow"></span><strong>Flashing yellow:</strong> warning; proceed cautiously. Flashing yellow arrow permits the indicated turn after yielding to traffic and pedestrians.</div>
+          <div class="signal"><span class="dot green"></span><strong>Steady green:</strong> go only if clear; yield to traffic/pedestrians already present. Left turn yields to oncoming traffic.</div>
+          <div class="signal"><span class="dot green"></span><strong>Green arrow:</strong> protected turn, but still check the path.</div>
+        </div>
+        <p>Blackout: act as if every direction has a stop sign. Pedestrian hybrid beacon: dark = caution; flashing yellow = slow; solid yellow = prepare to stop; solid red pair = stop; flashing red pair = stop, then proceed if clear.</p>
+
+        <h3>Pavement markings</h3>
+        <ul>
+          <li><strong>White</strong> separates same-direction traffic. Broken white: lane change allowed when safe. Single solid white: should not cross except to avoid danger. Double solid white: crossing prohibited.</li>
+          <li><strong>Yellow</strong> separates opposite-direction traffic. Broken yellow: may cross to pass when safe. One solid/one broken: only the side next to the broken line may pass. Double solid yellow: no passing, but may cross to turn left when safe.</li>
+          <li>White diamond: restricted/special lane such as HOV or bus. Sharrows show a shared lane, not a dedicated bike lane.</li>
+          <li>Bicycle lanes usually have solid white lines; cars may enter only when turning on/off the road and must first check for bicyclists. Green pavement highlights bicycle conflict zones; red pavement marks transit use.</li>
+          <li>Stop behind stop lines, yield lines (rows of triangles), and crosswalk lines when required.</li>
+        </ul>
+        <p>At a railroad gate/flashing light, stop at least <strong>15 feet</strong> before the post or gate and remain until the gate rises and lights stop. Never go around a lowered gate.</p>
+        <p class="source">Official manual pp. 80–92.</p>
+      </section>
+
+      <section id="road" data-search>
+        <h2>Rules of the road most worth memorizing</h2>
+        <h3>Speed limits (unless posted otherwise)</h3>
+        <table>
+          <thead><tr><th>Place</th><th>Limit</th><th>Remember</th></tr></thead>
+          <tbody>
+            <tr><td>School zone</td><td><strong>20 mph</strong></td><td>Watch posted hours/flashing lights</td></tr>
+            <tr><td>Thickly settled / business district</td><td><strong>30 mph</strong></td><td>Some communities post 25 mph; “thickly settled” = buildings &lt;200 ft apart for ≥¼ mile</td></tr>
+            <tr><td>Outside thickly settled/business district</td><td><strong>40 mph</strong></td><td>Unless posted otherwise</td></tr>
+            <tr><td>Highway outside such a district</td><td><strong>50 mph</strong></td><td>Limited-access posted limits commonly 50–65</td></tr>
+            <tr><td>Massachusetts Turnpike minimum</td><td><strong>40 mph</strong></td><td>Boston Harbor tunnel minimum is 20 mph</td></tr>
+          </tbody>
+        </table>
+        <p>The fundamental speed law always wins: drive no faster than is safe for traffic, road, weather, visibility, pedestrians, and bicyclists—even below a posted limit.</p>
+
+        <h3>Right-of-way</h3>
+        <ul>
+          <li>Right-of-way is something you <strong>give, not take</strong>. Yield to avoid a crash even when legally entitled to go.</li>
+          <li>Uncontrolled intersection: yield to a vehicle already entering or coming from your <strong>right</strong>.</li>
+          <li>Four-way stop: first full stop goes first; ties yield to the driver on the right.</li>
+          <li>Left turn: yield to oncoming vehicles, vehicles already in the intersection, and pedestrians/bicyclists crossing your path.</li>
+          <li>Entering a paved through road from a private road, driveway, or unpaved road: stop, then yield to everyone on the road/sidewalk.</li>
+          <li>Always yield to pedestrians in the roadway. Fully stop for a blind pedestrian with a white cane or guide dog; do not honk, wave, or pass a stopped vehicle.</li>
+          <li>Rotary/roundabout: counterclockwise traffic; yield to vehicles already inside and to pedestrians. Signal right to exit. Never stop inside; go around again if you miss the exit.</li>
+        </ul>
+
+        <h3>Turns, lanes, passing, and highways</h3>
+        <ul>
+          <li>Signal a turn at least <strong>100 feet</strong> ahead; on a highway, signal at least <strong>500 feet</strong> before a turn/exit. Sequence: look (mirrors + blind spot), signal, move.</li>
+          <li>Use the right lane except when passing, turning left, or when it is blocked. Never change lanes in an intersection.</li>
+          <li>Right on red is permitted after full stop and yield unless signed otherwise. Left on red is only from a one-way street to another one-way street.</li>
+          <li>No U-turn near a hill crest/curve or where drivers cannot see <strong>500 feet</strong>.</li>
+          <li>Pass left. A two-way broken-yellow pass requires at least <strong>400 feet</strong> of clear view, and return right before an oncoming vehicle is within <strong>200 feet</strong>. Never speed to pass.</li>
+          <li>Pass right only if the vehicle is turning left, on a one-way street, or on a same-direction multilane road. Never use a shoulder, breakdown lane, or sidewalk to pass.</li>
+          <li>Highway entry: yield to traffic already on the highway and match its speed. Missed exit: continue to the next exit; never stop or back up.</li>
+        </ul>
+
+        <h3>School bus, following distance, and parking</h3>
+        <ul>
+          <li>Flashing red school-bus lights/extended stop sign: <strong>both directions stop</strong> until signals end. Exception: opposite side of a divided highway with a physical barrier. First violation can mean a $250 fine and suspension.</li>
+          <li>Minimum following gap in good conditions: <strong>3 seconds</strong>; motorcycles: at least <strong>4 seconds</strong>; heavy equipment: at least <strong>10 seconds</strong>. Increase for poor conditions.</li>
+          <li>Park within <strong>12 inches</strong> of the curb and leave at least <strong>12 feet</strong> of clear road.</li>
+          <li>No parking within <strong>20 feet of an intersection</strong> or <strong>10 feet of a hydrant/fire lane</strong>, or in a crosswalk, driveway, bike/bus/taxi/loading zone, sidewalk/median, wrong direction, or double-parked.</li>
+          <li>Hill wheels: no curb = inward toward road edge; uphill with curb = outward toward travel lane; downhill with curb = inward toward curb.</li>
+        </ul>
+        <p class="source">Official manual pp. 79–110.</p>
+      </section>
+
+      <section id="special" data-search>
+        <h2>Special situations and safety traps</h2>
+        <details open><summary>Emergency vehicles and move-over law</summary><div>
+          <ul>
+            <li>Moving emergency vehicle with siren/lights: pull as far right as possible and <strong>stop</strong>. If in an intersection, clear it first, then pull over. Do not follow closer than <strong>300 feet</strong>.</li>
+            <li>Stationary emergency/maintenance/recovery vehicle with flashing lights: slow to a reasonable safe speed. On a highway with at least four lanes (two in your direction), move over one lane when safe; otherwise slow and use caution.</li>
+            <li>Do not drive by or park within <strong>800 feet of a fire</strong>. Never cross an unprotected fire hose unless directed.</li>
+          </ul>
+        </div></details>
+        <details><summary>Headlights, weather, and visibility</summary><div>
+          <ul>
+            <li>Use headlights/taillights from ½ hour after sunset to ½ hour before sunrise, whenever visibility is under <strong>500 feet</strong>, whenever wipers are used, in rain/snow/fog, and in tunnels.</li>
+            <li>High beams show about 350 feet; low beams about 100 feet. Dim high beams within <strong>500 feet of oncoming traffic</strong> or <strong>200 feet behind a vehicle</strong>.</li>
+            <li>Fog: use low beams. Hydroplaning: ease off gas; do not brake or turn suddenly. Bridges/overpasses freeze first.</li>
+          </ul>
+        </div></details>
+        <details><summary>Skids and mechanical emergencies</summary><div>
+          <ul>
+            <li>Skid: ease off gas, shift to neutral, do not brake, steer <strong>in the direction of the skid</strong>.</li>
+            <li>Run off pavement: hold wheel, ease off gas, brake gently, check traffic, return gently.</li>
+            <li>Blowout: grip wheel, ease off gas, gently straighten; avoid braking until controlled, then pull off.</li>
+            <li>Brake failure: downshift, gently use parking brake while holding release, warn others. Pump only non-ABS brakes—never pump ABS.</li>
+            <li>Stuck accelerator: shift to neutral, brake, try to free pedal, then pull over.</li>
+          </ul>
+        </div></details>
+        <details><summary>Crashes and reports</summary><div>
+          <ul>
+            <li>Always stop. For property-only crashes, move vehicles from travel lanes if possible and exchange identity, license, registration, and insurance details.</li>
+            <li>Within <strong>5 days</strong>, report to both RMV and local police if there is injury/death or at least <strong>$1,000 property damage</strong>.</li>
+            <li>Do not move an injured person unless necessary for immediate safety; support head/spine if movement is unavoidable.</li>
+          </ul>
+        </div></details>
+        <details><summary>Seat belts, child restraints, and phones</summary><div>
+          <ul>
+            <li>Everyone in a passenger vehicle must buckle up or use an appropriate child restraint. Driver and unbelted passengers age 16+ may each be fined $25; driver may be fined $25 for each unbelted passenger age 12–15.</li>
+            <li>Child restraint until at least <strong>age 8 or 57 inches tall</strong>; then safety belt. Rear-facing infant seat never in front of an active passenger air bag.</li>
+            <li>Drivers 18+ may use only hands-free mounted devices, with a single touch to activate; handheld use is not allowed even at red lights/stop signs. Under 18: no device use except emergency reporting.</li>
+            <li>General handheld penalties: <strong>$100 / $250 / $500</strong>, with education from the second offense and insurance surcharge from the third.</li>
+          </ul>
+        </div></details>
+        <p class="source">Official manual pp. 35–47 and 119–131.</p>
+      </section>
+
+      <section id="numbers" data-search>
+        <h2>The number cram wall</h2>
+        <p>Say the rule out loud before reading the label. These are the numbers most likely to blur together.</p>
+        <div class="number-wall">
+          <div class="number"><b>18 / 25</b><span>correct to pass; 25 minutes</span></div>
+          <div class="number"><b>16½–18</b><span>Junior Operator age range</span></div>
+          <div class="number"><b>6 months</b><span>permit + clean record; new JOL passenger limit</span></div>
+          <div class="number"><b>12:30–5</b><span>JOL prohibited driving hours</span></div>
+          <div class="number"><b>.08 / .02</b><span>all-driver limit / under-21 sanction</span></div>
+          <div class="number"><b>60·180·1yr</b><span>JOL passenger/night/phone ladder</span></div>
+          <div class="number"><b>90d / 1yr</b><span>JOL speeding ladder</span></div>
+          <div class="number"><b>1yr / 3yr</b><span>JOL drag-racing ladder</span></div>
+          <div class="number"><b>20·30·40·50</b><span>unposted speed ladder: school, settled, outside, highway</span></div>
+          <div class="number"><b>3·4·10 sec</b><span>following: car, motorcycle, heavy equipment</span></div>
+          <div class="number"><b>100 / 500 ft</b><span>turn signal / highway signal</span></div>
+          <div class="number"><b>500 / 200 ft</b><span>dim high beams: oncoming / following</span></div>
+          <div class="number"><b>20 / 10 ft</b><span>no parking: intersection / hydrant</span></div>
+          <div class="number"><b>15 ft</b><span>stop before railroad gate/lights</span></div>
+          <div class="number"><b>300 ft</b><span>minimum behind responding emergency vehicle</span></div>
+          <div class="number"><b>5d / $1,000</b><span>crash report deadline / damage threshold</span></div>
+        </div>
+      </section>
+
+      <section id="quiz" data-search>
+        <h2>Self-test: answer before revealing</h2>
+        <div id="quizList">
+          <article class="quiz-card"><p>1. What are the five official exam subject areas?</p><button class="reveal" type="button">Reveal</button><div class="answer">Alcohol misuse, suspensions, JOL violations, rules of the road, and identifying road signs.</div></article>
+          <article class="quiz-card"><p>2. A JOL driver carries a 17-year-old friend two months after getting licensed. Who must be present for this to be legal?</p><button class="reveal" type="button">Reveal</button><div class="answer">A person at least 21, licensed in MA or another state, with at least one year of driving experience, seated beside the driver. (Immediate family is exempt.)</div></article>
+          <article class="quiz-card"><p>3. What is the JOL passenger/night restriction suspension ladder?</p><button class="reveal" type="button">Reveal</button><div class="answer">60 days first, 180 days second, one year subsequent.</div></article>
+          <article class="quiz-card"><p>4. What is the JOL speeding suspension ladder?</p><button class="reveal" type="button">Reveal</button><div class="answer">90 days first, one year second or subsequent.</div></article>
+          <article class="quiz-card"><p>5. What are the adult and under-21 BAC thresholds?</p><button class="reveal" type="button">Reveal</button><div class="answer">0.08 for a failed chemical test / criminal limit for all drivers; 0.02 for under-21 administrative zero-tolerance sanctions.</div></article>
+          <article class="quiz-card"><p>6. Which removes alcohol faster: coffee, food, exercise, or a cold shower?</p><button class="reveal" type="button">Reveal</button><div class="answer">None. Only time removes alcohol.</div></article>
+          <article class="quiz-card"><p>7. With no prior OUI, how long is a chemical-test refusal suspension for someone over 21? For someone 18–21?</p><button class="reveal" type="button">Reveal</button><div class="answer">Over 21: 180 days. Age 18–21: three years plus 180 days.</div></article>
+          <article class="quiz-card"><p>8. What does a flashing red light mean? A flashing yellow?</p><button class="reveal" type="button">Reveal</button><div class="answer">Flashing red: full stop, then proceed under right-of-way rules. Flashing yellow: warning—proceed cautiously.</div></article>
+          <article class="quiz-card"><p>9. What do white and yellow pavement lines separate?</p><button class="reveal" type="button">Reveal</button><div class="answer">White: traffic in the same direction. Yellow: traffic in opposite directions.</div></article>
+          <article class="quiz-card"><p>10. Two cars stop simultaneously at a four-way stop. Who goes first?</p><button class="reveal" type="button">Reveal</button><div class="answer">The vehicle on the right.</div></article>
+          <article class="quiz-card"><p>11. When must both directions stop for a school bus, and what is the exception?</p><button class="reveal" type="button">Reveal</button><div class="answer">Stop while red lights flash / stop sign is extended. Exception: the bus is across a divided highway with a physical barrier.</div></article>
+          <article class="quiz-card"><p>12. What are the default school, settled-district, outside-district, and highway speed limits?</p><button class="reveal" type="button">Reveal</button><div class="answer">20, 30, 40, and 50 mph, unless posted otherwise (some settled communities post 25).</div></article>
+          <article class="quiz-card"><p>13. When may you turn left on red?</p><button class="reveal" type="button">Reveal</button><div class="answer">Only from a one-way street onto another one-way street, after a full stop and yielding, unless prohibited.</div></article>
+          <article class="quiz-card"><p>14. How far ahead do you signal a normal turn? A highway exit?</p><button class="reveal" type="button">Reveal</button><div class="answer">At least 100 feet normally; 500 feet on a highway.</div></article>
+          <article class="quiz-card"><p>15. At what distances must you dim high beams?</p><button class="reveal" type="button">Reveal</button><div class="answer">Within 500 feet of oncoming traffic or within 200 feet behind another vehicle.</div></article>
+          <article class="quiz-card"><p>16. What should you do in a skid?</p><button class="reveal" type="button">Reveal</button><div class="answer">Ease off gas, shift to neutral, do not brake, and steer in the direction of the skid.</div></article>
+          <article class="quiz-card"><p>17. Where do you pull for a moving emergency vehicle? What if you're in an intersection?</p><button class="reveal" type="button">Reveal</button><div class="answer">Pull as far right as possible and stop. If in an intersection, clear it first, then pull right and stop.</div></article>
+          <article class="quiz-card"><p>18. What crash must be reported, to whom, and by when?</p><button class="reveal" type="button">Reveal</button><div class="answer">Any crash with injury/death or at least $1,000 damage; report to both RMV and local police within five days.</div></article>
+          <article class="quiz-card"><p>19. Until what age/height must a child use a child restraint?</p><button class="reveal" type="button">Reveal</button><div class="answer">Until at least age eight or 57 inches tall.</div></article>
+          <article class="quiz-card"><p>20. What are the first three handheld-device fine amounts?</p><button class="reveal" type="button">Reveal</button><div class="answer">$100 first, $250 second, $500 third/subsequent. JOL suspensions and reinstatement requirements also apply to under-18 drivers.</div></article>
+        </div>
+      </section>
+
+      <section id="sources" data-search>
+        <h2>Sources and scope</h2>
+        <p><strong>Official authority:</strong> <a href="https://www.mass.gov/doc/english-drivers-manual/download">Massachusetts Driver's Manual</a>, Commonwealth of Massachusetts Registry of Motor Vehicles, PDF metadata creation date April 6, 2026; accessed July 21, 2026. Page references in this guide use the printed page numbers.</p>
+        <p><strong>Topic prioritization:</strong> <a href="https://www.reddit.com/r/driving/comments/1eanbvf/ma_massachusetts_permit_test/">“Ma Massachusetts Permit Test” on r/driving</a>, including all comments visible on July 21, 2026. Reddit was used only to rank study emphasis; the manual controls if there is any conflict.</p>
+        <p><strong>Scope:</strong> This is a targeted cram guide, not a substitute for reading the full manual. It deliberately gives the most space to JOL, alcohol/drugs, and suspensions because those were the repeated first-hand themes, while still covering high-yield road rules and signs named by the RMV.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner"><strong>Final reminder:</strong> Slow down on penalty questions. Identify (1) permit vs. license, (2) under 18 vs. 18–21 vs. over 21, and (3) first vs. later offense before choosing an answer.</div>
+  </footer>
+
+  <script>
+    const checks = [...document.querySelectorAll('.study-check')];
+    const progress = document.getElementById('progress');
+    const progressText = document.getElementById('progressText');
+    function updateProgress() {
+      const done = checks.filter(c => c.checked).length;
+      progress.value = done;
+      progressText.textContent = `${done} of ${checks.length}`;
+      try { localStorage.setItem('ma-permit-checks', JSON.stringify(checks.map(c => c.checked))); } catch (_) {}
+    }
+    try {
+      const saved = JSON.parse(localStorage.getItem('ma-permit-checks') || '[]');
+      checks.forEach((c, i) => c.checked = Boolean(saved[i]));
+    } catch (_) {}
+    checks.forEach(c => c.addEventListener('change', updateProgress));
+    updateProgress();
+
+    document.querySelectorAll('.reveal').forEach(button => {
+      button.addEventListener('click', () => {
+        const answer = button.nextElementSibling;
+        const shown = answer.classList.toggle('show');
+        button.textContent = shown ? 'Hide' : 'Reveal';
+      });
+    });
+
+    const searchable = [...document.querySelectorAll('[data-search]')];
+    document.getElementById('search').addEventListener('input', event => {
+      const q = event.target.value.trim().toLowerCase();
+      searchable.forEach(section => section.classList.toggle('search-hidden', q && !section.textContent.toLowerCase().includes(q)));
+    });
+  </script>
 </body>
 </html>
