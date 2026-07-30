@@ -3,607 +3,1367 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <meta name="description" content="Massachusetts learner's permit study guide focused on the topics repeatedly reported in a Reddit discussion and verified against the 2026 Massachusetts Driver's Manual.">
-  <title>MA Permit - High-Yield Study Guide</title>
+  <meta name="description" content="An interactive, beginner-friendly visual explanation of retrieval augmented generation.">
+  <title>RAG, visually explained</title>
   <style>
     :root {
       color-scheme: light;
-      --ink: #14213d;
-      --navy: #0b2545;
-      --blue: #134b70;
-      --red: #b4232c;
-      --cream: #f7f3ea;
-      --paper: #fffdf8;
-      --gold: #e8b44f;
-      --green: #226f54;
-      --muted: #5d6574;
-      --line: #d9d4c8;
-      --shadow: 0 12px 30px rgba(11, 37, 69, .10);
+      --ink: #17233d;
+      --muted: #65718a;
+      --paper: #f7f5ef;
+      --card: #fffdf8;
+      --line: #d9d6ca;
+      --purple: #7559d9;
+      --purple-pale: #eee9ff;
+      --blue: #3f83d1;
+      --blue-pale: #e3f1ff;
+      --green: #2a9874;
+      --green-pale: #def6ec;
+      --gold: #dc942f;
+      --gold-pale: #fff0cf;
+      --coral: #dc654e;
+      --coral-pale: #ffe7df;
+      --shadow: 0 18px 50px rgba(36, 47, 74, .10);
     }
+
     * { box-sizing: border-box; }
+
     html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at 15% -10%, rgba(117, 89, 217, .12), transparent 30rem),
+        radial-gradient(circle at 95% 14%, rgba(63, 131, 209, .10), transparent 28rem),
+        var(--paper);
       color: var(--ink);
-      background: var(--cream);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.58;
+      -webkit-font-smoothing: antialiased;
     }
-    a { color: var(--blue); }
+
     button, input { font: inherit; }
-    .masthead {
-      position: relative;
-      overflow: hidden;
+
+    button:focus-visible, input:focus-visible {
+      outline: 3px solid rgba(63, 131, 209, .35);
+      outline-offset: 3px;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 24px 0 16px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--ink);
       color: white;
-      background: var(--navy);
-      border-bottom: 7px solid var(--red);
+      font-size: 14px;
+      box-shadow: 0 8px 20px rgba(23, 35, 61, .18);
     }
-    .masthead::after {
-      content: "";
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      align-items: center;
+      gap: 56px;
+      min-height: 360px;
+      padding: 56px 0 48px;
+    }
+
+    h1 {
+      max-width: 720px;
+      margin: 0;
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+
+    h1 span { color: var(--purple); }
+
+    .hero-copy {
+      max-width: 590px;
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 20px);
+      line-height: 1.6;
+    }
+
+    .hero-card {
+      position: relative;
+      min-height: 250px;
+      padding: 26px;
+      overflow: hidden;
+      border: 1px solid rgba(23,35,61,.09);
+      border-radius: 28px;
+      background: rgba(255, 253, 248, .78);
+      box-shadow: var(--shadow);
+      transform: rotate(1deg);
+    }
+
+    .hero-card::after {
       position: absolute;
-      width: 430px;
-      height: 430px;
-      right: -120px;
-      top: -230px;
-      border: 60px solid rgba(255,255,255,.055);
+      right: -30px;
+      bottom: -42px;
+      width: 160px;
+      height: 160px;
       border-radius: 50%;
+      background: var(--purple-pale);
+      content: "";
     }
-    .hero { max-width: 1180px; margin: auto; padding: 54px 24px 42px; position: relative; z-index: 1; }
-    .eyebrow { margin: 0 0 10px; color: #ffd27a; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; }
-    h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.5rem, 7vw, 5.2rem); line-height: .94; letter-spacing: -.045em; margin: 0; max-width: 850px; }
-    .dek { max-width: 770px; font-size: 1.12rem; color: #dce7f2; margin: 22px 0 0; }
-    .exam-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; max-width: 1180px; margin: 0 auto; background: rgba(255,255,255,.16); border-top: 1px solid rgba(255,255,255,.16); }
-    .exam-stat { background: rgba(255,255,255,.055); padding: 18px 24px; }
-    .exam-stat strong { display: block; font-size: 1.6rem; color: white; }
-    .exam-stat span { color: #c9d8e6; font-size: .85rem; }
-    .layout { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 38px; padding: 30px 24px 80px; }
-    aside { position: sticky; top: 14px; align-self: start; }
-    .search { width: 100%; border: 1px solid var(--line); background: white; border-radius: 9px; padding: 10px 12px; color: var(--ink); }
-    .search:focus { outline: 3px solid rgba(19,75,112,.18); border-color: var(--blue); }
-    nav { margin-top: 14px; }
-    nav a { display: block; padding: 7px 10px; margin: 2px 0; color: var(--ink); text-decoration: none; border-left: 3px solid transparent; font-size: .92rem; }
-    nav a:hover, nav a:focus { color: var(--red); border-left-color: var(--red); background: white; }
-    .progress-card { margin-top: 18px; background: var(--ink); color: white; padding: 15px; border-radius: 10px; }
-    .progress-card p { margin: 0 0 8px; font-size: .85rem; color: #d8e0eb; }
-    progress { width: 100%; accent-color: var(--gold); }
-    .print-button { width: 100%; margin-top: 12px; border: 0; border-radius: 8px; padding: 9px; background: var(--gold); color: #261b05; font-weight: 800; cursor: pointer; }
-    main { min-width: 0; }
-    section { scroll-margin-top: 18px; margin-bottom: 54px; }
-    h2 { font-family: Georgia, "Times New Roman", serif; color: var(--navy); font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.1; letter-spacing: -.025em; margin: 0 0 18px; padding-bottom: 10px; border-bottom: 2px solid var(--ink); }
-    h3 { color: var(--navy); font-size: 1.15rem; margin: 28px 0 10px; }
-    h4 { margin-bottom: 5px; }
-    p { margin: 8px 0 13px; }
-    ul, ol { padding-left: 22px; }
-    li { margin: 5px 0; }
-    .priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .priority { background: var(--paper); border: 1px solid var(--line); border-top: 5px solid var(--blue); border-radius: 8px; padding: 18px; box-shadow: var(--shadow); }
-    .priority.hot { border-top-color: var(--red); }
-    .priority.warm { border-top-color: var(--gold); }
-    .priority h3 { margin: 4px 0; }
-    .priority .rank { font-weight: 900; color: var(--red); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; }
-    .note, .warning, .memory { padding: 14px 16px; margin: 16px 0; border-left: 5px solid var(--blue); background: #eef5f8; }
-    .warning { border-color: var(--red); background: #fff0f0; }
-    .memory { border-color: var(--gold); background: #fff8df; }
-    .memory strong, .warning strong, .note strong { color: var(--navy); }
-    .source { color: var(--muted); font-size: .82rem; }
-    .task-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0; list-style: none; }
-    .task-list label { display: flex; gap: 10px; align-items: flex-start; background: white; border: 1px solid var(--line); border-radius: 8px; padding: 12px; cursor: pointer; }
-    .task-list input { margin-top: 4px; accent-color: var(--green); }
-    table { border-collapse: collapse; width: 100%; margin: 14px 0 24px; background: white; font-size: .91rem; }
-    caption { text-align: left; font-weight: 800; color: var(--navy); margin-bottom: 7px; }
-    th, td { text-align: left; vertical-align: top; padding: 10px 11px; border: 1px solid var(--line); }
-    th { background: var(--navy); color: white; }
-    tbody tr:nth-child(even) { background: #f7f8fa; }
-    td strong { color: var(--red); }
-    .number-wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-    .number { background: var(--ink); color: white; border-radius: 8px; padding: 12px; min-height: 94px; }
-    .number b { display: block; color: #ffd27a; font-size: 1.45rem; line-height: 1.1; }
-    .number span { font-size: .82rem; color: #d7e0eb; }
-    .signals { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .signal { border: 1px solid var(--line); background: white; border-radius: 8px; padding: 11px 13px; }
-    .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; background: var(--red); }
-    .dot.yellow { background: #e0a900; } .dot.green { background: #17814e; }
-    details { background: white; border: 1px solid var(--line); border-radius: 8px; margin: 9px 0; overflow: hidden; }
-    summary { cursor: pointer; font-weight: 800; padding: 13px 15px; color: var(--navy); }
-    details > div { padding: 0 15px 14px; }
-    .quiz-card { border: 1px solid var(--line); border-radius: 9px; background: white; margin: 11px 0; padding: 15px; }
-    .quiz-card p { margin-top: 0; font-weight: 750; }
-    .reveal { border: 1px solid var(--blue); color: var(--blue); background: transparent; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-weight: 700; }
-    .answer { display: none; border-left: 4px solid var(--green); background: #eaf7f0; padding: 10px 12px; margin-top: 10px; }
-    .answer.show { display: block; }
-    .search-hidden { display: none !important; }
-    .footer { background: var(--navy); color: #d5e0eb; padding: 30px 24px; }
-    .footer-inner { max-width: 1180px; margin: auto; }
-    .footer a { color: #ffd27a; }
-    .tiny { font-size: .78rem; color: var(--muted); }
-    @media (max-width: 860px) {
-      .layout { grid-template-columns: 1fr; }
-      aside { position: static; }
-      nav { columns: 2; }
-      .progress-card { display: none; }
-      .priority-grid, .number-wall { grid-template-columns: 1fr 1fr; }
+
+    .analogy {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 18px;
     }
-    @media (max-width: 580px) {
-      .exam-strip { grid-template-columns: 1fr 1fr; }
-      .hero { padding-top: 38px; }
-      .priority-grid, .number-wall, .signals, .task-list { grid-template-columns: 1fr; }
-      nav { columns: 1; }
-      th, td { padding: 8px; }
-      table { font-size: .8rem; }
+
+    .analogy-row {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      align-items: center;
+      gap: 14px;
     }
-    @media print {
-      body { background: white; font-size: 10.5pt; }
-      aside, .print-button, .reveal { display: none !important; }
-      .layout { display: block; padding: 20px; }
-      .masthead { border-bottom-width: 3px; }
-      .hero { padding: 25px; }
-      h1 { font-size: 35pt; }
-      section { break-inside: avoid; margin-bottom: 30px; }
-      table { break-inside: avoid; }
-      .answer { display: block; }
-      a { color: inherit; text-decoration: none; }
+
+    .analogy-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border-radius: 15px;
+      background: var(--purple-pale);
+      font-size: 22px;
+    }
+
+    .analogy-row strong { display: block; margin-bottom: 3px; }
+    .analogy-row span { color: var(--muted); font-size: 14px; }
+
+    .workbench {
+      margin-bottom: 44px;
+      overflow: hidden;
+      border: 1px solid rgba(23,35,61,.10);
+      border-radius: 30px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .step-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .step-action-btn {
+      display: inline-flex;
+      min-height: 44px;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: transparent;
+      color: var(--ink);
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+
+    .step-action-btn:hover:not(:disabled) {
+      border-color: #aaa7a0;
+      background: #f4f1e8;
+      transform: translateY(-1px);
+    }
+
+    .step-action-btn:disabled { cursor: not-allowed; opacity: .35; }
+
+    .step-nav {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      margin: 0;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--line);
+      list-style: none;
+    }
+
+    .step-tab {
+      position: relative;
+      display: grid;
+      width: 100%;
+      grid-template-columns: 28px 1fr;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 8px 17px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .step-tab::after {
+      position: absolute;
+      right: 8px;
+      bottom: -1px;
+      left: 8px;
+      height: 3px;
+      border-radius: 3px 3px 0 0;
+      background: transparent;
+      content: "";
+    }
+
+    .step-tab[aria-selected="true"] { color: var(--ink); }
+    .step-tab[aria-selected="true"]::after { background: var(--purple); }
+
+    .step-number {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--paper);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .step-tab[aria-selected="true"] .step-number {
+      border-color: var(--purple);
+      background: var(--purple);
+      color: white;
+    }
+
+    .step-name {
+      overflow: hidden;
+      font-size: 13px;
+      font-weight: 750;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .stage {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
+      min-height: 540px;
+    }
+
+    .visual-wrap {
+      position: relative;
+      display: grid;
+      min-width: 0;
+      place-items: center;
+      padding: 22px;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(23,35,61,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23,35,61,.035) 1px, transparent 1px),
+        #fbfaf6;
+      background-size: 28px 28px;
+    }
+
+    #rag-diagram {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 490px;
+      overflow: visible;
+    }
+
+    .stage-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 42px 34px;
+      border-left: 1px solid var(--line);
+    }
+
+    .stage-kicker {
+      margin: 0 0 10px;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+
+    .stage-copy h2 {
+      margin: 0;
+      font-size: clamp(27px, 3.4vw, 39px);
+      line-height: 1.08;
+      letter-spacing: -.035em;
+    }
+
+    .stage-copy > p {
+      margin: 18px 0 22px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .plain-box {
+      padding: 16px;
+      border: 1px solid #dfd8fb;
+      border-radius: 15px;
+      background: var(--purple-pale);
+      line-height: 1.45;
+    }
+
+    .plain-box strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+
+    .plain-box span { color: #4e4670; font-size: 14px; }
+
+    .takeaway {
+      display: grid;
+      grid-template-columns: .72fr 1.28fr;
+      gap: 42px;
+      padding: 54px 0 70px;
+    }
+
+    .takeaway h2 {
+      margin: 0;
+      font-size: clamp(31px, 4vw, 52px);
+      line-height: 1.06;
+      letter-spacing: -.045em;
+    }
+
+    .takeaway-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .takeaway-list li {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      align-items: start;
+      gap: 13px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: rgba(255,253,248,.7);
+    }
+
+    .takeaway-list b {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--green-pale);
+      color: #176d52;
+    }
+
+    .takeaway-list strong { display: block; margin-bottom: 4px; }
+    .takeaway-list span { color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+    footer {
+      padding: 22px 0 34px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    /* SVG */
+    .svg-label { fill: var(--ink); font-family: inherit; font-weight: 750; }
+    .svg-small { fill: var(--muted); font-family: inherit; font-size: 13px; }
+    .svg-tiny { fill: var(--muted); font-family: inherit; font-size: 11px; }
+    .svg-node { stroke: rgba(23,35,61,.14); stroke-width: 1.5; }
+    .svg-line { fill: none; stroke: #aeb5c2; stroke-width: 2.5; stroke-linecap: round; }
+    .step5-arrow { stroke-width: 1.8; }
+    .svg-dash { stroke-dasharray: 7 8; }
+    .svg-layer {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .35s ease;
+    }
+    .svg-layer.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .svg-layer.is-active .draw-path {
+      animation: draw-line .8s ease both;
+    }
+    .svg-layer.is-active .pop {
+      animation: pop-in .48s cubic-bezier(.2,.85,.25,1.1) both;
+    }
+    .svg-layer.is-active .pop.d1 { animation-delay: .08s; }
+    .svg-layer.is-active .pop.d2 { animation-delay: .18s; }
+    .svg-layer.is-active .pop.d3 { animation-delay: .30s; }
+    .svg-layer.is-active .pop.d4 { animation-delay: .42s; }
+    .svg-layer.is-active .pulse { animation: soft-pulse 1.5s ease-in-out infinite; }
+    .svg-layer.is-active .float { animation: float 2.4s ease-in-out infinite; }
+    .svg-layer.is-active .travel { animation: travel 2.2s ease-in-out infinite; }
+    .svg-layer.is-active .source-highlight.sh1 { animation: highlight-chunk-1 8s ease-in-out infinite; }
+    .svg-layer.is-active .source-highlight.sh2 { animation: highlight-chunk-2 8s ease-in-out infinite; }
+    .svg-layer.is-active .source-highlight.sh3 { animation: highlight-chunk-3 8s ease-in-out infinite; }
+    .svg-layer.is-active .chunk-transfer.ct1 { animation: transfer-chunk-1 8s ease-in-out infinite; }
+    .svg-layer.is-active .chunk-transfer.ct2 { animation: transfer-chunk-2 8s ease-in-out infinite; }
+    .svg-layer.is-active .chunk-transfer.ct3 { animation: transfer-chunk-3 8s ease-in-out infinite; }
+    .svg-layer.is-active .chunk-result.cr1 { animation: reveal-result-1 8s ease-in-out infinite; }
+    .svg-layer.is-active .chunk-result.cr2 { animation: reveal-result-2 8s ease-in-out infinite; }
+    .svg-layer.is-active .chunk-result.cr3 { animation: reveal-result-3 8s ease-in-out infinite; }
+    .chunk-result {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .indexed-chunk, .db-vector {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .svg-layer.is-active .indexed-chunk.ic1 { animation: index-chunk-1 6.6s ease-in-out infinite; }
+    .svg-layer.is-active .indexed-chunk.ic2 { animation: index-chunk-2 6.6s ease-in-out infinite; }
+    .svg-layer.is-active .indexed-chunk.ic3 { animation: index-chunk-3 6.6s ease-in-out infinite; }
+    .svg-layer.is-active .indexed-vector.iv1 { animation: index-vector-1 6.6s ease-in-out infinite; }
+    .svg-layer.is-active .indexed-vector.iv2 { animation: index-vector-2 6.6s ease-in-out infinite; }
+    .svg-layer.is-active .indexed-vector.iv3 { animation: index-vector-3 6.6s ease-in-out infinite; }
+    .svg-layer.is-active .db-vector.dv1 { animation: store-vector-1 6.6s ease-in-out infinite; }
+    .svg-layer.is-active .db-vector.dv2 { animation: store-vector-2 6.6s ease-in-out infinite; }
+    .svg-layer.is-active .db-vector.dv3 { animation: store-vector-3 6.6s ease-in-out infinite; }
+    .svg-layer.is-active .query-search {
+      animation: query-search 3.2s ease-in-out infinite;
+    }
+    .svg-layer.is-active .scan-line {
+      animation: scan-vectors 3.2s ease-in-out infinite;
+    }
+    .svg-layer.is-active .closest-vector {
+      animation: closest-vector 3.2s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .svg-layer.is-active .match-out {
+      animation: match-out 3.2s ease-in-out infinite;
+    }
+    .svg-layer.is-active .search-phase.sp1 { animation: search-phase-1 3.2s ease-in-out infinite; }
+    .svg-layer.is-active .search-phase.sp2 { animation: search-phase-2 3.2s ease-in-out infinite; }
+    .svg-layer.is-active .search-phase.sp3 { animation: search-phase-3 3.2s ease-in-out infinite; }
+    .svg-layer.is-active .meaning-neighbor {
+      animation: meaning-neighbor 2.4s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .svg-layer.is-active .meaning-neighbor.mn2 { animation-delay: .3s; }
+    .svg-layer.is-active .analogy-answer {
+      animation: analogy-answer 3s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .svg-layer.is-active .guess-one { animation: guess-one 4.8s ease-in-out infinite; }
+    .svg-layer.is-active .guess-two { animation: guess-two 4.8s ease-in-out infinite; }
+    .svg-layer.is-active .warning-pulse {
+      animation: warning-pulse 1.7s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .svg-layer.is-active .evidence-flow {
+      animation: evidence-flow 2.5s ease-in-out infinite;
+    }
+    .svg-layer.is-active .grounded-glow {
+      animation: grounded-glow 2.5s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    @keyframes pop-in {
+      from { opacity: 0; transform: translateY(10px) scale(.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes draw-line {
+      from { stroke-dashoffset: 80; stroke-dasharray: 80; }
+      to { stroke-dashoffset: 0; stroke-dasharray: 80; }
+    }
+    @keyframes soft-pulse {
+      0%, 100% { opacity: .55; }
+      50% { opacity: 1; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes travel {
+      0% { transform: translateX(0); opacity: 0; }
+      15% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { transform: translateX(166px); opacity: 0; }
+    }
+    @keyframes highlight-chunk-1 {
+      0%, 2%, 27%, 100% { opacity: .22; }
+      6%, 18% { opacity: 1; }
+    }
+    @keyframes highlight-chunk-2 {
+      0%, 29%, 54%, 100% { opacity: .22; }
+      33%, 45% { opacity: 1; }
+    }
+    @keyframes highlight-chunk-3 {
+      0%, 56%, 81%, 100% { opacity: .22; }
+      60%, 72% { opacity: 1; }
+    }
+    @keyframes transfer-chunk-1 {
+      0%, 9% { transform: translate(0, 0); opacity: 0; }
+      12% { transform: translate(0, 0); opacity: 1; }
+      23% { transform: translate(298px, -70px); opacity: 1; }
+      27%, 100% { transform: translate(298px, -70px); opacity: 0; }
+    }
+    @keyframes transfer-chunk-2 {
+      0%, 36% { transform: translate(0, 0); opacity: 0; }
+      39% { transform: translate(0, 0); opacity: 1; }
+      50% { transform: translate(298px, -14px); opacity: 1; }
+      54%, 100% { transform: translate(298px, -14px); opacity: 0; }
+    }
+    @keyframes transfer-chunk-3 {
+      0%, 63% { transform: translate(0, 0); opacity: 0; }
+      66% { transform: translate(0, 0); opacity: 1; }
+      77% { transform: translate(298px, 42px); opacity: 1; }
+      81%, 100% { transform: translate(298px, 42px); opacity: 0; }
+    }
+    @keyframes reveal-result-1 {
+      0%, 22% { opacity: 0; transform: scale(.97); }
+      27%, 100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes reveal-result-2 {
+      0%, 49% { opacity: 0; transform: scale(.97); }
+      54%, 100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes reveal-result-3 {
+      0%, 76% { opacity: 0; transform: scale(.97); }
+      81%, 100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes index-chunk-1 {
+      0%, 24% { opacity: 1; transform: scale(1.04); }
+      29%, 100% { opacity: .45; transform: scale(1); }
+    }
+    @keyframes index-chunk-2 {
+      0%, 29% { opacity: .45; transform: scale(1); }
+      34%, 56% { opacity: 1; transform: scale(1.04); }
+      61%, 100% { opacity: .45; transform: scale(1); }
+    }
+    @keyframes index-chunk-3 {
+      0%, 61% { opacity: .45; transform: scale(1); }
+      66%, 89% { opacity: 1; transform: scale(1.04); }
+      94%, 100% { opacity: .45; transform: scale(1); }
+    }
+    @keyframes index-vector-1 {
+      0%, 5% { transform: translate(0, 0); opacity: 0; }
+      9% { opacity: 1; }
+      21% { transform: translate(72px, 0); opacity: 1; }
+      25%, 100% { transform: translate(72px, 0); opacity: 0; }
+    }
+    @keyframes index-vector-2 {
+      0%, 37% { transform: translate(0, 0); opacity: 0; }
+      41% { opacity: 1; }
+      53% { transform: translate(72px, -3px); opacity: 1; }
+      57%, 100% { transform: translate(72px, -3px); opacity: 0; }
+    }
+    @keyframes index-vector-3 {
+      0%, 69% { transform: translate(0, 0); opacity: 0; }
+      73% { opacity: 1; }
+      85% { transform: translate(72px, -6px); opacity: 1; }
+      89%, 100% { transform: translate(72px, -6px); opacity: 0; }
+    }
+    @keyframes store-vector-1 {
+      0%, 20% { opacity: 0; transform: scale(.9); }
+      25%, 100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes store-vector-2 {
+      0%, 52% { opacity: 0; transform: scale(.9); }
+      57%, 100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes store-vector-3 {
+      0%, 84% { opacity: 0; transform: scale(.9); }
+      89%, 100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes query-search {
+      0%, 8% { transform: translateX(0); opacity: 0; }
+      18% { opacity: 1; }
+      36%, 82% { transform: translate(104px, -54px); opacity: 1; }
+      90%, 100% { transform: translate(104px, -54px); opacity: 0; }
+    }
+    @keyframes scan-vectors {
+      0%, 32% { transform: translateY(0); opacity: 0; }
+      38% { opacity: 1; }
+      62% { transform: translateY(105px); opacity: 1; }
+      68%, 100% { transform: translateY(105px); opacity: 0; }
+    }
+    @keyframes closest-vector {
+      0%, 60% { transform: scale(1); opacity: .72; }
+      68%, 82% { transform: scale(1.14); opacity: 1; }
+      90%, 100% { transform: scale(1); opacity: .72; }
+    }
+    @keyframes match-out {
+      0%, 70% { transform: translateX(0); opacity: 0; }
+      76% { opacity: 1; }
+      96% { transform: translateX(63px); opacity: 1; }
+      100% { transform: translateX(63px); opacity: 0; }
+    }
+    @keyframes search-phase-1 {
+      0%, 34% { opacity: 1; }
+      40%, 100% { opacity: .32; }
+    }
+    @keyframes search-phase-2 {
+      0%, 34% { opacity: .32; }
+      40%, 67% { opacity: 1; }
+      73%, 100% { opacity: .32; }
+    }
+    @keyframes search-phase-3 {
+      0%, 67% { opacity: .32; }
+      73%, 100% { opacity: 1; }
+    }
+    @keyframes meaning-neighbor {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+    @keyframes analogy-answer {
+      0%, 48% { transform: scale(.92); opacity: .35; }
+      62%, 88% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(.92); opacity: .35; }
+    }
+    @keyframes guess-one {
+      0%, 42% { opacity: 1; }
+      50%, 92% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes guess-two {
+      0%, 42% { opacity: 0; }
+      50%, 92% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    @keyframes warning-pulse {
+      0%, 100% { transform: scale(1); opacity: .72; }
+      50% { transform: scale(1.12); opacity: 1; }
+    }
+    @keyframes evidence-flow {
+      0% { transform: translateX(0); opacity: 0; }
+      15% { opacity: 1; }
+      82% { opacity: 1; }
+      100% { transform: translateX(62px); opacity: 0; }
+    }
+    @keyframes grounded-glow {
+      0%, 30%, 100% { transform: scale(1); }
+      55%, 76% { transform: scale(1.04); }
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 30px; padding-top: 34px; }
+      .hero-card { min-height: 0; transform: none; }
+      .stage { grid-template-columns: 1fr; }
+      .stage-copy { border-top: 1px solid var(--line); border-left: 0; }
+      .visual-wrap { min-height: 420px; }
+      .takeaway { grid-template-columns: 1fr; gap: 24px; }
+      .step-name { display: none; }
+      .step-tab { grid-template-columns: 1fr; justify-items: center; }
+    }
+
+    @media (max-width: 560px) {
+      .shell { width: min(100% - 20px, 1180px); }
+      header { padding-top: 16px; }
+      .hero { padding: 28px 6px 36px; }
+      .hero-card { padding: 20px; border-radius: 20px; }
+      .workbench { border-radius: 20px; }
+      .step-nav { padding: 0 6px; }
+      .step-tab { padding-inline: 2px; }
+      .visual-wrap { min-height: 330px; padding: 8px; }
+      .stage-copy { padding: 30px 22px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
 <body>
-  <header class="masthead">
-    <div class="hero">
-      <p class="eyebrow">Massachusetts learner's permit · high-yield edition</p>
-      <h1>Ace the permit test.</h1>
-      <p class="dek">A last-day study guide built from the topics test-takers repeatedly flagged in the supplied Reddit thread, with every rule checked against the official 2026 Massachusetts Driver's Manual.</p>
-    </div>
-    <div class="exam-strip" aria-label="Exam facts">
-      <div class="exam-stat"><strong>25</strong><span>multiple-choice questions</span></div>
-      <div class="exam-stat"><strong>18</strong><span>correct answers to pass (72%)</span></div>
-      <div class="exam-stat"><strong>25 min</strong><span>about one minute per question</span></div>
-      <div class="exam-stat"><strong>5 areas</strong><span>alcohol, suspensions, JOL, rules, signs</span></div>
-    </div>
+  <header class="shell">
+    <div class="brand"><span class="brand-mark">R</span> RAG Explorer</div>
   </header>
 
-  <div class="layout">
-    <aside aria-label="Study navigation">
-      <input id="search" class="search" type="search" placeholder="Search this guide…" aria-label="Search guide">
-      <nav>
-        <a href="#priorities">What to prioritize</a>
-        <a href="#plan">Tonight's plan</a>
-        <a href="#jol">JOL rules</a>
-        <a href="#jol-penalties">JOL penalties</a>
-        <a href="#alcohol">Alcohol & drugs</a>
-        <a href="#suspensions">Other suspensions</a>
-        <a href="#signs">Signs & signals</a>
-        <a href="#road">Rules of the road</a>
-        <a href="#special">Special situations</a>
-        <a href="#numbers">Number cram wall</a>
-        <a href="#quiz">Self-test</a>
-        <a href="#sources">Sources</a>
-      </nav>
-      <div class="progress-card">
-        <p><strong id="progressText">0 of 8</strong> study blocks checked</p>
-        <progress id="progress" max="8" value="0"></progress>
-        <button class="print-button" type="button" onclick="window.print()">Print / Save PDF</button>
+  <main>
+    <section class="hero shell">
+      <div>
+        <h1>How AI finds facts <span>before</span> it answers.</h1>
+        <p class="hero-copy">Retrieval augmented generation — “RAG” for short — lets an AI look through trusted information first, then use what it finds to write a useful answer.</p>
       </div>
-    </aside>
-
-    <main>
-      <section id="priorities" data-search>
-        <h2>What the thread says to prioritize</h2>
-        <div class="priority-grid">
-          <article class="priority hot">
-            <span class="rank">Priority 1</span>
-            <h3>JOL + suspensions</h3>
-            <p>The original poster said the majority of their test involved alcohol and JOL violations. Another test-taker reported at least eight JOL/suspension questions before failing, then passed after studying the manual.</p>
-          </article>
-          <article class="priority hot">
-            <span class="rank">Priority 1</span>
-            <h3>Alcohol + drugs</h3>
-            <p>The same two first-hand reports repeatedly pair alcohol/drug rules with JOL. The second test-taker estimated about six JOL and alcohol/drug questions on the successful attempt.</p>
-          </article>
-          <article class="priority warm">
-            <span class="rank">Priority 2</span>
-            <h3>Signs + road rules</h3>
-            <p>They remain explicitly testable. The original poster recalled roughly three sign questions and one highway question, but exact exam mixes vary.</p>
-          </article>
+      <aside class="hero-card" aria-label="RAG analogy">
+        <div class="analogy">
+          <div class="analogy-row">
+            <div class="analogy-icon" aria-hidden="true">🧠</div>
+            <div><strong>AI alone = a closed-book answer</strong><span>It relies on what it learned in the past.</span></div>
+          </div>
+          <div class="analogy-row">
+            <div class="analogy-icon" aria-hidden="true">🔎</div>
+            <div><strong>RAG = an open-book answer</strong><span>It looks up relevant pages before responding.</span></div>
+          </div>
+          <div class="analogy-row">
+            <div class="analogy-icon" aria-hidden="true">✨</div>
+            <div><strong>The simple idea</strong><span>Retrieve good context, then generate with it.</span></div>
+          </div>
         </div>
-        <div class="warning"><strong>Use the ranking, not the anecdotes, as a guarantee.</strong> This is one Reddit thread with two detailed first-hand accounts. The official manual says all five areas are examinable: alcohol misuse, suspensions, JOL violations, rules of the road, and road signs.</div>
-        <p class="source">Thread evidence: supplied Reddit post and all visible comments, accessed July 21, 2026. Exam scope: RMV manual p. 15.</p>
-      </section>
+      </aside>
+    </section>
 
-      <section id="plan" data-search>
-        <h2>A realistic last-night plan</h2>
-        <ol>
-          <li><strong>45 minutes:</strong> memorize the JOL restriction rules and the red-number penalty ladders.</li>
-          <li><strong>45 minutes:</strong> memorize BAC thresholds, implied consent, failed/refused test suspensions, and OUI penalties.</li>
-          <li><strong>30 minutes:</strong> learn sign colors/shapes, signals, pavement lines, right-of-way, and school bus rules.</li>
-          <li><strong>20 minutes:</strong> review the Number Cram Wall, then answer every self-test question aloud.</li>
-          <li><strong>Tomorrow:</strong> one 15-minute number review. Do not stay up so late that fatigue erases the benefit.</li>
-        </ol>
-        <ul class="task-list" aria-label="Study checklist">
-          <li><label><input class="study-check" type="checkbox"> JOL eligibility and restrictions</label></li>
-          <li><label><input class="study-check" type="checkbox"> JOL permit penalty table</label></li>
-          <li><label><input class="study-check" type="checkbox"> JOL license penalty table</label></li>
-          <li><label><input class="study-check" type="checkbox"> BAC, drinks, and implied consent</label></li>
-          <li><label><input class="study-check" type="checkbox"> Failed/refused tests and OUI table</label></li>
-          <li><label><input class="study-check" type="checkbox"> Signs, signals, and pavement markings</label></li>
-          <li><label><input class="study-check" type="checkbox"> Right-of-way, turns, passing, parking</label></li>
-          <li><label><input class="study-check" type="checkbox"> Number wall + self-test</label></li>
-        </ul>
-      </section>
+    <section class="workbench shell" aria-label="Interactive RAG walkthrough">
+      <ol class="step-nav" role="tablist" aria-label="RAG steps">
+        <li><button class="step-tab" role="tab" aria-selected="true" data-step="0"><span class="step-number">0</span><span class="step-name">Why RAG?</span></button></li>
+        <li><button class="step-tab" role="tab" aria-selected="false" data-step="1"><span class="step-number">1</span><span class="step-name">Prepare</span></button></li>
+        <li><button class="step-tab" role="tab" aria-selected="false" data-step="2"><span class="step-number">2</span><span class="step-name">Index</span></button></li>
+        <li><button class="step-tab" role="tab" aria-selected="false" data-step="3"><span class="step-number">3</span><span class="step-name">Ask</span></button></li>
+        <li><button class="step-tab" role="tab" aria-selected="false" data-step="4"><span class="step-number">4</span><span class="step-name">Translate</span></button></li>
+        <li><button class="step-tab" role="tab" aria-selected="false" data-step="5"><span class="step-number">5</span><span class="step-name">Retrieve</span></button></li>
+        <li><button class="step-tab" role="tab" aria-selected="false" data-step="6"><span class="step-number">6</span><span class="step-name">Augment</span></button></li>
+        <li><button class="step-tab" role="tab" aria-selected="false" data-step="7"><span class="step-number">7</span><span class="step-name">Generate</span></button></li>
+      </ol>
 
-      <section id="jol" data-search>
-        <h2>JOL: know the rules cold</h2>
-        <h3>Who is a Junior Operator?</h3>
-        <p>Any motor vehicle operator or motorcyclist from age <strong>16½ until 18</strong> who holds a Junior Operator's License (JOL). The restriction code is <strong>I</strong>.</p>
+      <div class="stage">
+        <div class="visual-wrap">
+          <svg id="rag-diagram" viewBox="0 0 720 470" role="img" aria-labelledby="svg-title svg-desc">
+            <title id="svg-title">Interactive diagram showing the current RAG step</title>
+            <desc id="svg-desc">Prerequisite: RAG helps an AI answer with current, trusted evidence instead of relying on an unsupported guess.</desc>
+            <defs>
+              <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#17233d" flood-opacity=".10"/>
+              </filter>
+              <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+                <path d="M0 0 L10 5 L0 10 Z" fill="#aeb5c2"/>
+              </marker>
+              <marker id="arrow-right-small" markerWidth="8" markerHeight="8" refX="7" refY="4" markerUnits="userSpaceOnUse" orient="0">
+                <path d="M0 0 L8 4 L0 8 Z" fill="#aeb5c2"/>
+              </marker>
+            </defs>
 
-        <h3>Requirements to obtain a JOL</h3>
-        <ul>
-          <li>Hold a valid learner's permit for at least <strong>six consecutive months</strong> before the road test. Any suspension invalidates the permit and restarts the six-month clock after the suspension ends.</li>
-          <li>Maintain a <strong>clean driving record for six consecutive months</strong> before the road test.</li>
-          <li>Complete RMV-approved driver education: <strong>30 classroom hours + 12 behind-the-wheel hours + 6 observation hours</strong>.</li>
-          <li>Complete <strong>40 additional supervised driving hours</strong>, certified by a parent/guardian. This drops to <strong>30 hours</strong> if an approved driver skills development program was completed.</li>
-          <li>A parent/guardian completes <strong>two hours</strong> of driver-ed curriculum instruction, unless completed in the past five years.</li>
-          <li>Pass the driver-education final exam so the certificate is filed electronically with the RMV.</li>
-        </ul>
+            <g class="svg-layer is-active" data-layer="0">
+              <text x="360" y="36" text-anchor="middle" class="svg-label" font-size="18">Why does RAG exist?</text>
+              <text x="360" y="59" text-anchor="middle" class="svg-small">A language model can sound confident without having the right facts.</text>
 
-        <h3>JOL license restrictions</h3>
-        <ul>
-          <li><strong>Passenger restriction:</strong> for the first six months after receiving a JOL, no passenger under 18 unless the passenger is immediate family or the driver is accompanied by a person at least 21, licensed in MA or another state, with at least one year of driving experience, seated beside the driver. It ends after six months or at age 18, whichever comes first. A suspension pauses the six-month clock.</li>
-          <li><strong>Night restriction:</strong> no driving from <strong>12:30 a.m. to 5:00 a.m.</strong> unless accompanied by a parent or legal guardian. From 12:30–1:00 and 4:00–5:00, police generally enforce it only after a lawful stop for another violation, but the driving is still illegal.</li>
-          <li>No vehicle requiring a commercial driver's license.</li>
-          <li>No mobile electronic device for any reason while driving, except reporting an emergency.</li>
-          <li>A suspension imposed while on a JOL must be completed, and the driver must reach 18, before becoming eligible for a full license.</li>
-        </ul>
-        <div class="memory"><strong>Core ladder:</strong> passenger/night restriction violations are <strong>60 days → 180 days → 1 year</strong>. JOL speeding is <strong>90 days → 1 year</strong>. Drag racing is <strong>1 year → 3 years</strong>.</div>
-        <p class="source">Official manual pp. 9–11.</p>
-      </section>
+              <g class="pop d1">
+                <rect x="166" y="79" width="388" height="55" rx="18" fill="#fff0cf" class="svg-node"/>
+                <text x="360" y="102" text-anchor="middle" class="svg-tiny">THE SAME QUESTION THROUGHOUT THIS GUIDE</text>
+                <text x="360" y="122" text-anchor="middle" class="svg-label" font-size="14">“How many vacation days do employees get?”</text>
+              </g>
 
-      <section id="jol-penalties" data-search>
-        <h2>JOL violation and penalty tables</h2>
-        <p>These are the high-risk memorization tables specifically emphasized by the thread. “New exam” means another learner's permit exam.</p>
-        <table>
-          <caption>Mandatory learner's PERMIT suspensions — Junior Operators 16½ to 18</caption>
-          <thead><tr><th>Violation</th><th>Suspension</th><th>Reinstatement / fines</th><th>Fee</th></tr></thead>
-          <tbody>
-            <tr><td>Driving without a licensed driver</td><td><strong>60d / 180d / 1yr</strong></td><td>New exam every time; 2nd also Driver Attitudinal Retraining</td><td>$100</td></tr>
-            <tr><td>Driving during night restriction</td><td><strong>60d / 180d / 1yr</strong></td><td>New exam every time; 2nd also Driver Attitudinal Retraining</td><td>$100</td></tr>
-            <tr><td>Speeding</td><td><strong>90d / 1yr</strong></td><td>New exam every time</td><td>$100</td></tr>
-            <tr><td>Drag racing</td><td><strong>1yr / 3yr</strong></td><td>New exam + retraining; SCARR may be required</td><td>$500 / $1,000</td></tr>
-            <tr><td>Mobile electronic device</td><td><strong>60d / 180d / 1yr</strong></td><td>1st: $100 fine + new exam + retraining. Fines: $100 / $250 / $500</td><td>$100</td></tr>
-            <tr><td>Negligent operation + injury from phone use</td><td><strong>180d / 1yr</strong></td><td>2nd+ require new exam</td><td>$500</td></tr>
-          </tbody>
-        </table>
+              <g class="pop d2">
+                <rect x="28" y="158" width="320" height="257" rx="22" fill="#fff3ef" class="svg-node"/>
+                <text x="52" y="185" class="svg-label" font-size="14">AI model on its own</text>
+                <rect x="50" y="201" width="91" height="34" rx="17" fill="#ffe7df"/>
+                <text x="96" y="223" text-anchor="middle" fill="#9c3e2d" font-size="11" font-weight="800">CLOSED BOOK</text>
 
-        <table>
-          <caption>Mandatory LICENSE suspensions — Junior Operators 16½ to 18</caption>
-          <thead><tr><th>Violation</th><th>Suspension</th><th>Reinstatement / fines</th><th>Fee</th></tr></thead>
-          <tbody>
-            <tr><td>Passenger or night restriction</td><td><strong>60d / 180d / 1yr</strong></td><td>2nd+ retraining; 3rd+ new exam + road test</td><td>$100</td></tr>
-            <tr><td>Speeding</td><td><strong>90d / 1yr</strong></td><td>New exam + retraining + road test; SCARR may be required</td><td>$500</td></tr>
-            <tr><td>Drag racing</td><td><strong>1yr / 3yr</strong></td><td>New exam + retraining + road test; SCARR may be required</td><td>$500 / $1,000</td></tr>
-            <tr><td>Negligent/reckless operation or operating to endanger</td><td><strong>180d / 1yr</strong> (2nd within 3 years)</td><td>2nd+ new exam + road test</td><td>$500</td></tr>
-            <tr><td>Mobile electronic device</td><td><strong>60d / 180d / 1yr</strong></td><td>1st: $100 fine + new exam + retraining + road test. Fines: $100 / $250 / $500</td><td>$100</td></tr>
-            <tr><td>Negligent operation + injury from phone use</td><td><strong>180d / 1yr</strong></td><td>2nd+ new exam + road test</td><td>$500</td></tr>
-          </tbody>
-        </table>
-        <div class="warning"><strong>Extra JOL alcohol/drug-related suspension:</strong> a Junior Operator convicted of OUI, operating to endanger, leaving a crash, open-container drinking, OUI with serious bodily injury, unauthorized vehicle use, reckless/negligent operation, loaning a license/permit, or motor vehicle homicide gets an additional <strong>180 days for a first offense or 1 year for a later offense</strong>, unless an extra failed/refused breath-test suspension already applies. A parent/guardian is notified.</div>
-        <p class="source">Official manual pp. 63–65. “d” = days; “yr” = year.</p>
-      </section>
+                <circle cx="100" cy="286" r="38" fill="#eee9ff" class="svg-node"/>
+                <circle cx="88" cy="280" r="4" fill="#7559d9"/>
+                <circle cx="112" cy="280" r="4" fill="#7559d9"/>
+                <path d="M86 301c9-7 19-7 28 0" fill="none" stroke="#7559d9" stroke-width="3" stroke-linecap="round"/>
 
-      <section id="alcohol" data-search>
-        <h2>Alcohol, drugs, BAC, and OUI</h2>
-        <h3>What alcohol does</h3>
-        <p>Alcohol is a depressant. It slows reflexes, increases reaction time, distorts vision and judgment, and can create false confidence. It also makes speeding, lane drift, and failure to buckle up more likely. Even one drink in an hour can impair driving; fatigue, emotional upset, and lack of food can worsen the effect.</p>
-        <ul>
-          <li>No trick “sobers you up.” Coffee, cold showers, exercise, and food may change how alert you feel, but <strong>only time</strong> removes alcohol.</li>
-          <li>BAC depends on body weight, amount consumed, food eaten beforehand, time spent drinking, and individual processing speed—not the beverage type.</li>
-          <li>Each contains about the same alcohol (about ½ ounce): <strong>12 oz beer = 5 oz wine = 1½ oz of 80-proof liquor</strong>. One may raise an average person's BAC about <strong>0.02</strong>.</li>
-          <li>The manual says alcohol makes crash risk about <strong>5×</strong> greater; alcohol plus marijuana about <strong>12×</strong>.</li>
-        </ul>
+                <rect x="160" y="243" width="164" height="93" rx="17" fill="#fffdf8" class="svg-node"/>
+                <text x="178" y="267" class="svg-tiny">CONFIDENT ANSWER</text>
+                <text x="178" y="297" class="svg-label guess-one" font-size="17">“15 paid days.”</text>
+                <text x="178" y="297" class="svg-label guess-two" font-size="17">“25 paid days.”</text>
+                <g class="warning-pulse">
+                  <circle cx="300" cy="313" r="12" fill="#dc654e"/>
+                  <text x="300" y="318" text-anchor="middle" fill="white" font-size="14" font-weight="800">!</text>
+                </g>
+                <text x="52" y="367" class="svg-small">It may guess, use outdated knowledge,</text>
+                <text x="52" y="389" class="svg-small">or invent a plausible-sounding detail.</text>
+              </g>
 
-        <h3>BAC and implied consent</h3>
-        <div class="number-wall">
-          <div class="number"><b>0.08</b><span>BAC: criminal legal limit / failed chemical test for all drivers</span></div>
-          <div class="number"><b>0.02</b><span>BAC: under-21 administrative “zero tolerance” threshold</span></div>
-          <div class="number"><b>12 · 5 · 1½</b><span>ounces: beer · wine · 80-proof liquor</span></div>
-          <div class="number"><b>Time only</b><span>removes alcohol from the body</span></div>
+              <g class="pop d3">
+                <rect x="372" y="158" width="320" height="257" rx="22" fill="#ebf8f2" class="svg-node"/>
+                <text x="396" y="185" class="svg-label" font-size="14">AI model with RAG</text>
+                <rect x="396" y="201" width="91" height="34" rx="17" fill="#def6ec"/>
+                <text x="442" y="223" text-anchor="middle" fill="#176d52" font-size="11" font-weight="800">OPEN BOOK</text>
+
+                <rect x="397" y="255" width="79" height="91" rx="12" fill="#e3f1ff" class="svg-node"/>
+                <path d="M454 255v21h22" fill="#cde4fa"/>
+                <path d="M454 255l22 21" class="svg-line" stroke-width="1"/>
+                <rect x="411" y="286" width="48" height="5" rx="2.5" fill="#3f83d1" opacity=".7"/>
+                <rect x="411" y="300" width="39" height="5" rx="2.5" fill="#3f83d1" opacity=".4"/>
+                <text x="437" y="365" text-anchor="middle" class="svg-tiny">handbook</text>
+
+                <path d="M483 300H531" class="svg-line draw-path" marker-end="url(#arrow)"/>
+                <rect class="evidence-flow" x="471" y="289" width="28" height="21" rx="6" fill="#3f83d1"/>
+
+                <circle cx="552" cy="300" r="31" fill="#eee9ff" class="svg-node"/>
+                <circle cx="542" cy="295" r="3.5" fill="#7559d9"/>
+                <circle cx="562" cy="295" r="3.5" fill="#7559d9"/>
+                <path d="M540 312h24" stroke="#7559d9" stroke-width="3" stroke-linecap="round"/>
+
+                <g class="grounded-glow">
+                  <rect x="593" y="244" width="82" height="111" rx="16" fill="#def6ec" class="svg-node"/>
+                  <circle cx="610" cy="264" r="9" fill="#2a9874"/>
+                  <path d="M606 264l3 3 6-7" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  <text x="634" y="289" text-anchor="middle" class="svg-label" font-size="12">20 paid</text>
+                  <text x="634" y="307" text-anchor="middle" class="svg-label" font-size="12">days</text>
+                  <line x1="606" y1="321" x2="662" y2="321" stroke="#a9dac7"/>
+                  <text x="634" y="338" text-anchor="middle" class="svg-tiny">with source</text>
+                </g>
+                <text x="396" y="389" class="svg-small">RAG supplies current, trusted evidence</text>
+                <text x="396" y="408" class="svg-small">before the model writes its answer.</text>
+              </g>
+              <text x="360" y="447" text-anchor="middle" class="svg-small">RAG reduces unsupported answers; it does not guarantee perfection.</text>
+            </g>
+
+            <g class="svg-layer" data-layer="1">
+              <text x="360" y="42" text-anchor="middle" class="svg-label" font-size="18">Build the searchable library once</text>
+              <text x="360" y="65" text-anchor="middle" class="svg-small">Long documents become small, meaningful passages.</text>
+              <g class="pop d1" filter="url(#soft-shadow)">
+                <rect x="62" y="112" width="176" height="230" rx="18" fill="#fffdf8" class="svg-node"/>
+                <path d="M204 112v42h34" fill="#e3f1ff"/>
+                <path d="M204 112l34 42" class="svg-line" stroke-width="1.5"/>
+                <rect x="84" y="151" width="92" height="7" rx="3.5" fill="#3f83d1" opacity=".32"/>
+                <g class="source-highlight sh1">
+                  <rect x="78" y="169" width="144" height="34" rx="8" fill="#d7eaff"/>
+                  <rect x="89" y="178" width="104" height="5" rx="2.5" fill="#3f83d1" opacity=".78"/>
+                  <rect x="89" y="189" width="119" height="5" rx="2.5" fill="#3f83d1" opacity=".42"/>
+                </g>
+                <g class="source-highlight sh2">
+                  <rect x="78" y="212" width="144" height="34" rx="8" fill="#d7eaff"/>
+                  <rect x="89" y="221" width="118" height="5" rx="2.5" fill="#3f83d1" opacity=".78"/>
+                  <rect x="89" y="232" width="97" height="5" rx="2.5" fill="#3f83d1" opacity=".42"/>
+                </g>
+                <g class="source-highlight sh3">
+                  <rect x="78" y="255" width="144" height="34" rx="8" fill="#d7eaff"/>
+                  <rect x="89" y="264" width="110" height="5" rx="2.5" fill="#3f83d1" opacity=".78"/>
+                  <rect x="89" y="275" width="91" height="5" rx="2.5" fill="#3f83d1" opacity=".42"/>
+                </g>
+                <text x="150" y="321" text-anchor="middle" class="svg-label" font-size="14">Employee handbook</text>
+              </g>
+              <path d="M239 186C302 186 320 137 368 137" class="svg-line svg-dash draw-path" opacity=".48"/>
+              <path d="M239 229C301 229 319 236 368 236" class="svg-line svg-dash draw-path" opacity=".48"/>
+              <path d="M239 272C302 272 320 335 368 335" class="svg-line svg-dash draw-path" opacity=".48"/>
+              <text x="305" y="211" text-anchor="middle" class="svg-tiny">split into sections</text>
+              <g aria-hidden="true">
+                <g class="chunk-transfer ct1">
+                  <rect x="78" y="169" width="144" height="34" rx="8" fill="#3f83d1"/>
+                  <path d="M92 181h85M92 191h107" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+                </g>
+                <g class="chunk-transfer ct2">
+                  <rect x="78" y="212" width="144" height="34" rx="8" fill="#3f83d1"/>
+                  <path d="M92 224h104M92 234h84" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+                </g>
+                <g class="chunk-transfer ct3">
+                  <rect x="78" y="255" width="144" height="34" rx="8" fill="#3f83d1"/>
+                  <path d="M92 267h97M92 277h78" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+                </g>
+              </g>
+              <g class="chunk-result cr1">
+                <rect x="378" y="98" width="270" height="78" rx="14" fill="#e3f1ff" class="svg-node"/>
+                <circle cx="404" cy="123" r="10" fill="#3f83d1"/>
+                <text x="404" y="127" text-anchor="middle" fill="white" font-size="10" font-weight="800">1</text>
+                <text x="425" y="123" class="svg-label" font-size="13">Vacation policy</text>
+                <text x="401" y="148" class="svg-small">“Employees receive 20 paid days…”</text>
+              </g>
+              <g class="chunk-result cr2">
+                <rect x="378" y="197" width="270" height="78" rx="14" fill="#e3f1ff" class="svg-node"/>
+                <circle cx="404" cy="222" r="10" fill="#3f83d1"/>
+                <text x="404" y="226" text-anchor="middle" fill="white" font-size="10" font-weight="800">2</text>
+                <text x="425" y="222" class="svg-label" font-size="13">Remote work policy</text>
+                <text x="401" y="247" class="svg-small">“Teams may work remotely on…”</text>
+              </g>
+              <g class="chunk-result cr3">
+                <rect x="378" y="296" width="270" height="78" rx="14" fill="#e3f1ff" class="svg-node"/>
+                <circle cx="404" cy="321" r="10" fill="#3f83d1"/>
+                <text x="404" y="325" text-anchor="middle" fill="white" font-size="10" font-weight="800">3</text>
+                <text x="425" y="321" class="svg-label" font-size="13">Equipment policy</text>
+                <text x="401" y="346" class="svg-small">“A laptop and monitor are…”</text>
+              </g>
+              <text x="513" y="412" text-anchor="middle" class="svg-small">Each highlighted passage becomes its own searchable section.</text>
+            </g>
+
+            <g class="svg-layer" data-layer="2">
+              <text x="360" y="42" text-anchor="middle" class="svg-label" font-size="18">Turn every chunk into an embedding</text>
+              <text x="360" y="65" text-anchor="middle" class="svg-small">Watch each chunk become its own numbered meaning vector.</text>
+              <g class="pop d1 indexed-chunk ic1">
+                <rect x="42" y="89" width="214" height="54" rx="13" fill="#e3f1ff" class="svg-node"/>
+                <circle cx="61" cy="108" r="10" fill="#3f83d1"/>
+                <text x="61" y="112" text-anchor="middle" fill="white" font-size="9" font-weight="800">1</text>
+                <text x="78" y="111" class="svg-tiny">CHUNK 1</text>
+                <text x="60" y="132" class="svg-label" font-size="12">“Employees receive 20…”</text>
+              </g>
+              <g class="pop d1 indexed-chunk ic2">
+                <rect x="42" y="156" width="214" height="54" rx="13" fill="#e3f1ff" class="svg-node"/>
+                <circle cx="61" cy="175" r="10" fill="#3f83d1"/>
+                <text x="61" y="179" text-anchor="middle" fill="white" font-size="9" font-weight="800">2</text>
+                <text x="78" y="178" class="svg-tiny">CHUNK 2</text>
+                <text x="60" y="199" class="svg-label" font-size="12">“Teams may work remotely…”</text>
+              </g>
+              <g class="pop d1 indexed-chunk ic3">
+                <rect x="42" y="223" width="214" height="54" rx="13" fill="#e3f1ff" class="svg-node"/>
+                <circle cx="61" cy="242" r="10" fill="#3f83d1"/>
+                <text x="61" y="246" text-anchor="middle" fill="white" font-size="9" font-weight="800">3</text>
+                <text x="78" y="245" class="svg-tiny">CHUNK 3</text>
+                <text x="60" y="266" class="svg-label" font-size="12">“A laptop and monitor…”</text>
+              </g>
+              <path d="M264 116C306 116 311 158 337 164" class="svg-line svg-dash draw-path" opacity=".55"/>
+              <path d="M264 183H337" class="svg-line draw-path" marker-end="url(#arrow)"/>
+              <path d="M264 250C306 250 311 210 337 204" class="svg-line svg-dash draw-path" opacity=".55"/>
+              <g class="pop d2 pulse">
+                <rect x="347" y="130" width="108" height="108" rx="22" fill="#eee9ff" class="svg-node"/>
+                <circle cx="380" cy="166" r="7" fill="#7559d9"/>
+                <circle cx="405" cy="179" r="6" fill="#7559d9" opacity=".72"/>
+                <circle cx="426" cy="160" r="5" fill="#7559d9" opacity=".45"/>
+                <path d="M378 201h47M386 216h31" stroke="#7559d9" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+                <text x="401" y="232" text-anchor="middle" fill="#4e4670" font-size="9" font-weight="800">TEXT → VECTOR</text>
+                <text x="401" y="265" text-anchor="middle" class="svg-small">Embedding model</text>
+              </g>
+              <path d="M474 184H521" class="svg-line draw-path" marker-end="url(#arrow)"/>
+              <g aria-hidden="true" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#4e4670">
+                <g class="indexed-vector iv1">
+                  <circle cx="466" cy="147" r="9" fill="#7559d9"/>
+                  <text x="466" y="150" text-anchor="middle" fill="white" font-size="8" font-weight="800">1</text>
+                  <text x="478" y="150">[.82,−.14,…]</text>
+                </g>
+                <g class="indexed-vector iv2">
+                  <circle cx="466" cy="184" r="9" fill="#7559d9"/>
+                  <text x="466" y="187" text-anchor="middle" fill="white" font-size="8" font-weight="800">2</text>
+                  <text x="478" y="187">[.21,.63,…]</text>
+                </g>
+                <g class="indexed-vector iv3">
+                  <circle cx="466" cy="221" r="9" fill="#7559d9"/>
+                  <text x="466" y="224" text-anchor="middle" fill="white" font-size="8" font-weight="800">3</text>
+                  <text x="478" y="224">[−.4,.91,…]</text>
+                </g>
+              </g>
+              <g class="pop d3" filter="url(#soft-shadow)">
+                <ellipse cx="602" cy="108" rx="78" ry="24" fill="#def6ec" class="svg-node"/>
+                <rect x="524" y="108" width="156" height="142" fill="#def6ec" stroke="rgba(23,35,61,.14)" stroke-width="1.5"/>
+                <ellipse cx="602" cy="250" rx="78" ry="24" fill="#ccebdd" class="svg-node"/>
+                <ellipse cx="602" cy="108" rx="78" ry="24" fill="#def6ec" class="svg-node"/>
+                <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#176d52">
+                  <g class="db-vector dv1">
+                    <circle cx="543" cy="147" r="9" fill="#2a9874"/>
+                    <text x="543" y="150" text-anchor="middle" fill="white" font-size="8" font-weight="800">1</text>
+                    <text x="556" y="151">[.82,−.14,…]</text>
+                  </g>
+                  <g class="db-vector dv2">
+                    <circle cx="543" cy="181" r="9" fill="#2a9874"/>
+                    <text x="543" y="184" text-anchor="middle" fill="white" font-size="8" font-weight="800">2</text>
+                    <text x="556" y="185">[.21, .63,…]</text>
+                  </g>
+                  <g class="db-vector dv3">
+                    <circle cx="543" cy="215" r="9" fill="#2a9874"/>
+                    <text x="543" y="218" text-anchor="middle" fill="white" font-size="8" font-weight="800">3</text>
+                    <text x="556" y="219">[−.4, .91,…]</text>
+                  </g>
+                </g>
+                <text x="602" y="293" text-anchor="middle" class="svg-label" font-size="14">Vector database</text>
+              </g>
+              <g class="pop d4">
+                <rect x="42" y="320" width="636" height="126" rx="18" fill="#fffdf8" class="svg-node"/>
+                <line x1="351" y1="336" x2="351" y2="430" stroke="#d9d6ca"/>
+
+                <text x="64" y="345" class="svg-tiny">SIMILAR MEANINGS ARE CLOSE</text>
+                <line x1="115" y1="390" x2="188" y2="398" stroke="#3f83d1" stroke-width="2" stroke-dasharray="4 4"/>
+                <g class="meaning-neighbor">
+                  <circle cx="115" cy="390" r="10" fill="#3f83d1"/>
+                  <text x="115" y="374" text-anchor="middle" class="svg-small">car</text>
+                </g>
+                <g class="meaning-neighbor mn2">
+                  <circle cx="188" cy="398" r="10" fill="#3f83d1" opacity=".78"/>
+                  <text x="188" y="382" text-anchor="middle" class="svg-small">automobile</text>
+                </g>
+                <circle cx="302" cy="378" r="8" fill="#aeb5c2"/>
+                <text x="302" y="405" text-anchor="middle" class="svg-tiny">volcano is far away</text>
+                <text x="64" y="428" class="svg-tiny">Nearby vectors usually represent related ideas.</text>
+
+                <text x="374" y="345" class="svg-tiny">RELATIONSHIPS CAN HAVE DIRECTIONS</text>
+                <text x="374" y="386" class="svg-label" font-size="15">aunt − woman + man ≈</text>
+                <g class="analogy-answer">
+                  <rect x="577" y="365" width="76" height="31" rx="15.5" fill="#eee9ff"/>
+                  <text x="615" y="386" text-anchor="middle" class="svg-label" font-size="15">uncle</text>
+                </g>
+                <text x="374" y="418" class="svg-tiny">A classic simplified embedding analogy.</text>
+                <text x="374" y="435" class="svg-tiny">The math is approximate, not a rule.</text>
+              </g>
+            </g>
+
+            <g class="svg-layer" data-layer="3">
+              <text x="360" y="42" text-anchor="middle" class="svg-label" font-size="18">A person asks a question</text>
+              <text x="360" y="65" text-anchor="middle" class="svg-small">Natural language is all they need.</text>
+              <g class="pop d1">
+                <circle cx="150" cy="233" r="68" fill="#fff0cf" class="svg-node"/>
+                <circle cx="150" cy="213" r="20" fill="#dc942f" opacity=".78"/>
+                <path d="M113 269c8-30 66-30 74 0" fill="#dc942f" opacity=".78"/>
+                <text x="150" y="326" text-anchor="middle" class="svg-label" font-size="14">You</text>
+              </g>
+              <path d="M235 231H332" class="svg-line draw-path" marker-end="url(#arrow)"/>
+              <g class="pop d2 float" filter="url(#soft-shadow)">
+                <rect x="365" y="145" width="292" height="162" rx="28" fill="#fffdf8" class="svg-node"/>
+                <path d="M390 307l-18 35 48-35" fill="#fffdf8" stroke="rgba(23,35,61,.14)" stroke-width="1.5"/>
+                <text x="401" y="195" class="svg-small">QUESTION</text>
+                <text id="question-line-1" x="401" y="231" class="svg-label" font-size="19">“How many vacation</text>
+                <text id="question-line-2" x="401" y="259" class="svg-label" font-size="19">days do employees get?”</text>
+              </g>
+              <g class="pop d4">
+                <rect x="260" y="386" width="200" height="35" rx="17.5" fill="#eee9ff"/>
+                <text x="360" y="408" text-anchor="middle" class="svg-small">No special search syntax required</text>
+              </g>
+            </g>
+
+            <g class="svg-layer" data-layer="4">
+              <text x="360" y="42" text-anchor="middle" class="svg-label" font-size="18">Words become a meaning map</text>
+              <text x="360" y="65" text-anchor="middle" class="svg-small">An “embedding” is a numeric address for meaning.</text>
+              <g class="pop d1">
+                <rect x="48" y="170" width="238" height="118" rx="20" fill="#fff0cf" class="svg-node"/>
+                <text x="167" y="210" text-anchor="middle" class="svg-small">YOUR QUESTION</text>
+                <text x="167" y="241" text-anchor="middle" class="svg-label" font-size="15">“How many vacation days?”</text>
+                <text x="167" y="267" text-anchor="middle" class="svg-tiny">human-readable words</text>
+              </g>
+              <path d="M306 230H389" class="svg-line draw-path" marker-end="url(#arrow)"/>
+              <g class="pop d2 pulse">
+                <rect x="328" y="201" width="46" height="58" rx="13" fill="#eee9ff" class="svg-node"/>
+                <circle cx="344" cy="219" r="5" fill="#7559d9"/>
+                <circle cx="358" cy="230" r="5" fill="#7559d9" opacity=".7"/>
+                <circle cx="344" cy="243" r="5" fill="#7559d9" opacity=".45"/>
+              </g>
+              <g class="pop d3">
+                <rect x="418" y="132" width="254" height="196" rx="20" fill="#eee9ff" class="svg-node"/>
+                <text x="545" y="165" text-anchor="middle" class="svg-small">MEANING COORDINATES</text>
+                <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#4e4670">
+                  <text x="457" y="208">[ 0.82,</text>
+                  <text x="457" y="238">−0.14,</text>
+                  <text x="457" y="268"> 0.57,</text>
+                  <text x="457" y="298"> … ]</text>
+                </g>
+                <circle cx="614" cy="222" r="7" fill="#7559d9"/>
+                <circle cx="635" cy="247" r="5" fill="#7559d9" opacity=".65"/>
+                <circle cx="599" cy="274" r="4" fill="#7559d9" opacity=".42"/>
+              </g>
+              <g class="pop d4">
+                <rect x="147" y="375" width="426" height="48" rx="16" fill="#fffdf8" class="svg-node"/>
+                <text x="360" y="404" text-anchor="middle" class="svg-small">Similar ideas land near one another — even if the words differ.</text>
+              </g>
+            </g>
+
+            <g class="svg-layer" data-layer="5">
+              <text x="360" y="42" text-anchor="middle" class="svg-label" font-size="18">The system retrieves the closest matches</text>
+              <text x="360" y="65" text-anchor="middle" class="svg-small">The question vector is the search key: compare distances, then return the nearest text.</text>
+              <g class="pop d1">
+                <rect x="18" y="151" width="138" height="76" rx="15" fill="#fff0cf" class="svg-node"/>
+                <text x="87" y="173" text-anchor="middle" class="svg-tiny">ORIGINAL QUESTION</text>
+                <text x="87" y="197" text-anchor="middle" class="svg-label" font-size="11">How many vacation</text>
+                <text x="87" y="214" text-anchor="middle" class="svg-label" font-size="11">days do employees get?</text>
+
+                <text x="87" y="245" text-anchor="middle" fill="#7559d9" font-size="18">↓</text>
+
+                <rect x="38" y="254" width="98" height="54" rx="14" fill="#eee9ff" class="svg-node"/>
+                <text x="87" y="274" text-anchor="middle" class="svg-tiny" style="font-size:9px">QUESTION EMBEDDING</text>
+                <text x="87" y="295" text-anchor="middle" fill="#4e4670" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10">[.82, −.14, …]</text>
+              </g>
+              <path d="M136 281C158 281 154 227 168 227H177" class="svg-line step5-arrow draw-path" marker-end="url(#arrow-right-small)"/>
+              <text x="160" y="268" text-anchor="middle" class="svg-tiny">search</text>
+              <circle class="query-search" cx="136" cy="281" r="6" fill="#7559d9"/>
+              <g class="pop d1">
+                <ellipse cx="240" cy="132" rx="60" ry="21" fill="#def6ec" class="svg-node"/>
+                <rect x="180" y="132" width="120" height="184" fill="#def6ec" stroke="rgba(23,35,61,.14)" stroke-width="1.5"/>
+                <ellipse cx="240" cy="316" rx="60" ry="21" fill="#ccebdd" class="svg-node"/>
+                <ellipse cx="240" cy="132" rx="60" ry="21" fill="#def6ec" class="svg-node"/>
+                <text x="240" y="140" text-anchor="middle" fill="#176d52" font-size="9" font-weight="800">COMPARE DISTANCES</text>
+                <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#176d52">
+                  <g class="closest-vector">
+                    <rect x="192" y="161" width="96" height="25" rx="7" fill="#b8e6d3"/>
+                    <text x="202" y="177">[.80,−.12,…]</text>
+                  </g>
+                  <text x="202" y="217">[.33, .51,…]</text>
+                  <text x="202" y="257">[−.4, .91,…]</text>
+                  <text x="202" y="297">[.05,−.66,…]</text>
+                </g>
+                <line class="scan-line" x1="190" y1="157" x2="290" y2="157" stroke="#7559d9" stroke-width="3" stroke-linecap="round"/>
+                <text x="240" y="363" text-anchor="middle" class="svg-label" font-size="13">Vector database</text>
+              </g>
+              <path d="M307 174C320 174 315 134 321 134H329" class="svg-line step5-arrow svg-dash draw-path" marker-end="url(#arrow-right-small)"/>
+              <g aria-hidden="true">
+                <rect x="276" y="141" width="57" height="31" rx="8" fill="#fffdf8" stroke="#d9d6ca"/>
+                <text x="304.5" y="154" text-anchor="middle" class="svg-tiny" style="font-size:8px">return</text>
+                <text x="304.5" y="165" text-anchor="middle" class="svg-tiny" style="font-size:8px">linked text</text>
+              </g>
+              <g class="match-out" aria-hidden="true">
+                <rect x="286" y="160" width="38" height="23" rx="7" fill="#3f83d1"/>
+                <path d="M295 172h20" stroke="white" stroke-width="3" stroke-linecap="round"/>
+              </g>
+              <g class="pop d2">
+                <rect x="335" y="93" width="324" height="82" rx="16" fill="#e3f1ff" class="svg-node"/>
+                <circle cx="367" cy="134" r="13" fill="#3f83d1"/>
+                <text x="393" y="126" class="svg-label" font-size="14">Vacation policy</text>
+                <text x="393" y="149" class="svg-small">Meaning match: very close</text>
+                <rect x="552" y="122" width="78" height="11" rx="5.5" fill="#c9dcef"/>
+                <rect x="552" y="122" width="70" height="11" rx="5.5" fill="#3f83d1"/>
+              </g>
+              <g class="pop d3">
+                <rect x="335" y="194" width="324" height="82" rx="16" fill="#f2f4f7" class="svg-node"/>
+                <circle cx="367" cy="235" r="13" fill="#aeb5c2"/>
+                <text x="393" y="227" class="svg-label" font-size="14">Office closure dates</text>
+                <text x="393" y="250" class="svg-small">Meaning match: somewhat close</text>
+                <rect x="552" y="223" width="78" height="11" rx="5.5" fill="#d9dce2"/>
+                <rect x="552" y="223" width="41" height="11" rx="5.5" fill="#aeb5c2"/>
+              </g>
+              <g class="pop d4">
+                <rect x="335" y="295" width="324" height="82" rx="16" fill="#f2f4f7" class="svg-node"/>
+                <circle cx="367" cy="336" r="13" fill="#aeb5c2"/>
+                <text x="393" y="328" class="svg-label" font-size="14">Laptop replacement</text>
+                <text x="393" y="351" class="svg-small">Meaning match: far away</text>
+                <rect x="552" y="324" width="78" height="11" rx="5.5" fill="#d9dce2"/>
+                <rect x="552" y="324" width="16" height="11" rx="5.5" fill="#aeb5c2"/>
+              </g>
+              <g class="search-phase sp1">
+                <rect x="46" y="397" width="190" height="37" rx="18.5" fill="#eee9ff"/>
+                <circle cx="67" cy="415" r="10" fill="#7559d9"/>
+                <text x="67" y="419" text-anchor="middle" fill="white" font-size="9" font-weight="800">1</text>
+                <text x="84" y="419" class="svg-small">Use question vector</text>
+              </g>
+              <g class="search-phase sp2">
+                <rect x="265" y="397" width="190" height="37" rx="18.5" fill="#e3f1ff"/>
+                <circle cx="286" cy="415" r="10" fill="#3f83d1"/>
+                <text x="286" y="419" text-anchor="middle" fill="white" font-size="9" font-weight="800">2</text>
+                <text x="303" y="419" class="svg-small">Compare distances</text>
+              </g>
+              <g class="search-phase sp3">
+                <rect x="484" y="397" width="190" height="37" rx="18.5" fill="#def6ec"/>
+                <circle cx="505" cy="415" r="10" fill="#2a9874"/>
+                <text x="505" y="419" text-anchor="middle" fill="white" font-size="9" font-weight="800">3</text>
+                <text x="522" y="419" class="svg-small">Retrieve closest text</text>
+              </g>
+            </g>
+
+            <g class="svg-layer" data-layer="6">
+              <text x="360" y="42" text-anchor="middle" class="svg-label" font-size="18">The prompt is augmented with evidence</text>
+              <text x="360" y="65" text-anchor="middle" class="svg-small">“Augmented” simply means extra useful context is added.</text>
+              <g class="pop d1">
+                <rect x="46" y="115" width="242" height="91" rx="17" fill="#fff0cf" class="svg-node"/>
+                <text x="70" y="144" class="svg-small">QUESTION</text>
+                <text x="70" y="174" class="svg-label" font-size="14">How many vacation days?</text>
+              </g>
+              <g class="pop d2">
+                <rect x="46" y="254" width="242" height="113" rx="17" fill="#e3f1ff" class="svg-node"/>
+                <text x="70" y="283" class="svg-small">RETRIEVED CONTEXT</text>
+                <text x="70" y="313" class="svg-label" font-size="14">“Employees receive 20</text>
+                <text x="70" y="335" class="svg-label" font-size="14">paid vacation days…”</text>
+              </g>
+              <path d="M309 161C361 161 354 220 408 220" class="svg-line draw-path" marker-end="url(#arrow)"/>
+              <path d="M309 311C361 311 354 244 408 244" class="svg-line draw-path" marker-end="url(#arrow)"/>
+              <g class="pop d3" filter="url(#soft-shadow)">
+                <rect x="429" y="111" width="244" height="251" rx="21" fill="#eee9ff" class="svg-node"/>
+                <text x="551" y="145" text-anchor="middle" class="svg-small">AUGMENTED PROMPT</text>
+                <rect x="453" y="168" width="196" height="61" rx="11" fill="#fffdf8"/>
+                <text x="469" y="191" class="svg-tiny">Use this context:</text>
+                <text x="469" y="211" class="svg-small">20 paid vacation days</text>
+                <rect x="453" y="244" width="196" height="61" rx="11" fill="#fffdf8"/>
+                <text x="469" y="267" class="svg-tiny">Answer this question:</text>
+                <text x="469" y="287" class="svg-small">How many vacation days?</text>
+                <rect x="492" y="321" width="118" height="24" rx="12" fill="#7559d9"/>
+                <text x="551" y="337" text-anchor="middle" fill="white" font-size="11" font-weight="800">SEND TO THE AI</text>
+              </g>
+              <g class="travel">
+                <circle cx="300" cy="233" r="7" fill="#7559d9"/>
+              </g>
+              <text x="360" y="411" text-anchor="middle" class="svg-small">The AI gets the question and the evidence together.</text>
+            </g>
+
+            <g class="svg-layer" data-layer="7">
+              <text x="360" y="42" text-anchor="middle" class="svg-label" font-size="18">The AI generates a grounded answer</text>
+              <text x="360" y="65" text-anchor="middle" class="svg-small">It writes naturally while staying anchored to the retrieved text.</text>
+              <g class="pop d1">
+                <rect x="48" y="135" width="190" height="198" rx="22" fill="#eee9ff" class="svg-node"/>
+                <circle cx="143" cy="191" r="33" fill="#7559d9"/>
+                <path d="M125 190c10-16 25-16 36 0M130 202h26" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                <text x="143" y="252" text-anchor="middle" class="svg-label" font-size="15">Language model</text>
+                <text x="143" y="278" text-anchor="middle" class="svg-small">Reads context</text>
+                <text x="143" y="299" text-anchor="middle" class="svg-small">Writes answer</text>
+              </g>
+              <path d="M261 234H339" class="svg-line draw-path" marker-end="url(#arrow)"/>
+              <g class="pop d2" filter="url(#soft-shadow)">
+                <rect x="371" y="111" width="301" height="246" rx="24" fill="#def6ec" class="svg-node"/>
+                <circle cx="405" cy="149" r="13" fill="#2a9874"/>
+                <path d="M399 149l5 5 8-10" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="430" y="155" class="svg-small">GROUNDED ANSWER</text>
+                <text x="405" y="205" class="svg-label" font-size="18">Employees receive</text>
+                <text x="405" y="234" class="svg-label" font-size="22">20 paid vacation days</text>
+                <text x="405" y="263" class="svg-label" font-size="18">per year.</text>
+                <line x1="405" y1="289" x2="637" y2="289" stroke="#b9dfd0"/>
+                <text x="405" y="317" class="svg-small">Source: Employee handbook</text>
+                <text x="405" y="338" class="svg-tiny">Vacation policy, section 4.2</text>
+              </g>
+              <g class="pop d4">
+                <rect x="202" y="395" width="316" height="36" rx="18" fill="#fffdf8" class="svg-node"/>
+                <text x="360" y="418" text-anchor="middle" class="svg-small">Useful answer + traceable source = more trust</text>
+              </g>
+            </g>
+          </svg>
         </div>
-        <p>Massachusetts' Implied Consent Law means a licensed driver agrees to chemical testing in covered circumstances. If an officer believes you are OUI, they may request a field sobriety test and, after arrest, a breath or blood test. A BAC above the legal limit—or refusal—causes police to take the license and issue an <strong>immediate</strong> suspension notice.</p>
 
-        <table>
-          <caption>Failed chemical test suspension (BAC ≥ .08; or youth sanction at ≥ .02)</caption>
-          <thead><tr><th>Age</th><th>Administrative suspension</th><th>First-case education option</th></tr></thead>
-          <tbody>
-            <tr><td>Over 21</td><td><strong>30 days</strong> or until court case concludes, whichever is shorter</td><td>Court penalties may follow a conviction</td></tr>
-            <tr><td>18–21</td><td><strong>30 days + 180 days</strong></td><td>Extra 180 days may be waived by entering approved alcohol education</td></tr>
-            <tr><td>Under 18</td><td><strong>30 days + 1 year</strong></td><td>Extra year may be reduced to 180 days by entering approved alcohol education</td></tr>
-          </tbody>
-        </table>
-
-        <table>
-          <caption>Refusing a chemical test (prior refusals do not count as prior OUI offenses)</caption>
-          <thead><tr><th>Age</th><th>0 prior OUI</th><th>1 prior</th><th>2 prior</th><th>3+ prior</th></tr></thead>
-          <tbody>
-            <tr><td>Over 21</td><td><strong>180 days</strong></td><td>3 years</td><td>5 years</td><td>Lifetime</td></tr>
-            <tr><td>18–21</td><td><strong>3 years + 180 days</strong></td><td>3 years + 180 days</td><td>5 years + 180 days</td><td>Lifetime</td></tr>
-            <tr><td>Under 18</td><td><strong>3 years + 1 year</strong></td><td>3 years + 1 year</td><td>5 years + 1 year</td><td>Lifetime</td></tr>
-          </tbody>
-        </table>
-        <p class="tiny">For under-21 refusal additions, winning the court case does not remove the alcohol-education requirement. On a first OUI case, age 18–21 may have the extra 180 days waived by entering approved education; under 18 may have the extra year reduced to 180 days.</p>
-
-        <table>
-          <caption>OUI conviction penalties — alcohol or drugs (including marijuana/prescription drugs)</caption>
-          <thead><tr><th>Offense</th><th>Fine</th><th>Prison</th><th>License suspension</th></tr></thead>
-          <tbody>
-            <tr><td>1st</td><td>$500–$5,000</td><td>Max 2½ years</td><td><strong>1 year</strong>; education may reduce to 45–90 days if over 21, or 210 days if under 21</td></tr>
-            <tr><td>2nd</td><td>$600–$10,000</td><td>30 days–2½ years</td><td><strong>2 years</strong></td></tr>
-            <tr><td>3rd (felony)</td><td>$1,000–$15,000</td><td>150 days–5 years</td><td><strong>8 years</strong></td></tr>
-            <tr><td>4th (felony)</td><td>$1,500–$25,000</td><td>1–5 years</td><td><strong>10 years</strong></td></tr>
-            <tr><td>5th (felony)</td><td>$2,000–$50,000</td><td>2–5 years</td><td><strong>Lifetime</strong></td></tr>
-          </tbody>
-        </table>
-
-        <h3>Under-21 alcohol, open containers, false IDs, and drugs</h3>
-        <ul>
-          <li>Under 21: illegal to buy/have someone buy alcohol, or possess/carry/transport alcohol unless with a parent/guardian. License suspension range: <strong>90 days to 1 year</strong>. Buying or attempting to buy: <strong>180-day suspension</strong>.</li>
-          <li>Open container: neither the driver nor anyone else may have an open alcoholic drink inside the vehicle. Conviction: <strong>$100–$500</strong>; under 21 also arrested, fined, and suspended.</li>
-          <li>False/altered/borrowed ID or false information: RMV may suspend up to <strong>6 months without a conviction</strong>; conviction brings a <strong>1-year suspension</strong>.</li>
-          <li>OUI law applies to marijuana, illegal drugs, prescription drugs, and over-the-counter medicines. Legal possession of marijuana does not make impaired driving legal.</li>
-          <li>Marijuana impairs response to sights/sounds, rapid task handling, unexpected-event response, and night vision. Sedatives/cold medicines may cause drowsiness; stimulants may be followed by fatigue, dizziness, nervousness, and poor concentration.</li>
-        </ul>
-        <p class="source">Official manual pp. 68–75.</p>
-      </section>
-
-      <section id="suspensions" data-search>
-        <h2>Other suspensions and violation numbers</h2>
-        <table>
-          <caption>Mandatory suspensions for drivers 18 and older</caption>
-          <thead><tr><th>Situation</th><th>Trigger</th><th>Result</th><th>Fee</th></tr></thead>
-          <tbody>
-            <tr><td>3 speeding violations</td><td>Within 1 year</td><td><strong>30-day suspension</strong></td><td>$100</td></tr>
-            <tr><td>3 surchargeable events</td><td>Within 2 years</td><td>Complete retraining in 90 days or indefinite suspension until completed</td><td>$100</td></tr>
-            <tr><td>7 surchargeable events</td><td>Within 3 years</td><td><strong>60-day suspension</strong></td><td>$100</td></tr>
-            <tr><td>Habitual traffic offender</td><td>3 major violations OR 12 major/minor in 5 years</td><td><strong>4 years</strong></td><td>$500</td></tr>
-            <tr><td>Out-of-state suspension</td><td>Suspended/revoked elsewhere</td><td>Until resolved</td><td>$100</td></tr>
-          </tbody>
-        </table>
-        <h3>Criminal offense suspension ranges</h3>
-        <ul>
-          <li>Driving with suspended/revoked license: <strong>60 days–1 year</strong>.</li>
-          <li>Operating without owner's authority / vehicle larceny: <strong>1–3 years</strong>.</li>
-          <li>Leaving an injury crash: <strong>1–2 years</strong>; leaving a property-damage crash: <strong>60 days–1 year</strong>.</li>
-          <li>Operating to endanger: <strong>60 days–1 year</strong>.</li>
-          <li>Motor vehicle homicide or vehicular manslaughter: <strong>15 years–lifetime</strong>.</li>
-          <li>Drug trafficking (except Class D substance): <strong>1–5 years</strong>, even without driving.</li>
-          <li>Graffiti/defacing property: <strong>1 year</strong> or one-year delay in obtaining a license.</li>
-          <li>Drag racing by drivers over 18: <strong>30–180 days</strong>.</li>
-        </ul>
-        <div class="memory"><strong>Speeding fine formula:</strong> minimum fine is $100 plus $5 public-safety surcharge. Over 10 mph above the limit, add $10 for each mph above the first ten. Posted work-zone speeding fines are doubled. The manual also notes a $50 head-injury trust surcharge included in speeding fines.</div>
-        <p>For a civil motor vehicle infraction, pay or request a hearing within <strong>20 days</strong>. A hearing request has a <strong>$25</strong> filing fee, refunded if found not responsible for every violation. Ignoring the citation adds a late fee and can lead to suspension.</p>
-        <p class="source">Official manual pp. 56–68.</p>
-      </section>
-
-      <section id="signs" data-search>
-        <h2>Signs, signals, and pavement markings</h2>
-        <h3>Sign colors</h3>
-        <table>
-          <thead><tr><th>Color</th><th>Meaning</th><th>Color</th><th>Meaning</th></tr></thead>
-          <tbody>
-            <tr><td>Red</td><td>Stop / prohibition</td><td>Green</td><td>Direction / where you can go</td></tr>
-            <tr><td>Yellow</td><td>General warning</td><td>Black & white</td><td>Regulation</td></tr>
-            <tr><td>Blue</td><td>Motorist service / evacuation</td><td>Brown</td><td>Recreation, historic, scenic</td></tr>
-            <tr><td>Orange</td><td>Construction / maintenance</td><td>Fluorescent yellow-green</td><td>School, bike, pedestrian, curve warning</td></tr>
-            <tr><td>Fluorescent pink</td><td>Incident management</td><td>Purple</td><td>Electronic toll collection</td></tr>
-          </tbody>
-        </table>
-        <h3>Sign shapes you should recognize at a distance</h3>
-        <p><strong>Octagon:</strong> stop · <strong>downward triangle:</strong> yield · <strong>pennant:</strong> no-passing zone · <strong>pentagon:</strong> school zone/crossing · <strong>diamond:</strong> warning · <strong>circle:</strong> railroad warning · <strong>rectangle:</strong> regulation or guide/information · <strong>crossbuck:</strong> railroad crossing · <strong>shield:</strong> interstate highway.</p>
-
-        <h3>Traffic lights</h3>
-        <div class="signals">
-          <div class="signal"><span class="dot"></span><strong>Steady red:</strong> stop. Right on red after full stop and yielding unless prohibited. Left on red only one-way to one-way, after stop/yield.</div>
-          <div class="signal"><span class="dot"></span><strong>Flashing red:</strong> treat exactly as a STOP sign.</div>
-          <div class="signal"><span class="dot yellow"></span><strong>Steady yellow:</strong> stop if safe. If already stopped, do not enter.</div>
-          <div class="signal"><span class="dot yellow"></span><strong>Flashing yellow:</strong> warning; proceed cautiously. Flashing yellow arrow permits the indicated turn after yielding to traffic and pedestrians.</div>
-          <div class="signal"><span class="dot green"></span><strong>Steady green:</strong> go only if clear; yield to traffic/pedestrians already present. Left turn yields to oncoming traffic.</div>
-          <div class="signal"><span class="dot green"></span><strong>Green arrow:</strong> protected turn, but still check the path.</div>
+        <div class="stage-copy" aria-live="polite">
+          <p class="stage-kicker" id="stage-kicker">Prerequisite · Why RAG?</p>
+          <h2 id="stage-title">AI needs the right facts before it answers</h2>
+          <p id="stage-body">A language model predicts a useful response from patterns it learned earlier. It does not automatically know your private handbook or whether a policy changed yesterday, so it can confidently produce a wrong answer.</p>
+          <div class="plain-box">
+            <strong>In plain English</strong>
+            <span id="stage-plain">RAG lets the AI check a trusted source first. That makes the answer more current, traceable, and less likely to be invented.</span>
+          </div>
+          <div class="step-actions" aria-label="Step navigation">
+            <button class="step-action-btn" id="prev-btn" type="button"><span aria-hidden="true">←</span> Previous</button>
+            <button class="step-action-btn" id="next-btn" type="button">Next <span aria-hidden="true">→</span></button>
+          </div>
         </div>
-        <p>Blackout: act as if every direction has a stop sign. Pedestrian hybrid beacon: dark = caution; flashing yellow = slow; solid yellow = prepare to stop; solid red pair = stop; flashing red pair = stop, then proceed if clear.</p>
+      </div>
+    </section>
 
-        <h3>Pavement markings</h3>
-        <ul>
-          <li><strong>White</strong> separates same-direction traffic. Broken white: lane change allowed when safe. Single solid white: should not cross except to avoid danger. Double solid white: crossing prohibited.</li>
-          <li><strong>Yellow</strong> separates opposite-direction traffic. Broken yellow: may cross to pass when safe. One solid/one broken: only the side next to the broken line may pass. Double solid yellow: no passing, but may cross to turn left when safe.</li>
-          <li>White diamond: restricted/special lane such as HOV or bus. Sharrows show a shared lane, not a dedicated bike lane.</li>
-          <li>Bicycle lanes usually have solid white lines; cars may enter only when turning on/off the road and must first check for bicyclists. Green pavement highlights bicycle conflict zones; red pavement marks transit use.</li>
-          <li>Stop behind stop lines, yield lines (rows of triangles), and crosswalk lines when required.</li>
-        </ul>
-        <p>At a railroad gate/flashing light, stop at least <strong>15 feet</strong> before the post or gate and remain until the gate rises and lights stop. Never go around a lowered gate.</p>
-        <p class="source">Official manual pp. 80–92.</p>
-      </section>
+    <section class="takeaway shell" aria-labelledby="takeaway-title">
+      <h2 id="takeaway-title">RAG doesn’t give AI new memory. It gives AI a good reference.</h2>
+      <ul class="takeaway-list">
+        <li><b>1</b><div><strong>Retrieve</strong><span>Find the small pieces of trusted information most related to the question.</span></div></li>
+        <li><b>2</b><div><strong>Augment</strong><span>Add those pieces to the instructions sent to the language model.</span></div></li>
+        <li><b>3</b><div><strong>Generate</strong><span>Write a clear answer using the retrieved evidence as the source of truth.</span></div></li>
+      </ul>
+    </section>
+  </main>
 
-      <section id="road" data-search>
-        <h2>Rules of the road most worth memorizing</h2>
-        <h3>Speed limits (unless posted otherwise)</h3>
-        <table>
-          <thead><tr><th>Place</th><th>Limit</th><th>Remember</th></tr></thead>
-          <tbody>
-            <tr><td>School zone</td><td><strong>20 mph</strong></td><td>Watch posted hours/flashing lights</td></tr>
-            <tr><td>Thickly settled / business district</td><td><strong>30 mph</strong></td><td>Some communities post 25 mph; “thickly settled” = buildings &lt;200 ft apart for ≥¼ mile</td></tr>
-            <tr><td>Outside thickly settled/business district</td><td><strong>40 mph</strong></td><td>Unless posted otherwise</td></tr>
-            <tr><td>Highway outside such a district</td><td><strong>50 mph</strong></td><td>Limited-access posted limits commonly 50–65</td></tr>
-            <tr><td>Massachusetts Turnpike minimum</td><td><strong>40 mph</strong></td><td>Boston Harbor tunnel minimum is 20 mph</td></tr>
-          </tbody>
-        </table>
-        <p>The fundamental speed law always wins: drive no faster than is safe for traffic, road, weather, visibility, pedestrians, and bicyclists—even below a posted limit.</p>
-
-        <h3>Right-of-way</h3>
-        <ul>
-          <li>Right-of-way is something you <strong>give, not take</strong>. Yield to avoid a crash even when legally entitled to go.</li>
-          <li>Uncontrolled intersection: yield to a vehicle already entering or coming from your <strong>right</strong>.</li>
-          <li>Four-way stop: first full stop goes first; ties yield to the driver on the right.</li>
-          <li>Left turn: yield to oncoming vehicles, vehicles already in the intersection, and pedestrians/bicyclists crossing your path.</li>
-          <li>Entering a paved through road from a private road, driveway, or unpaved road: stop, then yield to everyone on the road/sidewalk.</li>
-          <li>Always yield to pedestrians in the roadway. Fully stop for a blind pedestrian with a white cane or guide dog; do not honk, wave, or pass a stopped vehicle.</li>
-          <li>Rotary/roundabout: counterclockwise traffic; yield to vehicles already inside and to pedestrians. Signal right to exit. Never stop inside; go around again if you miss the exit.</li>
-        </ul>
-
-        <h3>Turns, lanes, passing, and highways</h3>
-        <ul>
-          <li>Signal a turn at least <strong>100 feet</strong> ahead; on a highway, signal at least <strong>500 feet</strong> before a turn/exit. Sequence: look (mirrors + blind spot), signal, move.</li>
-          <li>Use the right lane except when passing, turning left, or when it is blocked. Never change lanes in an intersection.</li>
-          <li>Right on red is permitted after full stop and yield unless signed otherwise. Left on red is only from a one-way street to another one-way street.</li>
-          <li>No U-turn near a hill crest/curve or where drivers cannot see <strong>500 feet</strong>.</li>
-          <li>Pass left. A two-way broken-yellow pass requires at least <strong>400 feet</strong> of clear view, and return right before an oncoming vehicle is within <strong>200 feet</strong>. Never speed to pass.</li>
-          <li>Pass right only if the vehicle is turning left, on a one-way street, or on a same-direction multilane road. Never use a shoulder, breakdown lane, or sidewalk to pass.</li>
-          <li>Highway entry: yield to traffic already on the highway and match its speed. Missed exit: continue to the next exit; never stop or back up.</li>
-        </ul>
-
-        <h3>School bus, following distance, and parking</h3>
-        <ul>
-          <li>Flashing red school-bus lights/extended stop sign: <strong>both directions stop</strong> until signals end. Exception: opposite side of a divided highway with a physical barrier. First violation can mean a $250 fine and suspension.</li>
-          <li>Minimum following gap in good conditions: <strong>3 seconds</strong>; motorcycles: at least <strong>4 seconds</strong>; heavy equipment: at least <strong>10 seconds</strong>. Increase for poor conditions.</li>
-          <li>Park within <strong>12 inches</strong> of the curb and leave at least <strong>12 feet</strong> of clear road.</li>
-          <li>No parking within <strong>20 feet of an intersection</strong> or <strong>10 feet of a hydrant/fire lane</strong>, or in a crosswalk, driveway, bike/bus/taxi/loading zone, sidewalk/median, wrong direction, or double-parked.</li>
-          <li>Hill wheels: no curb = inward toward road edge; uphill with curb = outward toward travel lane; downhill with curb = inward toward curb.</li>
-        </ul>
-        <p class="source">Official manual pp. 79–110.</p>
-      </section>
-
-      <section id="special" data-search>
-        <h2>Special situations and safety traps</h2>
-        <details open><summary>Emergency vehicles and move-over law</summary><div>
-          <ul>
-            <li>Moving emergency vehicle with siren/lights: pull as far right as possible and <strong>stop</strong>. If in an intersection, clear it first, then pull over. Do not follow closer than <strong>300 feet</strong>.</li>
-            <li>Stationary emergency/maintenance/recovery vehicle with flashing lights: slow to a reasonable safe speed. On a highway with at least four lanes (two in your direction), move over one lane when safe; otherwise slow and use caution.</li>
-            <li>Do not drive by or park within <strong>800 feet of a fire</strong>. Never cross an unprotected fire hose unless directed.</li>
-          </ul>
-        </div></details>
-        <details><summary>Headlights, weather, and visibility</summary><div>
-          <ul>
-            <li>Use headlights/taillights from ½ hour after sunset to ½ hour before sunrise, whenever visibility is under <strong>500 feet</strong>, whenever wipers are used, in rain/snow/fog, and in tunnels.</li>
-            <li>High beams show about 350 feet; low beams about 100 feet. Dim high beams within <strong>500 feet of oncoming traffic</strong> or <strong>200 feet behind a vehicle</strong>.</li>
-            <li>Fog: use low beams. Hydroplaning: ease off gas; do not brake or turn suddenly. Bridges/overpasses freeze first.</li>
-          </ul>
-        </div></details>
-        <details><summary>Skids and mechanical emergencies</summary><div>
-          <ul>
-            <li>Skid: ease off gas, shift to neutral, do not brake, steer <strong>in the direction of the skid</strong>.</li>
-            <li>Run off pavement: hold wheel, ease off gas, brake gently, check traffic, return gently.</li>
-            <li>Blowout: grip wheel, ease off gas, gently straighten; avoid braking until controlled, then pull off.</li>
-            <li>Brake failure: downshift, gently use parking brake while holding release, warn others. Pump only non-ABS brakes—never pump ABS.</li>
-            <li>Stuck accelerator: shift to neutral, brake, try to free pedal, then pull over.</li>
-          </ul>
-        </div></details>
-        <details><summary>Crashes and reports</summary><div>
-          <ul>
-            <li>Always stop. For property-only crashes, move vehicles from travel lanes if possible and exchange identity, license, registration, and insurance details.</li>
-            <li>Within <strong>5 days</strong>, report to both RMV and local police if there is injury/death or at least <strong>$1,000 property damage</strong>.</li>
-            <li>Do not move an injured person unless necessary for immediate safety; support head/spine if movement is unavoidable.</li>
-          </ul>
-        </div></details>
-        <details><summary>Seat belts, child restraints, and phones</summary><div>
-          <ul>
-            <li>Everyone in a passenger vehicle must buckle up or use an appropriate child restraint. Driver and unbelted passengers age 16+ may each be fined $25; driver may be fined $25 for each unbelted passenger age 12–15.</li>
-            <li>Child restraint until at least <strong>age 8 or 57 inches tall</strong>; then safety belt. Rear-facing infant seat never in front of an active passenger air bag.</li>
-            <li>Drivers 18+ may use only hands-free mounted devices, with a single touch to activate; handheld use is not allowed even at red lights/stop signs. Under 18: no device use except emergency reporting.</li>
-            <li>General handheld penalties: <strong>$100 / $250 / $500</strong>, with education from the second offense and insurance surcharge from the third.</li>
-          </ul>
-        </div></details>
-        <p class="source">Official manual pp. 35–47 and 119–131.</p>
-      </section>
-
-      <section id="numbers" data-search>
-        <h2>The number cram wall</h2>
-        <p>Say the rule out loud before reading the label. These are the numbers most likely to blur together.</p>
-        <div class="number-wall">
-          <div class="number"><b>18 / 25</b><span>correct to pass; 25 minutes</span></div>
-          <div class="number"><b>16½–18</b><span>Junior Operator age range</span></div>
-          <div class="number"><b>6 months</b><span>permit + clean record; new JOL passenger limit</span></div>
-          <div class="number"><b>12:30–5</b><span>JOL prohibited driving hours</span></div>
-          <div class="number"><b>.08 / .02</b><span>all-driver limit / under-21 sanction</span></div>
-          <div class="number"><b>60·180·1yr</b><span>JOL passenger/night/phone ladder</span></div>
-          <div class="number"><b>90d / 1yr</b><span>JOL speeding ladder</span></div>
-          <div class="number"><b>1yr / 3yr</b><span>JOL drag-racing ladder</span></div>
-          <div class="number"><b>20·30·40·50</b><span>unposted speed ladder: school, settled, outside, highway</span></div>
-          <div class="number"><b>3·4·10 sec</b><span>following: car, motorcycle, heavy equipment</span></div>
-          <div class="number"><b>100 / 500 ft</b><span>turn signal / highway signal</span></div>
-          <div class="number"><b>500 / 200 ft</b><span>dim high beams: oncoming / following</span></div>
-          <div class="number"><b>20 / 10 ft</b><span>no parking: intersection / hydrant</span></div>
-          <div class="number"><b>15 ft</b><span>stop before railroad gate/lights</span></div>
-          <div class="number"><b>300 ft</b><span>minimum behind responding emergency vehicle</span></div>
-          <div class="number"><b>5d / $1,000</b><span>crash report deadline / damage threshold</span></div>
-        </div>
-      </section>
-
-      <section id="quiz" data-search>
-        <h2>Self-test: answer before revealing</h2>
-        <div id="quizList">
-          <article class="quiz-card"><p>1. What are the five official exam subject areas?</p><button class="reveal" type="button">Reveal</button><div class="answer">Alcohol misuse, suspensions, JOL violations, rules of the road, and identifying road signs.</div></article>
-          <article class="quiz-card"><p>2. A JOL driver carries a 17-year-old friend two months after getting licensed. Who must be present for this to be legal?</p><button class="reveal" type="button">Reveal</button><div class="answer">A person at least 21, licensed in MA or another state, with at least one year of driving experience, seated beside the driver. (Immediate family is exempt.)</div></article>
-          <article class="quiz-card"><p>3. What is the JOL passenger/night restriction suspension ladder?</p><button class="reveal" type="button">Reveal</button><div class="answer">60 days first, 180 days second, one year subsequent.</div></article>
-          <article class="quiz-card"><p>4. What is the JOL speeding suspension ladder?</p><button class="reveal" type="button">Reveal</button><div class="answer">90 days first, one year second or subsequent.</div></article>
-          <article class="quiz-card"><p>5. What are the adult and under-21 BAC thresholds?</p><button class="reveal" type="button">Reveal</button><div class="answer">0.08 for a failed chemical test / criminal limit for all drivers; 0.02 for under-21 administrative zero-tolerance sanctions.</div></article>
-          <article class="quiz-card"><p>6. Which removes alcohol faster: coffee, food, exercise, or a cold shower?</p><button class="reveal" type="button">Reveal</button><div class="answer">None. Only time removes alcohol.</div></article>
-          <article class="quiz-card"><p>7. With no prior OUI, how long is a chemical-test refusal suspension for someone over 21? For someone 18–21?</p><button class="reveal" type="button">Reveal</button><div class="answer">Over 21: 180 days. Age 18–21: three years plus 180 days.</div></article>
-          <article class="quiz-card"><p>8. What does a flashing red light mean? A flashing yellow?</p><button class="reveal" type="button">Reveal</button><div class="answer">Flashing red: full stop, then proceed under right-of-way rules. Flashing yellow: warning—proceed cautiously.</div></article>
-          <article class="quiz-card"><p>9. What do white and yellow pavement lines separate?</p><button class="reveal" type="button">Reveal</button><div class="answer">White: traffic in the same direction. Yellow: traffic in opposite directions.</div></article>
-          <article class="quiz-card"><p>10. Two cars stop simultaneously at a four-way stop. Who goes first?</p><button class="reveal" type="button">Reveal</button><div class="answer">The vehicle on the right.</div></article>
-          <article class="quiz-card"><p>11. When must both directions stop for a school bus, and what is the exception?</p><button class="reveal" type="button">Reveal</button><div class="answer">Stop while red lights flash / stop sign is extended. Exception: the bus is across a divided highway with a physical barrier.</div></article>
-          <article class="quiz-card"><p>12. What are the default school, settled-district, outside-district, and highway speed limits?</p><button class="reveal" type="button">Reveal</button><div class="answer">20, 30, 40, and 50 mph, unless posted otherwise (some settled communities post 25).</div></article>
-          <article class="quiz-card"><p>13. When may you turn left on red?</p><button class="reveal" type="button">Reveal</button><div class="answer">Only from a one-way street onto another one-way street, after a full stop and yielding, unless prohibited.</div></article>
-          <article class="quiz-card"><p>14. How far ahead do you signal a normal turn? A highway exit?</p><button class="reveal" type="button">Reveal</button><div class="answer">At least 100 feet normally; 500 feet on a highway.</div></article>
-          <article class="quiz-card"><p>15. At what distances must you dim high beams?</p><button class="reveal" type="button">Reveal</button><div class="answer">Within 500 feet of oncoming traffic or within 200 feet behind another vehicle.</div></article>
-          <article class="quiz-card"><p>16. What should you do in a skid?</p><button class="reveal" type="button">Reveal</button><div class="answer">Ease off gas, shift to neutral, do not brake, and steer in the direction of the skid.</div></article>
-          <article class="quiz-card"><p>17. Where do you pull for a moving emergency vehicle? What if you're in an intersection?</p><button class="reveal" type="button">Reveal</button><div class="answer">Pull as far right as possible and stop. If in an intersection, clear it first, then pull right and stop.</div></article>
-          <article class="quiz-card"><p>18. What crash must be reported, to whom, and by when?</p><button class="reveal" type="button">Reveal</button><div class="answer">Any crash with injury/death or at least $1,000 damage; report to both RMV and local police within five days.</div></article>
-          <article class="quiz-card"><p>19. Until what age/height must a child use a child restraint?</p><button class="reveal" type="button">Reveal</button><div class="answer">Until at least age eight or 57 inches tall.</div></article>
-          <article class="quiz-card"><p>20. What are the first three handheld-device fine amounts?</p><button class="reveal" type="button">Reveal</button><div class="answer">$100 first, $250 second, $500 third/subsequent. JOL suspensions and reinstatement requirements also apply to under-18 drivers.</div></article>
-        </div>
-      </section>
-
-      <section id="sources" data-search>
-        <h2>Sources and scope</h2>
-        <p><strong>Official authority:</strong> <a href="https://www.mass.gov/doc/english-drivers-manual/download">Massachusetts Driver's Manual</a>, Commonwealth of Massachusetts Registry of Motor Vehicles, PDF metadata creation date April 6, 2026; accessed July 21, 2026. Page references in this guide use the printed page numbers.</p>
-        <p><strong>Topic prioritization:</strong> <a href="https://www.reddit.com/r/driving/comments/1eanbvf/ma_massachusetts_permit_test/">“Ma Massachusetts Permit Test” on r/driving</a>, including all comments visible on July 21, 2026. Reddit was used only to rank study emphasis; the manual controls if there is any conflict.</p>
-        <p><strong>Scope:</strong> This is a targeted cram guide, not a substitute for reading the full manual. It deliberately gives the most space to JOL, alcohol/drugs, and suspensions because those were the repeated first-hand themes, while still covering high-yield road rules and signs named by the RMV.</p>
-      </section>
-    </main>
-  </div>
-
-  <footer class="footer">
-    <div class="footer-inner"><strong>Final reminder:</strong> Slow down on penalty questions. Identify (1) permit vs. license, (2) under 18 vs. 18–21 vs. over 21, and (3) first vs. later offense before choosing an answer.</div>
-  </footer>
+  <footer class="shell">A visual introduction to retrieval augmented generation · Everything runs locally in this page.</footer>
 
   <script>
-    const checks = [...document.querySelectorAll('.study-check')];
-    const progress = document.getElementById('progress');
-    const progressText = document.getElementById('progressText');
-    function updateProgress() {
-      const done = checks.filter(c => c.checked).length;
-      progress.value = done;
-      progressText.textContent = `${done} of ${checks.length}`;
-      try { localStorage.setItem('ma-permit-checks', JSON.stringify(checks.map(c => c.checked))); } catch (_) {}
-    }
-    try {
-      const saved = JSON.parse(localStorage.getItem('ma-permit-checks') || '[]');
-      checks.forEach((c, i) => c.checked = Boolean(saved[i]));
-    } catch (_) {}
-    checks.forEach(c => c.addEventListener('change', updateProgress));
-    updateProgress();
+    (() => {
+      const steps = [
+        {
+          kicker: "Prerequisite · Why RAG?",
+          title: "AI needs the right facts before it answers",
+          body: "A language model predicts a useful response from patterns it learned earlier. It does not automatically know your private handbook or whether a policy changed yesterday, so it can confidently produce a wrong answer.",
+          plain: "RAG lets the AI check a trusted source first. That makes the answer more current, traceable, and less likely to be invented.",
+          desc: "Prerequisite: An AI working alone alternates between unsupported answers, while a RAG system retrieves the employee handbook and gives the sourced answer of 20 paid vacation days."
+        },
+        {
+          kicker: "Step 1 of 7 · Before questions arrive",
+          title: "Prepare a searchable library",
+          body: "The system splits trusted documents into smaller passages called <strong>chunks</strong>. Keeping each passage focused makes it easier to retrieve the right detail later.",
+          plain: "It is like cutting a long handbook into useful index cards, with one idea on each card.",
+          desc: "Step 1: Three passages highlight inside a handbook, then move into matching vacation, remote-work, and equipment sections."
+        },
+        {
+          kicker: "Step 2 of 7 · Before questions arrive",
+          title: "Embed and store every chunk",
+          body: "An <strong>embedding model</strong> is a specialized AI that reads text and consistently translates its meaning into numbers. Its output—a <strong>text embedding</strong>, or vector—is a list of numbers in which similar ideas end up nearby. A <strong>vector database</strong> stores each vector with its original chunk and quickly finds the nearest meanings when a question arrives.",
+          plain: "The embedding model is the fingerprint maker: it gives every chunk its own numbered “meaning fingerprint.” The vector database is the fast filing cabinet that keeps each fingerprint linked to its original text.",
+          desc: "Step 2: Chunks one, two, and three highlight in sequence; each passes through the embedding model, becomes a correspondingly numbered vector, and is stored in the matching vector database row."
+        },
+        {
+          kicker: "Step 3 of 7 · At question time",
+          title: "A person asks normally",
+          body: "The question can be typed in everyday language. The person does not need to know which document contains the answer — or use exact keywords.",
+          plain: "Ask the way you would ask a helpful coworker.",
+          desc: "Step 3: A person asks how many vacation days employees receive."
+        },
+        {
+          kicker: "Step 4 of 7 · Understand meaning",
+          title: "Turn the question into numbers",
+          body: "An <strong>embedding</strong> converts the question’s meaning into a list of numbers. Those numbers act like coordinates on a map of ideas.",
+          plain: "Ideas with similar meanings get nearby addresses, even when they use different words.",
+          desc: "Step 4: The question is converted into numeric coordinates that represent its meaning."
+        },
+        {
+          kicker: "Step 5 of 7 · Search",
+          title: "Retrieve the closest passages",
+          body: "The original question has already been translated into a <strong>question embedding</strong>. The system uses that vector as a search key and measures its distance from the stored chunk vectors. The nearest vectors point back to their original text passages, which are retrieved and ranked.",
+          plain: "The question’s meaning fingerprint is compared with every saved fingerprint. The closest matches lead the system back to the vacation-policy text—not merely to a row of numbers.",
+          desc: "Step 5: The original vacation question sits beside its embedding; the embedding enters the vector database as a search key, stored vectors are compared by distance, and the closest linked text becomes the top-ranked result."
+        },
+        {
+          kicker: "Step 6 of 7 · Add evidence",
+          title: "Augment the prompt",
+          body: "The retrieved passages are placed beside the original question in one package called a <strong>prompt</strong>. Now the AI can see both the request and the evidence.",
+          plain: "The AI gets an open book with the useful pages already marked.",
+          desc: "Step 6: The original question and retrieved context are combined into an augmented prompt."
+        },
+        {
+          kicker: "Step 7 of 7 · Respond",
+          title: "Generate a grounded answer",
+          body: "The language model reads the supplied context and writes a natural response. A good RAG system also shows where the supporting information came from.",
+          plain: "The answer is written by the AI, but its facts come from the retrieved source.",
+          desc: "Step 7: The language model uses retrieved evidence to write a grounded answer with a source."
+        }
+      ];
 
-    document.querySelectorAll('.reveal').forEach(button => {
-      button.addEventListener('click', () => {
-        const answer = button.nextElementSibling;
-        const shown = answer.classList.toggle('show');
-        button.textContent = shown ? 'Hide' : 'Reveal';
+      let current = 0;
+      const tabs = Array.from(document.querySelectorAll(".step-tab"));
+      const layers = Array.from(document.querySelectorAll(".svg-layer"));
+      const title = document.getElementById("stage-title");
+      const kicker = document.getElementById("stage-kicker");
+      const body = document.getElementById("stage-body");
+      const plain = document.getElementById("stage-plain");
+      const desc = document.getElementById("svg-desc");
+      const prev = document.getElementById("prev-btn");
+      const next = document.getElementById("next-btn");
+
+      function showStep(index, announce = true) {
+        current = Math.max(0, Math.min(steps.length - 1, index));
+        tabs.forEach((tab, i) => tab.setAttribute("aria-selected", String(i === current)));
+        layers.forEach((layer, i) => {
+          layer.classList.remove("is-active");
+          if (i === current) requestAnimationFrame(() => layer.classList.add("is-active"));
+        });
+        kicker.textContent = steps[current].kicker;
+        title.textContent = steps[current].title;
+        body.innerHTML = steps[current].body;
+        plain.textContent = steps[current].plain;
+        desc.textContent = steps[current].desc;
+        prev.disabled = current === 0;
+        next.disabled = current === steps.length - 1;
+        if (announce) {
+          const progress = current === 0 ? "Why RAG?" : `Step ${current}/7`;
+          document.title = `${progress} · ${steps[current].title} · RAG Explorer`;
+        }
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          showStep(Number(tab.dataset.step));
+        });
       });
-    });
 
-    const searchable = [...document.querySelectorAll('[data-search]')];
-    document.getElementById('search').addEventListener('input', event => {
-      const q = event.target.value.trim().toLowerCase();
-      searchable.forEach(section => section.classList.toggle('search-hidden', q && !section.textContent.toLowerCase().includes(q)));
-    });
+      prev.addEventListener("click", () => {
+        showStep(current - 1);
+      });
+
+      next.addEventListener("click", () => {
+        showStep(current + 1);
+      });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "ArrowRight") {
+          showStep(current + 1);
+        }
+        if (event.key === "ArrowLeft") {
+          showStep(current - 1);
+        }
+      });
+
+      showStep(0, false);
+    })();
   </script>
 </body>
 </html>
