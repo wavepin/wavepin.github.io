@@ -1,0 +1,9 @@
+.DS_Store
+*.docx
+*.pdf
+/output/
+/.interface-design/
+/node_modules/
+/test-results/
+/playwright-report/
+/dist/
