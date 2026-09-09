@@ -209,11 +209,14 @@ nav a:focus-visible::after {
 
 .hero-composition {
   position: relative;
+  display: grid;
+  align-items: start;
   margin-top: 42px;
   min-height: 555px;
 }
 
 .hero-name {
+  grid-area: 1 / 1;
   position: relative;
   z-index: 2;
   width: max-content;
@@ -268,17 +271,18 @@ nav a:focus-visible::after {
 }
 
 .playground {
-  position: absolute;
+  position: relative;
+  grid-area: 1 / 1;
+  justify-self: end;
   width: 37%;
   max-width: 475px;
-  right: 0;
-  top: 65px;
-  aspect-ratio: 1;
+  margin-top: 65px;
 }
 
 .orbit {
   position: absolute;
-  inset: -15px;
+  inset: -15px -15px auto;
+  aspect-ratio: 1;
   border: 1px solid var(--ink);
   border-radius: 50%;
   transform: rotate(-24deg) scaleY(0.7);
@@ -297,9 +301,10 @@ nav a:focus-visible::after {
 }
 
 .spinner {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  display: block;
   width: 100%;
+  aspect-ratio: 1;
   padding: 0;
   background: none;
   z-index: 2;
@@ -343,10 +348,9 @@ nav a:focus-visible::after {
 }
 
 .spin-caption {
-  position: absolute;
-  bottom: -35px;
-  right: 25px;
   display: flex;
+  width: fit-content;
+  margin: 0.6em 25px 1.5em auto;
   align-items: center;
   gap: 12px;
   font-family: Georgia, serif;
@@ -1385,7 +1389,7 @@ details[data-expanded="false"] > summary .plus {
     min-height: 600px;
   }
   .playground {
-    top: 70px;
+    margin-top: 70px;
   }
   .hero-statement {
     left: 37%;
@@ -1407,8 +1411,7 @@ details[data-expanded="false"] > summary .plus {
     max-width: 225px;
   }
   .playground {
-    top: 62px;
-    right: 0;
+    margin-top: 62px;
   }
   .project-stage {
     min-height: 350px;
@@ -1474,8 +1477,7 @@ details[data-expanded="false"] > summary .plus {
   }
   .playground {
     width: 47%;
-    top: 137px;
-    right: 0;
+    margin-top: 137px;
   }
   .hero-statement {
     left: 0;
@@ -1484,8 +1486,7 @@ details[data-expanded="false"] > summary .plus {
     font-size: 21px;
   }
   .spin-caption {
-    right: 0;
-    bottom: -34px;
+    margin-right: 0;
     font-size: 18px;
     gap: 3px;
   }
@@ -1589,7 +1590,7 @@ details[data-expanded="false"] > summary .plus {
     font-size: 26vw;
   }
   .playground {
-    top: 103px;
+    margin-top: 103px;
   }
   .hero-statement {
     bottom: 5px;
