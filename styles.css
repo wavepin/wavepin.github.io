@@ -923,7 +923,7 @@ details[data-expanded="false"] > summary .plus {
   margin-top: 8px;
 }
 
-/* Four trays of movable, tactile technology stickers. */
+/* Four decks of tactile technology stickers. */
 .toolkit {
   padding-block: 85px 100px;
   overflow: clip;
@@ -945,6 +945,7 @@ details[data-expanded="false"] > summary .plus {
   --panel-angle: -1.2deg;
   --tilt-x: 0deg;
   --tilt-y: 0deg;
+  position: relative;
   background: var(--panel-color);
   border: 2px solid var(--ink);
   padding: 30px;
@@ -983,15 +984,8 @@ details[data-expanded="false"] > summary .plus {
   box-shadow: 10px 15px 0 var(--orange);
 }
 
-.tool-panel-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 28px;
-}
-
 .tool-panel h3 {
+  margin-bottom: 28px;
   font-size: clamp(26px, 3.1vw, 44px);
   letter-spacing: -0.055em;
 }
@@ -999,39 +993,36 @@ details[data-expanded="false"] > summary .plus {
   color: var(--acid);
 }
 
-.shuffle-tools {
-  display: grid;
-  place-items: center;
-  width: 43px;
-  height: 43px;
-  flex-shrink: 0;
-  color: var(--ink);
-  background: var(--paper);
-  border: 1px solid var(--ink);
-  border-radius: 50%;
-  transition:
-    transform 0.55s var(--bounce),
-    background 0.3s;
+.tool-deck-trigger {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 20px 24px;
+  background: transparent;
+  font-size: 13px;
 }
 
-.shuffle-tools svg {
-  width: 22px;
-  height: 22px;
+.tool-deck-trigger > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid currentColor;
 }
-.shuffle-tools:hover {
-  transform: rotate(-15deg) scale(1.12);
-  background: var(--orange);
-}
-.shuffle-tools:active {
-  transform: rotate(15deg) scale(0.9);
-}
-.tool-panel-3 .shuffle-tools:focus-visible {
-  outline-color: var(--paper);
+
+.tool-panel:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 6px;
 }
 
 .tool-list {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
+  min-height: 174px;
   gap: 12px 10px;
   margin: 0;
   padding: 0;
@@ -1067,7 +1058,24 @@ details[data-expanded="false"] > summary .plus {
 .tool-chip:hover img {
   transform: rotate(15deg) scale(1.3);
 }
-.tool-panel.is-shuffling .tool-chip {
+.tool-panel.is-stacked .tool-chip {
+  z-index: var(--deck-order);
+  transform: translate(var(--stack-x), var(--stack-y))
+    rotate(var(--stack-angle)) scale(0.96);
+  transition: none;
+}
+
+.tool-panel.is-stacked .tool-chip:not(:first-child) > * {
+  opacity: 0;
+}
+
+.tool-panel.is-stacked .tool-chip img {
+  transform: none;
+}
+
+.tool-panel.is-dealing .tool-chip {
+  z-index: var(--deck-order);
+  pointer-events: none;
   transition: none;
 }
 
@@ -1762,7 +1770,7 @@ details[data-expanded="false"] > summary .plus {
   .copy-button,
   .toast,
   .intro-scene,
-  .shuffle-tools {
+  .tool-deck-trigger {
     display: none;
   }
   .hero-statement {
@@ -1789,6 +1797,17 @@ details[data-expanded="false"] > summary .plus {
   }
   .toolkit-grid {
     gap: 20px;
+  }
+  .tool-list {
+    min-height: 0;
+  }
+  .tool-panel .tool-chip {
+    transform: none !important;
+    transition: none !important;
+  }
+  .tool-panel .tool-chip > * {
+    opacity: 1 !important;
+    transition: none !important;
   }
   .reveal.awaiting {
     opacity: 1;

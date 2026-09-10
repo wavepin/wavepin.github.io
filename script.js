@@ -448,72 +448,121 @@ document.querySelectorAll(".project-notes, .experience").forEach((details) => {
   });
 });
 
-const shuffleMotions = [];
+const toolDecks = [];
 document.querySelectorAll(".tool-panel").forEach((panel) => {
-  const button = panel.querySelector(".shuffle-tools");
+  const button = panel.querySelector(".tool-deck-trigger");
   const list = panel.querySelector(".tool-list");
+  const items = [...list.children];
   let animations = [];
-  let round = 0;
+  let spread = false;
   let tiltFrame;
-  function settle() {
-    round++;
-    animations.forEach((animation) => animation.cancel());
-    animations = [];
-    panel.classList.remove("is-shuffling");
+
+  function resetTilt() {
+    cancelAnimationFrame(tiltFrame);
     panel.style.removeProperty("--tilt-x");
     panel.style.removeProperty("--tilt-y");
-    cancelAnimationFrame(tiltFrame);
   }
-  shuffleMotions.push(settle);
-  button.hidden = false;
-  button.addEventListener("click", () => {
-    settle();
-    const currentRound = round;
-    const items = [...list.children];
-    const before = new Map(
-      items.map((item) => [item, item.getBoundingClientRect()]),
-    );
-    const shuffled = [...items];
-    for (let index = shuffled.length - 1; index > 0; index--) {
-      const swap = Math.floor(Math.random() * (index + 1));
-      [shuffled[index], shuffled[swap]] = [shuffled[swap], shuffled[index]];
-    }
-    if (shuffled.every((item, index) => item === items[index]))
-      shuffled.push(shuffled.shift());
-    list.replaceChildren(...shuffled);
+
+  function settle() {
+    animations.forEach((animation) => animation.cancel());
+    animations = [];
+    panel.classList.remove("is-dealing");
+  }
+
+  function layoutStack() {
+    if (spread) return;
+    // Layout coordinates stay accurate while the panel itself tilts or reveals.
+    const centerX = list.clientWidth / 2 - (items.length - 1);
+    const centerY = list.clientHeight / 2 + (items.length - 1) * 1.5;
+    items.forEach((item, index) => {
+      item.style.setProperty("--deck-order", items.length - index);
+      item.style.setProperty(
+        "--stack-x",
+        `${centerX - item.offsetLeft - item.offsetWidth / 2 + index * 2}px`,
+      );
+      item.style.setProperty(
+        "--stack-y",
+        `${centerY - item.offsetTop - item.offsetHeight / 2 - index * 3}px`,
+      );
+      item.style.setProperty("--stack-angle", `${-9 + index * 3}deg`);
+    });
+  }
+
+  function deal() {
+    if (spread) return;
+    layoutStack();
+    spread = true;
+    panel.classList.remove("is-stacked");
+    button.setAttribute("aria-expanded", "true");
+    // Keep keyboard focus in the panel after its one-time control disappears.
+    if (document.activeElement === button) panel.focus({ preventScroll: true });
+    button.hidden = true;
+    stackObserver?.disconnect();
     if (reducedMotion.matches || !canAnimate) return;
-    panel.classList.add("is-shuffling");
-    animations = shuffled.map((item, index) => {
-      const after = item.getBoundingClientRect();
-      const from = before.get(item);
+    panel.classList.add("is-dealing");
+    animations = items.flatMap((item, index) => {
+      const x = parseFloat(item.style.getPropertyValue("--stack-x"));
+      const y = parseFloat(item.style.getPropertyValue("--stack-y"));
+      const angle = item.style.getPropertyValue("--stack-angle");
       const rotation = item.style.getPropertyValue("--chip-angle");
-      return item.animate(
+      const timing = {
+        duration: 780,
+        delay: index * 55,
+        easing: "cubic-bezier(.22,1,.36,1)",
+        fill: "backwards",
+      };
+      const motion = item.animate(
         [
           {
-            transform: `translate(${from.left - after.left}px, ${from.top - after.top}px) rotate(${rotation})`,
+            transform: `translate(${x}px, ${y}px) rotate(${angle}) scale(.96)`,
           },
           {
-            transform: `translate(0, -9px) rotate(${index % 2 ? 4 : -4}deg)`,
-            offset: 0.75,
+            transform: `translate(${x * 0.08}px, ${y * 0.08 - 10}px) rotate(${index % 2 ? 3 : -3}deg) scale(1.025)`,
+            offset: 0.68,
           },
           { transform: `rotate(${rotation})` },
         ],
-        {
-          duration: 800,
-          delay: index * 25,
-          easing: "cubic-bezier(.22,1,.36,1)",
-          fill: "backwards",
-        },
+        timing,
       );
+      // Reveal each face as its chip leaves the pile.
+      const faces =
+        index === 0
+          ? []
+          : [...item.children].map((face) =>
+              face.animate(
+                [{ opacity: 0 }, { opacity: 1, offset: 0.3 }, { opacity: 1 }],
+                timing,
+              ),
+            );
+      return [motion, ...faces];
     });
     Promise.allSettled(animations.map((animation) => animation.finished)).then(
-      () => {
-        if (round === currentRound) settle();
-      },
+      settle,
     );
+  }
+
+  const stackObserver =
+    "ResizeObserver" in window ? new ResizeObserver(layoutStack) : undefined;
+  layoutStack();
+  panel.classList.add("is-stacked");
+  button.hidden = false;
+  stackObserver?.observe(list);
+  document.fonts?.ready.then(layoutStack);
+  toolDecks.push(() => {
+    settle();
+    resetTilt();
+    layoutStack();
   });
+  button.addEventListener("click", deal);
+  panel.addEventListener("focusin", deal);
+  panel.addEventListener("pointerenter", (event) => {
+    if (event.pointerType === "mouse") deal();
+  });
+  // A panel scrolled beneath a stationary pointer opens on the next mouse move.
   panel.addEventListener("pointermove", (event) => {
-    if (event.pointerType !== "mouse" || reducedMotion.matches) return;
+    if (event.pointerType !== "mouse") return;
+    deal();
+    if (reducedMotion.matches) return;
     cancelAnimationFrame(tiltFrame);
     tiltFrame = requestAnimationFrame(() => {
       const rect = panel.getBoundingClientRect();
@@ -527,11 +576,7 @@ document.querySelectorAll(".tool-panel").forEach((panel) => {
       );
     });
   });
-  panel.addEventListener("pointerleave", () => {
-    cancelAnimationFrame(tiltFrame);
-    panel.style.removeProperty("--tilt-x");
-    panel.style.removeProperty("--tilt-y");
-  });
+  panel.addEventListener("pointerleave", resetTilt);
 });
 
 let finishIntro = () => {};
@@ -697,7 +742,7 @@ reducedMotion.addEventListener("change", () => {
   finishIntro();
   settlePreview();
   detailMotions.forEach((settle) => settle());
-  shuffleMotions.forEach((settle) => settle());
+  toolDecks.forEach((settle) => settle());
   revealObserver?.disconnect();
   revealElements.forEach((element) => element.classList.remove("awaiting"));
   letters.forEach((letter) =>
@@ -720,6 +765,6 @@ window.addEventListener("resize", () => {
   finishIntro();
   settlePreview();
   detailMotions.forEach((settle) => settle());
-  shuffleMotions.forEach((settle) => settle());
+  toolDecks.forEach((settle) => settle());
 });
 startIntro();

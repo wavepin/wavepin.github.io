@@ -473,32 +473,14 @@
             <h2 id="toolkit-title">The <em>toolkit.</em></h2>
           </div>
           <div class="toolkit-grid">
-            <div class="tool-panel tool-panel-1 reveal">
-              <div class="tool-panel-heading">
-                <h3 id="tools-1">Languages</h3>
-                <button
-                  class="shuffle-tools"
-                  type="button"
-                  aria-label="Shuffle Languages"
-                  title="Shuffle Languages"
-                  hidden
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M3 6h3c5 0 7 12 12 12h3m-4-4 4 4-4 4M3 18h3c2 0 3-2 4-4m4-4c1-2 2-4 4-4h3m-4-4 4 4-4 4"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <ul class="tool-list" aria-labelledby="tools-1">
+            <div
+              class="tool-panel tool-panel-1 reveal"
+              role="group"
+              aria-labelledby="tools-1"
+              tabindex="-1"
+            >
+              <h3 id="tools-1">Languages</h3>
+              <ul id="tool-list-1" class="tool-list" aria-labelledby="tools-1">
                 <li class="tool-chip" style="--chip-angle: 1deg">
                   <img
                     src="assets/icons/python.svg"
@@ -563,33 +545,25 @@
                   /><span>C++</span>
                 </li>
               </ul>
+              <button
+                class="tool-deck-trigger"
+                type="button"
+                aria-label="Spread Languages tools"
+                aria-controls="tool-list-1"
+                aria-expanded="false"
+                hidden
+              >
+                <span>Spread tools <span aria-hidden="true">↗</span></span>
+              </button>
             </div>
-            <div class="tool-panel tool-panel-2 reveal">
-              <div class="tool-panel-heading">
-                <h3 id="tools-2">Frameworks</h3>
-                <button
-                  class="shuffle-tools"
-                  type="button"
-                  aria-label="Shuffle Frameworks"
-                  title="Shuffle Frameworks"
-                  hidden
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M3 6h3c5 0 7 12 12 12h3m-4-4 4 4-4 4M3 18h3c2 0 3-2 4-4m4-4c1-2 2-4 4-4h3m-4-4 4 4-4 4"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <ul class="tool-list" aria-labelledby="tools-2">
+            <div
+              class="tool-panel tool-panel-2 reveal"
+              role="group"
+              aria-labelledby="tools-2"
+              tabindex="-1"
+            >
+              <h3 id="tools-2">Frameworks</h3>
+              <ul id="tool-list-2" class="tool-list" aria-labelledby="tools-2">
                 <li class="tool-chip" style="--chip-angle: 1deg">
                   <img
                     src="assets/icons/react.svg"
@@ -672,33 +646,25 @@
                   /><span>CSS</span>
                 </li>
               </ul>
+              <button
+                class="tool-deck-trigger"
+                type="button"
+                aria-label="Spread Frameworks tools"
+                aria-controls="tool-list-2"
+                aria-expanded="false"
+                hidden
+              >
+                <span>Spread tools <span aria-hidden="true">↗</span></span>
+              </button>
             </div>
-            <div class="tool-panel tool-panel-3 reveal">
-              <div class="tool-panel-heading">
-                <h3 id="tools-3">AI &amp; ML</h3>
-                <button
-                  class="shuffle-tools"
-                  type="button"
-                  aria-label="Shuffle AI &amp; ML"
-                  title="Shuffle AI &amp; ML"
-                  hidden
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M3 6h3c5 0 7 12 12 12h3m-4-4 4 4-4 4M3 18h3c2 0 3-2 4-4m4-4c1-2 2-4 4-4h3m-4-4 4 4-4 4"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <ul class="tool-list" aria-labelledby="tools-3">
+            <div
+              class="tool-panel tool-panel-3 reveal"
+              role="group"
+              aria-labelledby="tools-3"
+              tabindex="-1"
+            >
+              <h3 id="tools-3">AI &amp; ML</h3>
+              <ul id="tool-list-3" class="tool-list" aria-labelledby="tools-3">
                 <li class="tool-chip" style="--chip-angle: 1deg">
                   <img
                     src="assets/icons/pytorch.svg"
@@ -754,33 +720,25 @@
                   /><span>RAG</span>
                 </li>
               </ul>
+              <button
+                class="tool-deck-trigger"
+                type="button"
+                aria-label="Spread AI &amp; ML tools"
+                aria-controls="tool-list-3"
+                aria-expanded="false"
+                hidden
+              >
+                <span>Spread tools <span aria-hidden="true">↗</span></span>
+              </button>
             </div>
-            <div class="tool-panel tool-panel-4 reveal">
-              <div class="tool-panel-heading">
-                <h3 id="tools-4">Infrastructure</h3>
-                <button
-                  class="shuffle-tools"
-                  type="button"
-                  aria-label="Shuffle Infrastructure"
-                  title="Shuffle Infrastructure"
-                  hidden
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M3 6h3c5 0 7 12 12 12h3m-4-4 4 4-4 4M3 18h3c2 0 3-2 4-4m4-4c1-2 2-4 4-4h3m-4-4 4 4-4 4"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <ul class="tool-list" aria-labelledby="tools-4">
+            <div
+              class="tool-panel tool-panel-4 reveal"
+              role="group"
+              aria-labelledby="tools-4"
+              tabindex="-1"
+            >
+              <h3 id="tools-4">Infrastructure</h3>
+              <ul id="tool-list-4" class="tool-list" aria-labelledby="tools-4">
                 <li class="tool-chip" style="--chip-angle: 1deg">
                   <img
                     src="assets/icons/googlecloud.svg"
@@ -810,7 +768,7 @@
                 </li>
                 <li class="tool-chip" style="--chip-angle: -1deg">
                   <img
-                    src="assets/icons/qdrant.svg"
+                    src="assets/icons/qdrant-red.svg"
                     alt=""
                     width="28"
                     height="28"
@@ -836,6 +794,16 @@
                   /><span>REST APIs</span>
                 </li>
               </ul>
+              <button
+                class="tool-deck-trigger"
+                type="button"
+                aria-label="Spread Infrastructure tools"
+                aria-controls="tool-list-4"
+                aria-expanded="false"
+                hidden
+              >
+                <span>Spread tools <span aria-hidden="true">↗</span></span>
+              </button>
             </div>
           </div>
         </div>
