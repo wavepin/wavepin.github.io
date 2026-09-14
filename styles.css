@@ -263,11 +263,31 @@ nav a:focus-visible::after {
   position: absolute;
   left: 34%;
   bottom: 43px;
-  max-width: 265px;
-  font-size: 21px;
-  line-height: 1.35;
-  letter-spacing: -0.5px;
+  width: max-content;
+  max-width: 350px;
+  font-size: 28px;
+  line-height: 1.25;
+  letter-spacing: -0.9px;
   z-index: 3;
+}
+
+.hero-statement-lead {
+  display: block;
+  font-weight: 600;
+}
+
+.hero-statement-flair {
+  display: block;
+  width: max-content;
+  margin-top: 9px;
+  padding: 0.02em 0.22em 0.1em;
+  background: var(--pink);
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.22em;
+  letter-spacing: -0.055em;
+  transform: rotate(-4deg);
+  border-radius: 48% 5% 40% 8% / 12% 45% 15% 35%;
 }
 
 .playground {
@@ -1415,8 +1435,8 @@ details[data-expanded="false"] > summary .plus {
   .hero-statement {
     left: 35%;
     bottom: 10px;
-    font-size: 18px;
-    max-width: 225px;
+    font-size: 24px;
+    max-width: 300px;
   }
   .playground {
     margin-top: 62px;
@@ -1490,8 +1510,8 @@ details[data-expanded="false"] > summary .plus {
   .hero-statement {
     left: 0;
     bottom: 15px;
-    max-width: 250px;
-    font-size: 21px;
+    max-width: 300px;
+    font-size: 28px;
   }
   .spin-caption {
     margin-right: 0;
@@ -1602,8 +1622,8 @@ details[data-expanded="false"] > summary .plus {
   }
   .hero-statement {
     bottom: 5px;
-    font-size: 19px;
-    max-width: 230px;
+    font-size: 25px;
+    max-width: 270px;
   }
   .project-stage {
     min-height: 285px;
