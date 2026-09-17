@@ -247,6 +247,7 @@ remix.addEventListener("click", () => {
 // Animate the key faces so their rotated button hit areas stay still.
 document.querySelectorAll(".keyboard-key").forEach((key) => {
   const face = key.querySelector(".key-face");
+  const stage = key.closest(".stage-autotyper");
   let motion;
   let hovered = false;
   let bouncing = false;
@@ -280,11 +281,11 @@ document.querySelectorAll(".keyboard-key").forEach((key) => {
     );
   }
 
-  key.addEventListener("pointerenter", (event) => {
+  stage.addEventListener("pointerenter", (event) => {
     hovered = event.pointerType === "mouse";
     invite();
   });
-  key.addEventListener("pointerleave", () => {
+  stage.addEventListener("pointerleave", () => {
     hovered = false;
     if (!bouncing && motion && !reducedMotion.matches)
       animateFace([{ transform: "none" }], { duration: 160, easing: "ease-out" });
@@ -329,13 +330,14 @@ document.querySelectorAll(".keyboard-key").forEach((key) => {
 });
 
 const reviewStars = document.querySelector(".review-stars");
-if (reviewStars && canAnimate) {
+const reviewStage = reviewStars?.closest(".stage-reviews");
+if (reviewStage && canAnimate) {
   const stars = [...reviewStars.children];
-  const fillTime = 640;
-  const growTime = 260;
-  const drainTime = 800;
-  const shrinkTime = 240;
-  const holdTime = 300;
+  const fillTime = 320;
+  const growTime = 280;
+  const drainTime = 400;
+  const shrinkTime = 260;
+  const holdTime = 200;
   const fillStep = fillTime + growTime;
   const drainStep = drainTime + shrinkTime;
   const drainStart = stars.length * fillStep + holdTime;
@@ -371,7 +373,7 @@ if (reviewStars && canAnimate) {
           easing: "ease-out",
         },
         {
-          transform: "scale(1.2)",
+          transform: "translateY(-4px) scale(1.55)",
           offset: (filledAt + growTime * 0.45) / duration,
           easing: "ease-in-out",
         },
@@ -382,7 +384,7 @@ if (reviewStars && canAnimate) {
           easing: "ease-out",
         },
         {
-          transform: "scale(.8)",
+          transform: "translateY(3px) scale(.5)",
           offset: (drainedAt + shrinkTime * 0.45) / duration,
           easing: "ease-in-out",
         },
@@ -404,11 +406,11 @@ if (reviewStars && canAnimate) {
       playing ? animation.play() : animation.pause(),
     );
   }
-  reviewStars.addEventListener("pointerenter", (event) => {
+  reviewStage.addEventListener("pointerenter", (event) => {
     hovered = event.pointerType === "mouse";
     updateStars();
   });
-  reviewStars.addEventListener("pointerleave", () => {
+  reviewStage.addEventListener("pointerleave", () => {
     hovered = false;
     updateStars();
   });
