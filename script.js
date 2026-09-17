@@ -244,6 +244,178 @@ remix.addEventListener("click", () => {
   spin(210);
 });
 
+// Animate the key faces so their rotated button hit areas stay still.
+document.querySelectorAll(".keyboard-key").forEach((key) => {
+  const face = key.querySelector(".key-face");
+  let motion;
+  let hovered = false;
+  let bouncing = false;
+
+  function animateFace(frames, timing) {
+    const transform = getComputedStyle(face).transform;
+    motion?.cancel();
+    motion = face.animate([{ transform }, ...frames], timing);
+    motion.finished.catch(() => {});
+    return motion;
+  }
+
+  function invite() {
+    if (
+      !hovered ||
+      bouncing ||
+      reducedMotion.matches ||
+      !canAnimate ||
+      document.hidden
+    )
+      return;
+    animateFace(
+      [
+        { transform: "translateY(-3px) scale(1.015)", offset: 0.28 },
+        { transform: "translateY(1px) scale(.99)", offset: 0.46 },
+        { transform: "translateY(-1px) scale(1.005)", offset: 0.64 },
+        { transform: "translateY(0)", offset: 0.8 },
+        { transform: "translateY(0)" },
+      ],
+      { duration: 850, iterations: Infinity, easing: "linear" },
+    );
+  }
+
+  key.addEventListener("pointerenter", (event) => {
+    hovered = event.pointerType === "mouse";
+    invite();
+  });
+  key.addEventListener("pointerleave", () => {
+    hovered = false;
+    if (!bouncing && motion && !reducedMotion.matches)
+      animateFace([{ transform: "none" }], { duration: 160, easing: "ease-out" });
+  });
+  key.addEventListener("pointerdown", () => {
+    motion?.cancel();
+    bouncing = false;
+  });
+  key.addEventListener("click", () => {
+    if (reducedMotion.matches || !canAnimate) return;
+    bouncing = true;
+    const bounce = animateFace(
+      [
+        { transform: "translateY(3px) scale(.94)", offset: 0.12 },
+        { transform: "translateY(-13px) scale(1.06)", offset: 0.38 },
+        { transform: "translateY(2px) scale(.98)", offset: 0.64 },
+        { transform: "translateY(-3px) scale(1.015)", offset: 0.82 },
+        { transform: "translateY(0) scale(1)" },
+      ],
+      { duration: 600, easing: "cubic-bezier(.22,1,.36,1)" },
+    );
+    bounce.finished.then(
+      () => {
+        if (motion !== bounce) return;
+        bouncing = false;
+        invite();
+      },
+      () => {},
+    );
+  });
+
+  function updateMotion() {
+    if (reducedMotion.matches || document.hidden) {
+      motion?.cancel();
+      bouncing = false;
+    } else {
+      invite();
+    }
+  }
+  reducedMotion.addEventListener("change", updateMotion);
+  document.addEventListener("visibilitychange", updateMotion);
+});
+
+const reviewStars = document.querySelector(".review-stars");
+if (reviewStars && canAnimate) {
+  const stars = [...reviewStars.children];
+  const fillTime = 640;
+  const growTime = 260;
+  const drainTime = 800;
+  const shrinkTime = 240;
+  const holdTime = 300;
+  const fillStep = fillTime + growTime;
+  const drainStep = drainTime + shrinkTime;
+  const drainStart = stars.length * fillStep + holdTime;
+  const duration = drainStart + stars.length * drainStep + holdTime;
+  const empty = "inset(0 100% 0 0)";
+  const full = "inset(0 0% 0 0)";
+  let hovered = false;
+
+  // All fills and pulses share one repeating timeline. Pausing retains the
+  // exact partial fill, direction, and pulse; the first visit starts at 3/5.
+  const animations = stars.flatMap((star, index) => {
+    const fillAt = index * fillStep;
+    const filledAt = fillAt + fillTime;
+    const drainAt = drainStart + (stars.length - 1 - index) * drainStep;
+    const drainedAt = drainAt + drainTime;
+    const fill = star.querySelector(".review-star-fill").animate(
+      [
+        { clipPath: empty, offset: 0 },
+        { clipPath: empty, offset: fillAt / duration },
+        { clipPath: full, offset: filledAt / duration },
+        { clipPath: full, offset: drainAt / duration },
+        { clipPath: empty, offset: drainedAt / duration },
+        { clipPath: empty, offset: 1 },
+      ],
+      { duration, iterations: Infinity },
+    );
+    const pulse = star.animate(
+      [
+        { transform: "scale(1)", offset: 0 },
+        {
+          transform: "scale(1)",
+          offset: filledAt / duration,
+          easing: "ease-out",
+        },
+        {
+          transform: "scale(1.2)",
+          offset: (filledAt + growTime * 0.45) / duration,
+          easing: "ease-in-out",
+        },
+        { transform: "scale(1)", offset: (filledAt + growTime) / duration },
+        {
+          transform: "scale(1)",
+          offset: drainedAt / duration,
+          easing: "ease-out",
+        },
+        {
+          transform: "scale(.8)",
+          offset: (drainedAt + shrinkTime * 0.45) / duration,
+          easing: "ease-in-out",
+        },
+        { transform: "scale(1)", offset: (drainedAt + shrinkTime) / duration },
+        { transform: "scale(1)", offset: 1 },
+      ],
+      { duration, iterations: Infinity },
+    );
+    for (const animation of [fill, pulse]) {
+      animation.pause();
+      animation.currentTime = 3 * fillStep;
+    }
+    return [fill, pulse];
+  });
+
+  function updateStars() {
+    const playing = hovered && !reducedMotion.matches && !document.hidden;
+    animations.forEach((animation) =>
+      playing ? animation.play() : animation.pause(),
+    );
+  }
+  reviewStars.addEventListener("pointerenter", (event) => {
+    hovered = event.pointerType === "mouse";
+    updateStars();
+  });
+  reviewStars.addEventListener("pointerleave", () => {
+    hovered = false;
+    updateStars();
+  });
+  reducedMotion.addEventListener("change", updateStars);
+  document.addEventListener("visibilitychange", updateStars);
+}
+
 // Keep the native dialog's focus and keyboard behavior while giving it a
 // thumbnail-to-poster entrance and a matching return trip.
 const dialog = document.querySelector(".image-dialog");
