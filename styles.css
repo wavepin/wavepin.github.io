@@ -648,10 +648,15 @@ nav a:focus-visible::after {
   transform-origin: center;
 }
 
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .stage-scramblr:hover .sound-lines i {
+@media (prefers-reduced-motion: no-preference) {
+  .sound-lines i {
     animation: equalize 0.32s cubic-bezier(.45, 0, .55, 1) alternate infinite;
     animation-delay: calc(var(--delay) * -1);
+    animation-play-state: paused;
+  }
+
+  .stage-scramblr.is-playing .sound-lines i {
+    animation-play-state: running;
   }
 }
 
@@ -722,6 +727,39 @@ summary {
   list-style: none;
   font-size: 14px;
   padding: 9px 0;
+}
+
+.project-notes > summary {
+  min-height: 48px;
+}
+
+.project-notes > summary h4 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.025em;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 5px;
+  transition: text-decoration-color 0.2s;
+}
+
+.project-notes > summary:hover h4,
+.project-notes > summary:focus-visible h4 {
+  text-decoration-color: currentColor;
+}
+
+.project-notes > summary .plus {
+  flex-basis: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--acid);
+}
+
+.project-notes > summary .plus::before,
+.project-notes > summary .plus::after {
+  top: 14px;
+  left: 8px;
 }
 
 summary::-webkit-details-marker {

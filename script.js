@@ -244,12 +244,61 @@ remix.addEventListener("click", () => {
   spin(210);
 });
 
+// Share viewport and motion-preference state across all thumbnail animations.
+const stageMotions = new Map();
+const visibleStages = new Set();
+function updateStageMotion(stage) {
+  const playing =
+    visibleStages.has(stage) && !reducedMotion.matches && !document.hidden;
+  stage.classList.toggle("is-playing", playing);
+  stageMotions.get(stage)?.forEach((update) => update(playing));
+}
+const stageObserver = "IntersectionObserver" in window
+  ? new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) visibleStages.add(entry.target);
+        else visibleStages.delete(entry.target);
+        updateStageMotion(entry.target);
+      });
+    })
+  : null;
+function observeStageMotion(stage, update) {
+  if (!stageMotions.has(stage)) {
+    stageMotions.set(stage, []);
+    stageObserver?.observe(stage);
+  }
+  if (update) stageMotions.get(stage).push(update);
+  updateStageMotion(stage);
+}
+observeStageMotion(document.querySelector(".stage-scramblr"));
+function updateStageMotions() {
+  stageMotions.forEach((_, stage) => updateStageMotion(stage));
+}
+reducedMotion.addEventListener("change", updateStageMotions);
+document.addEventListener("visibilitychange", updateStageMotions);
+if (!stageObserver) {
+  const checkStages = () => {
+    stageMotions.forEach((_, stage) => {
+      const bounds = stage.getBoundingClientRect();
+      if (
+        bounds.bottom > 0 && bounds.top < window.innerHeight &&
+        bounds.right > 0 && bounds.left < window.innerWidth
+      ) visibleStages.add(stage);
+      else visibleStages.delete(stage);
+      updateStageMotion(stage);
+    });
+  };
+  window.addEventListener("scroll", checkStages, { passive: true });
+  window.addEventListener("resize", checkStages);
+  requestAnimationFrame(checkStages);
+}
+
 // Animate the key faces so their rotated button hit areas stay still.
 document.querySelectorAll(".keyboard-key").forEach((key) => {
   const face = key.querySelector(".key-face");
   const stage = key.closest(".stage-autotyper");
   let motion;
-  let hovered = false;
+  let stagePlaying = false;
   let bouncing = false;
 
   function animateFace(frames, timing) {
@@ -262,13 +311,18 @@ document.querySelectorAll(".keyboard-key").forEach((key) => {
 
   function invite() {
     if (
-      !hovered ||
+      !stagePlaying ||
       bouncing ||
       reducedMotion.matches ||
       !canAnimate ||
       document.hidden
     )
       return;
+    if (motion?.playState === "paused") {
+      motion.play();
+      return;
+    }
+    if (motion?.playState === "running") return;
     animateFace(
       [
         { transform: "translateY(-3px) scale(1.015)", offset: 0.28 },
@@ -281,19 +335,6 @@ document.querySelectorAll(".keyboard-key").forEach((key) => {
     );
   }
 
-  stage.addEventListener("pointerenter", (event) => {
-    hovered = event.pointerType === "mouse";
-    invite();
-  });
-  stage.addEventListener("pointerleave", () => {
-    hovered = false;
-    if (!bouncing && motion && !reducedMotion.matches)
-      animateFace([{ transform: "none" }], { duration: 160, easing: "ease-out" });
-  });
-  key.addEventListener("pointerdown", () => {
-    motion?.cancel();
-    bouncing = false;
-  });
   key.addEventListener("click", () => {
     if (reducedMotion.matches || !canAnimate) return;
     bouncing = true;
@@ -317,16 +358,20 @@ document.querySelectorAll(".keyboard-key").forEach((key) => {
     );
   });
 
-  function updateMotion() {
-    if (reducedMotion.matches || document.hidden) {
+  observeStageMotion(stage, (playing) => {
+    stagePlaying = playing;
+    if (reducedMotion.matches) {
       motion?.cancel();
+      motion = null;
       bouncing = false;
+    } else if (!playing) {
+      motion?.pause();
+    } else if (bouncing) {
+      motion?.play();
     } else {
       invite();
     }
-  }
-  reducedMotion.addEventListener("change", updateMotion);
-  document.addEventListener("visibilitychange", updateMotion);
+  });
 });
 
 const reviewStars = document.querySelector(".review-stars");
@@ -344,7 +389,6 @@ if (reviewStage && canAnimate) {
   const duration = drainStart + stars.length * drainStep + holdTime;
   const empty = "inset(0 100% 0 0)";
   const full = "inset(0 0% 0 0)";
-  let hovered = false;
 
   // All fills and pulses share one repeating timeline. Pausing retains the
   // exact partial fill, direction, and pulse; the first visit starts at 3/5.
@@ -400,22 +444,11 @@ if (reviewStage && canAnimate) {
     return [fill, pulse];
   });
 
-  function updateStars() {
-    const playing = hovered && !reducedMotion.matches && !document.hidden;
+  observeStageMotion(reviewStage, (playing) => {
     animations.forEach((animation) =>
       playing ? animation.play() : animation.pause(),
     );
-  }
-  reviewStage.addEventListener("pointerenter", (event) => {
-    hovered = event.pointerType === "mouse";
-    updateStars();
   });
-  reviewStage.addEventListener("pointerleave", () => {
-    hovered = false;
-    updateStars();
-  });
-  reducedMotion.addEventListener("change", updateStars);
-  document.addEventListener("visibilitychange", updateStars);
 }
 
 // Keep the native dialog's focus and keyboard behavior while giving it a
