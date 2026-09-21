@@ -573,7 +573,6 @@ document.querySelectorAll(".project-notes, .experience").forEach((details) => {
     if (reducedMotion.matches || !canAnimate) return;
     event.preventDefault();
     const startHeight = details.getBoundingClientRect().height;
-    const startMargin = getComputedStyle(details).marginTop;
     const opacity = details.open ? getComputedStyle(body).opacity : 0;
     targetOpen = heightMotion ? !targetOpen : !details.open;
     heightMotion?.cancel();
@@ -594,11 +593,10 @@ document.querySelectorAll(".project-notes, .experience").forEach((details) => {
     details.setAttribute("data-expanded", String(targetOpen));
     summary.setAttribute("aria-expanded", String(targetOpen));
     details.style.height = `${endHeight}px`;
-    const endMargin = getComputedStyle(details).marginTop;
     const animation = details.animate(
       [
-        { height: `${startHeight}px`, marginTop: startMargin },
-        { height: `${endHeight}px`, marginTop: endMargin },
+        { height: `${startHeight}px` },
+        { height: `${endHeight}px` },
       ],
       { duration: targetOpen ? 720 : 560, easing: "cubic-bezier(.22,1,.36,1)" },
     );

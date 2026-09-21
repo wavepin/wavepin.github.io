@@ -537,6 +537,7 @@ nav a:focus-visible::after {
 }
 
 .project-grid {
+  --project-stage-height: 400px;
   display: grid;
   grid-template-columns: 1.55fr 1fr;
   align-items: stretch;
@@ -544,7 +545,7 @@ nav a:focus-visible::after {
 
 .project-stage {
   align-self: start;
-  min-height: 435px;
+  height: var(--project-stage-height);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -590,10 +591,11 @@ nav a:focus-visible::after {
 
 .stage-scramblr {
   background: var(--pink);
-  padding-block: 60px 150px;
+  padding-block: 30px 75px;
 }
 
 .stage-scramblr .project-preview {
+  max-width: calc((var(--project-stage-height) - 130px) * 1.94);
   transform: rotate(-7deg);
 }
 
@@ -654,10 +656,11 @@ nav a:focus-visible::after {
 }
 
 .project-copy {
-  padding: 37px 0 20px 42px;
+  padding: 24px 0 24px 42px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
 }
 
 .project-description {
@@ -692,14 +695,22 @@ nav a:focus-visible::after {
 }
 
 .project-notes {
+  grid-column: 1 / -1;
   width: 100%;
   border-top: 1px solid #27246140;
-  margin-top: auto;
+  margin-top: 20px;
   padding-top: 15px;
 }
 
-.project-notes[open]:not([data-expanded="false"]) {
-  margin-top: -1px;
+.project-notes .details-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 42px;
+  padding-bottom: 24px;
+}
+
+.project-notes .details-body p + p {
+  margin-top: 0;
 }
 
 summary {
@@ -779,6 +790,7 @@ details[data-expanded="false"] > summary .plus {
 
 .stage-autotyper .project-preview {
   width: 43%;
+  max-width: calc((var(--project-stage-height) - 80px) * 0.92);
   transform: rotate(7deg);
 }
 
@@ -843,12 +855,13 @@ details[data-expanded="false"] > summary .plus {
 
 .stage-reviews {
   background: var(--orange);
-  padding-block: 104px 40px;
+  padding-block: 80px 25px;
 }
 
 .stage-reviews .project-preview {
   transform: rotate(-4deg);
   width: 81%;
+  max-width: calc((var(--project-stage-height) - 130px) * 1.76);
 }
 
 .stage-reviews .project-preview:hover {
@@ -1508,8 +1521,8 @@ details[data-expanded="false"] > summary .plus {
   .playground {
     margin-top: 62px;
   }
-  .project-stage {
-    min-height: 350px;
+  .project-grid {
+    --project-stage-height: 320px;
   }
   .project-copy {
     padding: 20px 0 10px 28px;
@@ -1519,9 +1532,6 @@ details[data-expanded="false"] > summary .plus {
   }
   .tech-list {
     margin-block: 15px 18px;
-  }
-  .project-notes {
-    margin-top: 25px;
   }
   .about-heading,
   .about-row {
@@ -1608,10 +1618,8 @@ details[data-expanded="false"] > summary .plus {
     font-size: 32px;
   }
   .project-grid {
+    --project-stage-height: 340px;
     grid-template-columns: 1fr;
-  }
-  .project-stage {
-    min-height: 370px;
   }
   .project-copy {
     padding: 25px 0 0;
@@ -1622,6 +1630,10 @@ details[data-expanded="false"] > summary .plus {
   }
   .project-notes {
     margin-top: 24px;
+  }
+  .project-notes .details-body {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .project + .project {
     margin-top: 52px;
@@ -1692,8 +1704,8 @@ details[data-expanded="false"] > summary .plus {
     font-size: 25px;
     max-width: 270px;
   }
-  .project-stage {
-    min-height: 285px;
+  .project-grid {
+    --project-stage-height: 285px;
   }
   .project-title h3 {
     font-size: 28px;
