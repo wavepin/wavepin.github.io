@@ -543,6 +543,7 @@ nav a:focus-visible::after {
 }
 
 .project-stage {
+  align-self: start;
   min-height: 435px;
   position: relative;
   overflow: hidden;
@@ -695,6 +696,10 @@ nav a:focus-visible::after {
   border-top: 1px solid #27246140;
   margin-top: auto;
   padding-top: 15px;
+}
+
+.project-notes[open]:not([data-expanded="false"]) {
+  margin-top: -1px;
 }
 
 summary {
