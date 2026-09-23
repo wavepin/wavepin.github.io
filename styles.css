@@ -14,10 +14,11 @@
 
 :root {
   --paper: #f4f1e8;
-  --acid: #d9f461;
+  --acid: #b4c5fa;
   --ink: #272461;
-  --pink: #f5a6ce;
-  --orange: #fe7045;
+  --pink: #febf75;
+  --orange: #f5a6ce;
+  --toolkit-accent: #f5a6ce;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -143,6 +144,7 @@ svg {
 /* A type specimen you can play with. */
 .masthead {
   background: var(--acid);
+  overflow-x: clip;
   transition: background 0.45s;
 }
 
@@ -203,15 +205,16 @@ nav a:focus-visible::after {
 
 .hero {
   position: relative;
-  padding-top: 25px;
-  padding-bottom: 36px;
+  min-height: calc(100svh - 90px);
+  display: grid;
+  align-items: center;
+  padding-block: 45px 60px;
 }
 
 .hero-composition {
   position: relative;
   display: grid;
   align-items: start;
-  margin-top: 42px;
   min-height: 555px;
 }
 
@@ -255,39 +258,41 @@ nav a:focus-visible::after {
   transform: translateY(-15px) rotate(-7deg);
 }
 
+.name-glyph {
+  display: inline-block;
+  transform-origin: 50% 85%;
+}
+
+/* Independent motion layers let hovering lift a letter during the quiet wave. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-name.is-settled .name-glyph {
+    animation: name-drift 6.4s ease-in-out infinite;
+    animation-delay: calc(1.6s + var(--letter-index) * 120ms);
+    animation-play-state: paused;
+  }
+
+  .hero-name.is-idling .name-glyph {
+    animation-play-state: running;
+  }
+}
+
+@keyframes name-drift {
+  0%, 18%, 100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  7% {
+    translate: 0 -4px;
+    rotate: -1deg;
+  }
+  12% {
+    translate: 0 1px;
+    rotate: 0.4deg;
+  }
+}
+
 .name-dot {
   color: #9e3066;
-}
-
-.hero-statement {
-  position: absolute;
-  left: 34%;
-  bottom: 43px;
-  width: max-content;
-  max-width: 350px;
-  font-size: 28px;
-  line-height: 1.25;
-  letter-spacing: -0.9px;
-  z-index: 3;
-}
-
-.hero-statement-lead {
-  display: block;
-  font-weight: 600;
-}
-
-.hero-statement-flair {
-  display: block;
-  width: max-content;
-  margin-top: 9px;
-  padding: 0.02em 0.22em 0.1em;
-  background: var(--pink);
-  color: var(--ink);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.22em;
-  letter-spacing: -0.055em;
-  transform: rotate(-4deg);
-  border-radius: 48% 5% 40% 8% / 12% 45% 15% 35%;
 }
 
 .playground {
@@ -357,6 +362,7 @@ nav a:focus-visible::after {
 
 .spinner-center {
   fill: var(--pink);
+  transition: fill 0.45s;
 }
 
 .spinner-mark {
@@ -365,85 +371,6 @@ nav a:focus-visible::after {
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-.spin-caption {
-  display: flex;
-  width: fit-content;
-  margin: 0.6em 25px 1.5em auto;
-  align-items: center;
-  gap: 12px;
-  font-family: Georgia, serif;
-  font-style: italic;
-  font-size: 20px;
-  transform: rotate(-8deg);
-}
-
-.spin-caption svg {
-  width: 53px;
-  height: 40px;
-}
-
-.hero-bottom {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 8px;
-}
-
-.remix {
-  display: inline-flex;
-  gap: 14px;
-  align-items: center;
-  background: var(--ink);
-  color: var(--acid);
-  border: 2px solid var(--ink);
-  border-radius: 9px;
-  box-shadow: 6px 7px 0 var(--pink);
-  padding: 17px 22px;
-  font-size: 18px;
-  font-weight: 600;
-  transform: rotate(-3deg);
-  transition:
-    transform 0.55s var(--bounce),
-    box-shadow 0.35s,
-    color 0.35s;
-}
-
-.remix:hover,
-.remix:focus-visible {
-  transform: translate(-3px, -5px) rotate(1deg);
-  box-shadow: 10px 12px 0 var(--pink);
-}
-
-.remix:focus-visible {
-  outline-color: var(--ink);
-}
-
-.remix:active {
-  transform: translate(4px, 5px) rotate(0);
-  box-shadow: 1px 2px 0 var(--pink);
-}
-
-.remix-swatches {
-  display: flex;
-  padding-left: 4px;
-}
-
-.remix-swatches i {
-  width: 17px;
-  height: 17px;
-  border: 1px solid var(--ink);
-  border-radius: 50%;
-  background: var(--acid);
-  margin-left: -4px;
-}
-
-.remix-swatches i:nth-child(2) {
-  background: var(--pink);
-}
-.remix-swatches i:nth-child(3) {
-  background: var(--orange);
 }
 
 .link-icon {
@@ -457,16 +384,6 @@ nav a:focus-visible::after {
 
 .text-link:hover .link-icon {
   transform: rotate(-12deg) scale(1.16);
-}
-
-.remix svg {
-  width: 21px;
-  height: 21px;
-  transition: transform 0.6s var(--bounce);
-}
-
-.remix:hover svg {
-  transform: rotate(180deg);
 }
 
 .hero-stroke {
@@ -1104,7 +1021,7 @@ details[data-expanded="false"] > summary .plus {
   box-shadow: 8px 9px 0 var(--orange);
 }
 .tool-panel-4 {
-  --panel-color: #b4c5fa;
+  --panel-color: var(--toolkit-accent);
   --panel-angle: -1deg;
 }
 
@@ -1355,13 +1272,19 @@ details[data-expanded="false"] > summary .plus {
 }
 
 .image-dialog {
-  width: min(1150px, 94vw);
-  max-height: 92dvh;
-  padding: 20px;
+  --preview-ratio: 1;
+  width: min(
+    1280px,
+    calc(100vw - 24px),
+    calc((94dvh - 100px) * var(--preview-ratio) + 22px)
+  );
+  max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 24px);
+  padding: 10px;
   background: var(--paper);
   color: var(--ink);
   border: 1px solid var(--ink);
-  box-shadow: 12px 14px 0 var(--pink);
+  box-shadow: 6px 7px 0 var(--pink);
   transform-origin: center;
 }
 
@@ -1396,11 +1319,11 @@ details[data-expanded="false"] > summary .plus {
   justify-content: space-between;
   align-items: center;
   gap: 15px;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 
 .dialog-top h2 {
-  font-size: 22px;
+  font-size: clamp(18px, 2.5vw, 22px);
   line-height: 1.2;
 }
 
@@ -1471,9 +1394,8 @@ details[data-expanded="false"] > summary .plus {
 }
 
 .preview-image {
-  max-height: calc(92dvh - 110px);
   width: 100%;
-  object-fit: contain;
+  height: auto;
 }
 
 .confetti-layer {
@@ -1537,10 +1459,6 @@ details[data-expanded="false"] > summary .plus {
   .playground {
     margin-top: 70px;
   }
-  .hero-statement {
-    left: 37%;
-    bottom: 55px;
-  }
 }
 
 @media (max-width: 1100px) {
@@ -1549,12 +1467,6 @@ details[data-expanded="false"] > summary .plus {
   }
   .hero-composition {
     min-height: 460px;
-  }
-  .hero-statement {
-    left: 35%;
-    bottom: 10px;
-    font-size: 24px;
-    max-width: 300px;
   }
   .playground {
     margin-top: 62px;
@@ -1605,12 +1517,11 @@ details[data-expanded="false"] > summary .plus {
     font-size: 14px;
   }
   .hero {
-    padding-top: 18px;
-    padding-bottom: 25px;
+    min-height: calc(100svh - 74px);
+    padding-block: 48px 60px;
   }
   .hero-composition {
-    margin-top: 47px;
-    min-height: 530px;
+    min-height: max(350px, 52vw);
   }
   .hero-name {
     font-size: clamp(118px, 25.5vw, 191px);
@@ -1621,20 +1532,6 @@ details[data-expanded="false"] > summary .plus {
   .playground {
     width: 47%;
     margin-top: 137px;
-  }
-  .hero-statement {
-    left: 0;
-    bottom: 15px;
-    max-width: 300px;
-    font-size: 28px;
-  }
-  .spin-caption {
-    margin-right: 0;
-    font-size: 18px;
-    gap: 3px;
-  }
-  .spin-caption svg {
-    width: 37px;
   }
   .work {
     padding-block: 65px 75px;
@@ -1728,19 +1625,13 @@ details[data-expanded="false"] > summary .plus {
 
 @media (max-width: 420px) {
   .hero-composition {
-    min-height: 425px;
-    margin-top: 43px;
+    min-height: 330px;
   }
   .hero-name {
     font-size: 26vw;
   }
   .playground {
     margin-top: 103px;
-  }
-  .hero-statement {
-    bottom: 5px;
-    font-size: 25px;
-    max-width: 270px;
   }
   .project-grid {
     --project-stage-height: 285px;
@@ -1827,14 +1718,6 @@ details[data-expanded="false"] > summary .plus {
     width: 25px;
     height: 25px;
   }
-  .remix {
-    padding: 15px 17px;
-    font-size: 16px;
-    gap: 11px;
-  }
-  .hero-bottom {
-    margin-top: 17px;
-  }
 }
 
 @media (max-width: 420px) {
@@ -1901,18 +1784,12 @@ details[data-expanded="false"] > summary .plus {
     font-size: 140px;
   }
   .playground,
-  .remix,
-  .hero-bottom,
   .hero-stroke,
   .copy-button,
   .toast,
   .intro-scene,
   .tool-deck-trigger {
     display: none;
-  }
-  .hero-statement {
-    bottom: 0;
-    left: 50%;
   }
   .wrap {
     width: 100%;

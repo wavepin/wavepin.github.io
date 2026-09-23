@@ -41,13 +41,47 @@ if ("IntersectionObserver" in window && !reducedMotion.matches) {
 }
 
 const letters = [...document.querySelectorAll(".name-letter")];
+const glyphs = letters.map((letter, index) => {
+  letter.style.setProperty("--letter-index", index);
+  return letter.querySelector(".name-glyph");
+});
+const heroName = document.querySelector(".hero-name");
+let nameVisible = false;
+function updateNameMotion() {
+  heroName.classList.toggle(
+    "is-idling",
+    nameVisible && !document.hidden && !reducedMotion.matches,
+  );
+}
+function checkNameVisibility() {
+  const bounds = heroName.getBoundingClientRect();
+  nameVisible = bounds.bottom > 0 && bounds.top < window.innerHeight;
+  updateNameMotion();
+}
+if ("IntersectionObserver" in window) {
+  const nameObserver = new IntersectionObserver(([entry]) => {
+    nameVisible = entry.isIntersecting;
+    updateNameMotion();
+  });
+  nameObserver.observe(heroName);
+} else {
+  window.addEventListener("scroll", checkNameVisibility, { passive: true });
+  window.addEventListener("resize", checkNameVisibility);
+  checkNameVisibility();
+}
+document.addEventListener("visibilitychange", updateNameMotion);
+reducedMotion.addEventListener("change", updateNameMotion);
+
+// Hover stays on the outer letter; reveal and remix use the inner glyph.
+const letterMotions = new Map();
 function bounceLetters() {
   if (reducedMotion.matches || !canAnimate) return;
-  letters.forEach((letter, index) => {
-    letter.getAnimations().forEach((animation) => animation.cancel());
+  glyphs.forEach((letter, index) => {
+    const transform = getComputedStyle(letter).transform;
+    letterMotions.get(letter)?.cancel();
     const animation = letter.animate(
       [
-        { transform: "translateY(0) rotate(0deg)" },
+        { transform },
         {
           transform: `translateY(-24px) rotate(${index % 2 ? 7 : -7}deg)`,
           offset: 0.35,
@@ -55,8 +89,14 @@ function bounceLetters() {
         { transform: "translateY(5px) rotate(1deg)", offset: 0.72 },
         { transform: "translateY(0) rotate(0deg)" },
       ],
-      { duration: 680, delay: index * 45, easing: "cubic-bezier(.22,1,.36,1)" },
+      {
+        duration: 680,
+        delay: index * 45,
+        easing: "cubic-bezier(.22,1,.36,1)",
+        fill: "backwards",
+      },
     );
+    letterMotions.set(letter, animation);
     animation.finished.catch(() => {});
   });
 }
@@ -70,7 +110,6 @@ let drag;
 let suppressClick = false;
 spinner.disabled = false;
 spinner.style.touchAction = "pan-y";
-document.querySelector(".spin-caption").hidden = false;
 
 function stopSpin() {
   if (!spinAnimation) return;
@@ -159,6 +198,7 @@ spinner.addEventListener("click", (event) => {
     return;
   }
   suppressClick = false;
+  cyclePalette();
   spin();
   const bounds = spinner.getBoundingClientRect();
   burst(
@@ -214,6 +254,7 @@ function endDrag(event) {
     spinner.releasePointerCapture(event.pointerId);
   if (event.type === "pointerup" && previous.moved) {
     suppressClick = true;
+    cyclePalette();
     spin(Math.max(-900, Math.min(900, previous.velocity * 28)));
     burst(event.clientX, event.clientY);
   }
@@ -223,26 +264,41 @@ spinner.addEventListener("pointercancel", endDrag);
 spinner.addEventListener("lostpointercapture", endDrag);
 
 const palettes = [
-  { name: "Citron", acid: "#d9f461", pink: "#f5a6ce", orange: "#fe7045" },
-  { name: "Bubblegum", acid: "#f5a6ce", pink: "#b4c5fa", orange: "#d9f461" },
-  { name: "Periwinkle", acid: "#b4c5fa", pink: "#febf75", orange: "#f5a6ce" },
+  {
+    name: "Blue",
+    acid: "#b4c5fa",
+    pink: "#febf75",
+    orange: "#f5a6ce",
+    "toolkit-accent": "#f5a6ce",
+  },
+  {
+    name: "Pink",
+    acid: "#f5a6ce",
+    pink: "#b4c5fa",
+    orange: "#d9f461",
+    "toolkit-accent": "#d9f461",
+  },
+  {
+    name: "Neon green",
+    acid: "#d9f461",
+    pink: "#f5a6ce",
+    orange: "#fe7045",
+    "toolkit-accent": "#b4c5fa",
+  },
 ];
 let paletteIndex = 0;
-const remix = document.querySelector(".remix");
-remix.hidden = false;
-remix.addEventListener("click", () => {
+function cyclePalette() {
   paletteIndex = (paletteIndex + 1) % palettes.length;
   const palette = palettes[paletteIndex];
-  for (const key of ["acid", "pink", "orange"])
+  for (const key of ["acid", "pink", "orange", "toolkit-accent"])
     root.style.setProperty(`--${key}`, palette[key]);
   document.querySelector('meta[name="theme-color"]').content = palette.acid;
-  remix.setAttribute(
+  spinner.setAttribute(
     "aria-label",
-    `Remix the color palette. Current palette: ${palette.name}`,
+    `Spin and change colors. Current palette: ${palette.name}`,
   );
   bounceLetters();
-  spin(210);
-});
+}
 
 // Share viewport and motion-preference state across all thumbnail animations.
 const stageMotions = new Map();
@@ -294,7 +350,7 @@ if (!stageObserver) {
 }
 
 // Animate the key faces so their rotated button hit areas stay still.
-document.querySelectorAll(".keyboard-key").forEach((key) => {
+document.querySelectorAll(".keyboard-key").forEach((key, index) => {
   const face = key.querySelector(".key-face");
   const stage = key.closest(".stage-autotyper");
   let motion;
@@ -323,16 +379,25 @@ document.querySelectorAll(".keyboard-key").forEach((key) => {
       return;
     }
     if (motion?.playState === "running") return;
-    animateFace(
+    const invitation = animateFace(
       [
-        { transform: "translateY(-3px) scale(1.015)", offset: 0.28 },
-        { transform: "translateY(1px) scale(.99)", offset: 0.46 },
-        { transform: "translateY(-1px) scale(1.005)", offset: 0.64 },
-        { transform: "translateY(0)", offset: 0.8 },
-        { transform: "translateY(0)" },
+        { transform: "translateY(0) scale(1)", offset: 0 },
+        { transform: "translateY(-3px) scale(1.015)", offset: 0.25 },
+        { transform: "translateY(0) scale(1)", offset: 0.5 },
+        { transform: "translateY(3px) scale(.985)", offset: 0.75 },
+        { transform: "translateY(0) scale(1)" },
       ],
-      { duration: 850, iterations: Infinity, easing: "linear" },
+      { duration: 1000, iterations: Infinity, easing: "linear" },
     );
+    // Rejoin the other key's phase after a click bounce, too.
+    const partner = [...stage.querySelectorAll(".key-face")]
+      .find((candidate) => candidate !== face)
+      ?.getAnimations().find((animation) =>
+        animation.effect.getTiming().iterations === Infinity,
+      );
+    invitation.currentTime = partner
+      ? (Number(partner.currentTime) + 500) % 1000
+      : index * 500;
   }
 
   key.addEventListener("click", () => {
@@ -378,24 +443,23 @@ const reviewStars = document.querySelector(".review-stars");
 const reviewStage = reviewStars?.closest(".stage-reviews");
 if (reviewStage && canAnimate) {
   const stars = [...reviewStars.children];
-  const fillTime = 320;
+  const fillTime = 530;
   const growTime = 280;
-  const drainTime = 400;
+  const drainTime = 660;
   const shrinkTime = 260;
   const holdTime = 200;
-  const fillStep = fillTime + growTime;
-  const drainStep = drainTime + shrinkTime;
-  const drainStart = stars.length * fillStep + holdTime;
-  const duration = drainStart + stars.length * drainStep + holdTime;
+  // Each next star starts immediately; only the ends of the row settle and hold.
+  const drainStart = stars.length * fillTime + growTime + holdTime;
+  const duration = drainStart + stars.length * drainTime + shrinkTime + holdTime;
   const empty = "inset(0 100% 0 0)";
   const full = "inset(0 0% 0 0)";
 
   // All fills and pulses share one repeating timeline. Pausing retains the
   // exact partial fill, direction, and pulse; the first visit starts at 3/5.
   const animations = stars.flatMap((star, index) => {
-    const fillAt = index * fillStep;
+    const fillAt = index * fillTime;
     const filledAt = fillAt + fillTime;
-    const drainAt = drainStart + (stars.length - 1 - index) * drainStep;
+    const drainAt = drainStart + (stars.length - 1 - index) * drainTime;
     const drainedAt = drainAt + drainTime;
     const fill = star.querySelector(".review-star-fill").animate(
       [
@@ -417,7 +481,7 @@ if (reviewStage && canAnimate) {
           easing: "ease-out",
         },
         {
-          transform: "translateY(-4px) scale(1.55)",
+          transform: "translateY(-1px) scale(1.12)",
           offset: (filledAt + growTime * 0.45) / duration,
           easing: "ease-in-out",
         },
@@ -428,7 +492,7 @@ if (reviewStage && canAnimate) {
           easing: "ease-out",
         },
         {
-          transform: "translateY(3px) scale(.5)",
+          transform: "translateY(1px) scale(.92)",
           offset: (drainedAt + shrinkTime * 0.45) / duration,
           easing: "ease-in-out",
         },
@@ -439,7 +503,7 @@ if (reviewStage && canAnimate) {
     );
     for (const animation of [fill, pulse]) {
       animation.pause();
-      animation.currentTime = 3 * fillStep;
+      animation.currentTime = 3 * fillTime;
     }
     return [fill, pulse];
   });
@@ -520,8 +584,11 @@ if (typeof dialog.showModal === "function") {
       const source = link.querySelector("img");
       previewImage.src = link.href;
       previewImage.alt = source.alt;
-      previewImage.width = source.width;
-      previewImage.height = source.height;
+      const width = source.naturalWidth || Number(source.getAttribute("width"));
+      const height = source.naturalHeight || Number(source.getAttribute("height"));
+      previewImage.width = width;
+      previewImage.height = height;
+      dialog.style.setProperty("--preview-ratio", width / height);
       previewTitle.textContent = link.dataset.preview;
       dialog.showModal();
       document.body.classList.add("modal-open");
@@ -798,8 +865,10 @@ function startIntro() {
     location.hash ||
     window.scrollY > 24 ||
     navigation?.type === "back_forward"
-  )
+  ) {
+    heroName.classList.add("is-settled");
     return;
+  }
   const scene = document.createElement("div");
   scene.className = "intro-scene";
   scene.setAttribute("aria-hidden", "true");
@@ -825,13 +894,15 @@ function startIntro() {
     root.classList.remove("intro-running");
     motion.forEach((animation) => animation.cancel());
     scene.remove();
+    heroName.classList.add("is-settled");
+    updateNameMotion();
     document.removeEventListener("pointerdown", finishIntro, true);
     document.removeEventListener("keydown", finishIntro, true);
     window.removeEventListener("wheel", finishIntro);
     window.removeEventListener("scroll", finishIntro);
   };
   // A failed/cancelled animation must never leave a curtain over the page.
-  fallback = setTimeout(finishIntro, 2800);
+  fallback = setTimeout(finishIntro, 3400);
   document.addEventListener("pointerdown", finishIntro, {
     capture: true,
     once: true,
@@ -850,8 +921,8 @@ function startIntro() {
           { transform: `translateY(${index % 2 ? 105 : -105}%)` },
         ],
         {
-          duration: 1100,
-          delay: 550 + index * 110,
+          duration: 900,
+          delay: 300 + index * 90,
           easing: "cubic-bezier(.76,0,.24,1)",
           fill: "both",
         },
@@ -880,54 +951,42 @@ function startIntro() {
     ),
   );
   motion.push(
-    mark
-      .querySelector(".asterisk")
-      .animate([{ fill: "#d9f461" }, { fill: "#272461" }], {
+    mark.querySelector(".asterisk").animate(
+      [
+        { fill: getComputedStyle(root).getPropertyValue("--acid").trim() },
+        { fill: getComputedStyle(root).getPropertyValue("--ink").trim() },
+      ],
+      {
         duration: 800,
         delay: 1050,
         fill: "both",
-      }),
+      },
+    ),
   );
-  letters.forEach((letter, index) => {
-    motion.push(
-      letter.animate(
-        [
-          {
-            opacity: 0,
-            transform: `translateY(65vh) rotate(${index % 2 ? 35 : -30}deg) scale(.6)`,
-          },
-          {
-            opacity: 1,
-            transform: "translateY(-14px) rotate(-2deg) scale(1.04)",
-            offset: 0.75,
-          },
-          { opacity: 1, transform: "none" },
-        ],
+  glyphs.forEach((letter, index) => {
+    const animation = letter.animate(
+      [
         {
-          duration: 1000,
-          delay: 740 + index * 65,
-          easing: "cubic-bezier(.2,.85,.3,1)",
-          fill: "both",
+          opacity: 0,
+          transform: `translateY(.45em) rotate(${index % 2 ? 8 : -8}deg) scale(.92)`,
         },
-      ),
+        {
+          opacity: 1,
+          transform: "translateY(-7px) rotate(-1deg) scale(1.015)",
+          offset: 0.75,
+        },
+        { opacity: 1, transform: "none" },
+      ],
+      {
+        duration: 760,
+        delay: 1100 + index * 110,
+        easing: "cubic-bezier(.2,.85,.3,1)",
+        fill: "both",
+      },
     );
+    letterMotions.set(letter, animation);
+    motion.push(animation);
   });
-  for (const selector of [".hero-statement", ".hero-bottom", ".spin-caption"]) {
-    motion.push(
-      document.querySelector(selector).animate(
-        [
-          { opacity: 0, translate: "0 24px" },
-          { opacity: 1, translate: "0 0" },
-        ],
-        {
-          duration: 650,
-          delay: 1450,
-          easing: "cubic-bezier(.2,.8,.3,1)",
-          fill: "both",
-        },
-      ),
-    );
-  }
   Promise.allSettled(motion.map((animation) => animation.finished)).then(
     finishIntro,
   );
@@ -955,9 +1014,7 @@ reducedMotion.addEventListener("change", () => {
   toolDecks.forEach((settle) => settle());
   revealObserver?.disconnect();
   revealElements.forEach((element) => element.classList.remove("awaiting"));
-  letters.forEach((letter) =>
-    letter.getAnimations().forEach((animation) => animation.cancel()),
-  );
+  letterMotions.forEach((animation) => animation.cancel());
   document.querySelectorAll(".confetti").forEach((particle) => {
     particle.getAnimations().forEach((animation) => animation.cancel());
     particle.remove();
